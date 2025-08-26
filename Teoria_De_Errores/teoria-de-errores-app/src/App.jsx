@@ -1,17 +1,18 @@
-// src/App.jsx
-
-import React from 'react';
-import RoundOff from './components/RoundOff';
-import ErrorAbsolute from './components/ErrorAbsolute';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./apps/HomeApp";
+//import Teoria from "./Teoria";
+import Practica from "./apps/PracticeApp";
 
 function App() {
-    return (
-        <div className="app">
-            <h1>Análisis Numérico</h1>
-            <RoundOff />
-            <ErrorAbsolute />
-        </div>
-    );
-};
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/teoria" element={<Teoria />} /> */}
+        <Route path="/practica" element={<Practica />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 export default App;
