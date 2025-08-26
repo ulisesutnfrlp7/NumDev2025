@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { calculateErrorAbsolute } from '../hooks/useMath';
 import { errorAbsoluteSchema } from '../utils/validationSchemas';
 import ResultDisplay from './ResultDisplay';
+import '../styles/styles.css'
 
 const ErrorAbsolute = () => {
     const [result, setResult] = useState(null);
@@ -16,7 +17,7 @@ const ErrorAbsolute = () => {
     };
 
     return (
-        <div>
+        <section>
             <h2>Error Absoluto</h2>
             <Formik
                 initialValues={initialValues}
@@ -34,11 +35,11 @@ const ErrorAbsolute = () => {
                         <Field name="actual" type="text" />
                         <ErrorMessage name="actual" component="div" />
                     </div>
-                    <button type="submit">Calcular</button>
+                    <button type='submit'>Calcular</button>
                 </Form>
             </Formik>
             {result !== null && <ResultDisplay result={result} label="Error Absoluto" />}
-        </div>
+        </section>
     );
 };
 

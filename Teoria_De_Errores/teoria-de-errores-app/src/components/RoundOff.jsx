@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { roundOff } from '../hooks/useMath';
 import { roundOffSchema } from '../utils/validationSchemas';
 import ResultDisplay from './ResultDisplay';
+import '../styles/styles.css'
 
 const RoundOff = () => {
     const [result, setResult] = useState(null);
@@ -12,11 +13,13 @@ const RoundOff = () => {
 
     const handleSubmit = (values) => {
         const result = roundOff(parseFloat(values.number), parseInt(values.decimals));
-        setResult(result);
+        const cientific = result.toExponential(values.decimals);
+        const [base, exponente] = cientific.split("e");
+        setResult(`${base} × 10^${parseInt(exponente)}`);
     };
 
     return (
-        <div>
+        <section>
             <h2>Redondeo al Valor Más Próximo</h2>
             <Formik
                 initialValues={initialValues}
@@ -34,11 +37,11 @@ const RoundOff = () => {
                         <Field name="decimals" type="text" />
                         <ErrorMessage name="decimals" component="div" />
                     </div>
-                    <button type="submit">Calcular</button>
+                    <button type='submit'>Calcular</button>
                 </Form>
             </Formik>
             {result !== null && <ResultDisplay result={result} label="Resultado de Redondeo" />}
-        </div>
+        </section>
     );
 };
 
