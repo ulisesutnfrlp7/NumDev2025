@@ -6,7 +6,7 @@ const ResultDisplay = ({ result, label }) => {
     return (
         <div className="result-display">
             <h3>{label}</h3>
-            <p>Resultado: {result}</p>
+            <p>RESULTADO: {result}</p>
         </div>
     );
 };

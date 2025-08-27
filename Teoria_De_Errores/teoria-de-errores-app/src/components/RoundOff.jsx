@@ -40,7 +40,11 @@ const RoundOff = () => {
                     <button type='submit'>Calcular</button>
                 </Form>
             </Formik>
-            {result !== null && <ResultDisplay result={result} label="Resultado de Redondeo" />}
+            {result !== null && (
+                <div style={{ marginTop: '2rem' }}>
+                    <ResultDisplay result={result} label="RESULTADO DE REDONDEO" />
+                    </div>
+            )}
         </section>
     );
 };

@@ -38,7 +38,11 @@ const ErrorAbsolute = () => {
                     <button type='submit'>Calcular</button>
                 </Form>
             </Formik>
-            {result !== null && <ResultDisplay result={result} label="Error Absoluto" />}
+            {result !== null && (
+                <div style={{ marginTop: '2rem' }}>
+                    <ResultDisplay result={result} label="ERROR ABSOLUTO" />
+                </div>
+            )}
         </section>
     );
 };
