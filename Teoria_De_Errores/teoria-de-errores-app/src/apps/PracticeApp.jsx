@@ -1,5 +1,6 @@
 import RoundOff from '../components/RoundOff';
 import ErrorAbsolute from '../components/ErrorAbsolute';
+import PracticeExamples from '../components/PracticeExamples';
 import { useNavigate } from 'react-router-dom';
 
 function PracticeApp() {
@@ -15,8 +16,10 @@ function PracticeApp() {
                 ⬅ Volver al Home
             </button>
             <h1>Análisis Numérico</h1>
+            <PracticeExamples />
             <RoundOff />
             <ErrorAbsolute />
+            
         </div>
     );
 };

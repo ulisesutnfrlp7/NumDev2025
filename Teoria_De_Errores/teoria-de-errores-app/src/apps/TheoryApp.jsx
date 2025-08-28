@@ -16,23 +16,48 @@ function TheoryApp() {
             <h1 className="text-3xl font-bold mb-6 text-center">Teoría: Redondeo y Errores</h1>
 
             {/* 1. Redondeo */}
-            <section className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">1. Redondeo al valor más próximo con “m” cifras</h2>
-                <ul className="list-disc pl-6 space-y-2">
-                    <li>
-                        Para redondear se analiza la cifra <strong>“m+1”</strong>:
-                        <ul className="list-[circle] pl-6 mt-2 space-y-1">
-                            <li><strong>Si a<sub>m+1</sub> &lt; 5 →</strong> se redondea por defecto:</li>
-                            <li className="bg-gray-100 p-2 rounded-md text-sm">
-                                ā = 0, a₁ a₂ … aₘ × 10ᵏ
-                            </li>
-                            <li><strong>Si a<sub>m+1</sub> ≥ 5 →</strong> se redondea por exceso:</li>
-                            <li className="bg-gray-100 p-2 rounded-md text-sm">
-                                ā = 0, a₁ a₂ … (aₘ + 1) × 10ᵏ
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                        
+            <section className="mb-8 bg-white max-w-3xl mx-auto p-6 rounded-2xl shadow-lg">
+            <h2 className="text-2xl font-semibold mb-4 text-blue-600 border-b pb-2">
+                1. Redondeo al valor más próximo con “m” cifras significativas
+            </h2>
+
+            <p className="mb-6">
+                Cuando queremos redondear un número con <strong>m cifras significativas</strong>, 
+                debemos observar la cifra siguiente (<strong>m+1</strong>).
+            </p>
+
+            {/* Caso 1 */}
+            <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
+                <h3 className="font-semibold text-lg mb-2 text-gray-800">Caso 1 — Por defecto</h3>
+                <p className="mb-3">
+                Si <strong>a<sub>m+1</sub> &lt; 5</strong>, entonces el número se queda igual hasta la posición <em>m</em>.
+                </p>
+                <div className="bg-white p-4 rounded-md text-sm border border-dashed">
+                <p><strong>Ejemplo:</strong></p>
+                <p>a = 124,641, m = 4</p>
+                <p>ā = 0,1246 × 10³ = 1246</p>
+                </div>
+            </div>
+
+            {/* Caso 2 */}
+            <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
+                <h3 className="font-semibold text-lg mb-2 text-gray-800">Caso 2 — Por exceso</h3>
+                <p className="mb-3">
+                Si <strong>a<sub>m+1</sub> ≥ 5</strong>, entonces al último dígito de las <em>m</em> cifras se le suma 1.
+                </p>
+                <div className="bg-white p-4 rounded-md text-sm border border-dashed">
+                <p><strong>Ejemplo:</strong></p>
+                <p>a = 124,647, m = 4</p>
+                <p>ā = 0,1247 × 10³ = 1247</p>
+                </div>
+            </div>
+
+            {/* Nota final */}
+            <p className="italic text-gray-600">
+                Este método se llama <strong>redondeo simétrico</strong>, porque trata de no sesgar 
+                el valor hacia arriba o hacia abajo, sino mantenerlo “cercano” al número real.
+            </p>
             </section>
 
             {/* 2. Ejemplo de Redondeo */}
