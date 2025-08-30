@@ -19,7 +19,7 @@ function TheoryApp() {
                         
             <section className="mb-8 bg-white max-w-3xl mx-auto p-6 rounded-2xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-4 text-blue-600 border-b pb-2">
-                1. Redondeo al valor más próximo con “m” cifras significativas
+                1.  REDONDEO AL VALOR MÁS PRÓXIMO CON “m” CIFRAS SIGNIFICATIVAS
             </h2>
 
             <p className="mb-6">
@@ -62,9 +62,9 @@ function TheoryApp() {
 
             {/* 2. Ejemplo de Redondeo */}
             <section className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">2. Ejemplo de Redondeo</h2>
+                <h2 className="text-2xl font-semibold mb-4">2. EJEMPLO DE REDONDEO </h2>
                 <p className="mt-4">
-                    <strong>Ejemplo:</strong>
+                    <strong>Ejemplo: </strong>
                     Si α = 124,641 y se pide redondear con m = 4:
                 </p>
                 <div className="bg-yellow-100 p-3 rounded-md mt-2">
@@ -77,7 +77,7 @@ function TheoryApp() {
 
             {/* 3. Error Absoluto Explicado (con la imagen) */}
             <section className="mb-8 text-center">
-                <h2 className="text-2xl font-semibold mb-4">3. Error Absoluto Explicado</h2>
+                <h2 className="text-2xl font-semibold mb-4">3. ERROR ABSOLUTO EXPLICADO</h2>
                 {/* Aquí insertamos la imagen */}
                 <img
                     src={ErrorAbsolutoExplicado}

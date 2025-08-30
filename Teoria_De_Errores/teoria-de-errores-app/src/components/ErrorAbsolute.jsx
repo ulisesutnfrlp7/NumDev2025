@@ -26,19 +26,19 @@ const ErrorAbsolute = () => {
             >
                 <Form>
                     <div>
-                        <label htmlFor="measured">Valor Medido:</label>
+                        <label htmlFor="measured"><strong>VALOR MEDIDO:</strong></label>
                         <Field name="measured" type="text" />
                         <ErrorMessage name="measured" component="div" />
                     </div>
                     <div>
-                        <label htmlFor="actual">Valor Real:</label>
+                        <label htmlFor="actual"><strong>VALOR REAL:</strong></label>
                         <Field name="actual" type="text" />
                         <ErrorMessage name="actual" component="div" />
                     </div>
-                    <button type='submit'>Calcular</button>
+                    <button type='submit'>CALCULAR</button>
                 </Form>
             </Formik>
-            {result !== null && <ResultDisplay result={result} label="Error Absoluto" />}
+            {result !== null && <ResultDisplay result={result} label="ERROR ABSOLUTO" />}
         </section>
     );
 };

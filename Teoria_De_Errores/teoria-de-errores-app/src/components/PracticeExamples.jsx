@@ -1,3 +1,5 @@
+// src/components/PracticeExamples.jsx
+
 import React, { useState } from 'react';
 
 const PracticeExamples = () => {

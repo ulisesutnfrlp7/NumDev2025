@@ -1,3 +1,5 @@
+// src/apps/HomeApp.jsx
+
 import { useNavigate } from "react-router-dom";
 
 export default function HomeApp() {
@@ -15,7 +17,7 @@ export default function HomeApp() {
           className="text-2xl font-semibold rounded-2xl bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-105 transition-transform"
           style={{ height: "400px", width: "400px" }}
         >
-          📘 Teoría
+          📘 TEORÍA
         </button>
 
         <button
@@ -23,7 +25,7 @@ export default function HomeApp() {
           className="text-2xl font-semibold rounded-2xl bg-green-600 text-white shadow-lg hover:bg-green-700 hover:scale-105 transition-transform"
           style={{ height: "400px", width: "400px" }}
         >
-          🧮 Práctica
+          🧮 PRÁCTICA
         </button>
       </div>
     </div>

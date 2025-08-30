@@ -1,7 +1,9 @@
+// src/App.jsx
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./apps/HomeApp";
 import Practica from "./apps/PracticeApp";
-import TheoryApp from "./apps/TheoryApp"; // 👈 Importamos
+import TheoryApp from "./apps/TheoryApp";
 
 function App() {
   return (

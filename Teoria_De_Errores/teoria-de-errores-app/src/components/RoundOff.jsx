@@ -1,4 +1,4 @@
-// src/components/RoundOff.js
+// src/components/RoundOff.jsx
 
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -28,19 +28,19 @@ const RoundOff = () => {
             >
                 <Form>
                     <div>
-                        <label htmlFor="number">Número:</label>
+                        <label htmlFor="number"><strong>NÚMERO:</strong></label>
                         <Field name="number" type="text" />
                         <ErrorMessage name="number" component="div" />
                     </div>
                     <div>
-                        <label htmlFor="decimals">Decimales:</label>
+                        <label htmlFor="decimals"><strong>CIFRAS SIGNIFICATIVAS:</strong></label>
                         <Field name="decimals" type="text" />
                         <ErrorMessage name="decimals" component="div" />
                     </div>
-                    <button type='submit'>Calcular</button>
+                    <button type='submit'>CALCULAR</button>
                 </Form>
             </Formik>
-            {result !== null && <ResultDisplay result={result} label="Resultado de Redondeo" />}
+            {result !== null && <ResultDisplay result={result} label="RESULTADO DE REDONDEO" />}
         </section>
     );
 };

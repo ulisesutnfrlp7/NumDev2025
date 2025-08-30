@@ -1,3 +1,5 @@
+// src/apps/PracticeApp.jsx
+
 import RoundOff from '../components/RoundOff';
 import ErrorAbsolute from '../components/ErrorAbsolute';
 import PracticeExamples from '../components/PracticeExamples';
@@ -15,7 +17,7 @@ function PracticeApp() {
             >
                 ⬅ Volver al Home
             </button>
-            <h1>Análisis Numérico</h1>
+            <h1>Análisis Numérico - UNIDAD 5: TEORÍA DE ERRORES</h1>
             <PracticeExamples />
             <RoundOff />
             <ErrorAbsolute />
