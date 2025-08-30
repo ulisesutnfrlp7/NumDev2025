@@ -43,8 +43,6 @@ src/
 ├── main.jsx                 # Punto de entrada React
 └── index.html               # Template HTML base
 
-````
-
 ---
 
 ## 🧮 LÓGICA IMPLEMENTADA
@@ -57,7 +55,6 @@ export const roundOff = (number, decimals) => {
     const factor = Math.pow(10, decimals);
     return Math.round(number * factor) / factor;
 };
-````
 
 * También muestra el resultado en **notación científica** usando `toExponential`.
 
