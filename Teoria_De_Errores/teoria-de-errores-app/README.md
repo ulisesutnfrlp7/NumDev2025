@@ -1,4 +1,3 @@
-```markdown
 # 📘 Análisis Numérico – Redondeo y Error Absoluto
 
 Aplicación interactiva para practicar **redondeo por aproximación** y **cálculo de error absoluto** en problemas de análisis numérico. Incluye teoría, ejemplos prácticos y ejercicios resueltos.  
@@ -17,8 +16,6 @@ Aplicación interactiva para practicar **redondeo por aproximación** y **cálcu
 ---
 
 ## 📂 ESTRUCTURA DEL PROYECTO
-
-```
 
 src/
 ├── apps/
