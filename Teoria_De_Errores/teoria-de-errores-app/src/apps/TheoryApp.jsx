@@ -33,11 +33,7 @@ function TheoryApp() {
                 <p className="mb-3">
                 Si <strong>a<sub>m+1</sub> &lt; 5</strong>, entonces el número se queda igual hasta la posición <em>m</em>.
                 </p>
-                <div className="bg-white p-4 rounded-md text-sm border border-dashed">
-                <p><strong>Ejemplo:</strong></p>
-                <p>a = 124,641, m = 4</p>
-                <p>ā = 0,1246 × 10³ = 1246</p>
-                </div>
+               
             </div>
 
             {/* Caso 2 */}
@@ -46,11 +42,7 @@ function TheoryApp() {
                 <p className="mb-3">
                 Si <strong>a<sub>m+1</sub> ≥ 5</strong>, entonces al último dígito de las <em>m</em> cifras se le suma 1.
                 </p>
-                <div className="bg-white p-4 rounded-md text-sm border border-dashed">
-                <p><strong>Ejemplo:</strong></p>
-                <p>a = 124,647, m = 4</p>
-                <p>ā = 0,1247 × 10³ = 1247</p>
-                </div>
+
             </div>
 
             {/* Nota final */}
