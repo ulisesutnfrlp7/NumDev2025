@@ -17,6 +17,7 @@ Aplicación interactiva para practicar **redondeo por aproximación** y **cálcu
 
 ## 📂 ESTRUCTURA DEL PROYECTO
 
+```
 src/
 ├── apps/
 │   ├── HomeApp.jsx          # Página principal con navegación
@@ -42,6 +43,7 @@ src/
 ├── App.jsx                  # Definición de rutas principales
 ├── main.jsx                 # Punto de entrada React
 └── index.html               # Template HTML base
+```
 
 ---
 
