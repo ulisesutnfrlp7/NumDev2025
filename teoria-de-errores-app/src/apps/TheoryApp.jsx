@@ -14,19 +14,15 @@ function TheoryApp() {
                 ⬅ Volver al Home
             </button>
             <h1 className="text-3xl font-bold mb-6 text-center">Teoría: Redondeo y Errores</h1>
-
-            {/* 1. Redondeo */}
-                        
+            {/*Redondeo */}
             <section className="mb-8 bg-white max-w-3xl mx-auto p-6 rounded-2xl shadow-lg">
             <h2 className="text-2xl font-semibold mb-4 text-blue-600 border-b pb-2">
                 1.  REDONDEO AL VALOR MÁS PRÓXIMO CON “m” CIFRAS SIGNIFICATIVAS
             </h2>
-
             <p className="mb-6">
                 Cuando queremos redondear un número con <strong>m cifras significativas</strong>, 
                 debemos observar la cifra siguiente (<strong>m+1</strong>).
             </p>
-
             {/* Caso 1 */}
             <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
                 <h3 className="font-semibold text-lg mb-2 text-gray-800">Caso 1 — Por defecto</h3>
@@ -34,24 +30,19 @@ function TheoryApp() {
                 Si <strong>a<sub>m+1</sub> &lt; 5</strong>, entonces el número se queda igual hasta la posición <em>m</em>.
                 </p>
             </div>
-
             {/* Caso 2 */}
             <div className="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6">
                 <h3 className="font-semibold text-lg mb-2 text-gray-800">Caso 2 — Por exceso</h3>
                 <p className="mb-3">
                 Si <strong>a<sub>m+1</sub> ≥ 5</strong>, entonces al último dígito de las <em>m</em> cifras se le suma 1.
                 </p>
-
             </div>
-
-            {/* Nota final */}
             <p className="italic text-gray-600">
                 Este método se llama <strong>redondeo simétrico</strong>, porque trata de no sesgar 
                 el valor hacia arriba o hacia abajo, sino mantenerlo “cercano” al número real.
             </p>
             </section>
-
-            {/* 2. Ejemplo de Redondeo */}
+            {/*Ejemplo de redondeo */}
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">2. EJEMPLO DE REDONDEO </h2>
                 <p className="mt-4">
@@ -65,11 +56,9 @@ function TheoryApp() {
                     ā = 0,1247 × 10³
                 </div>
             </section>
-
-            {/* 3. Error Absoluto Explicado (con la imagen) */}
+            {/* 3. Error absoluto explicacion */}
             <section className="mb-8 text-center">
                 <h2 className="text-2xl font-semibold mb-4">3. ERROR ABSOLUTO EXPLICADO</h2>
-                {/* Aquí insertamos la imagen */}
                 <img
                     src={ErrorAbsolutoExplicado}
                     alt="Diagrama explicando el Error Absoluto"
