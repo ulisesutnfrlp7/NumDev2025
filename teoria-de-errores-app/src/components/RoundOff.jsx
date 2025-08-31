@@ -1,23 +1,23 @@
-// src/components/RoundOff.jsx
-
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { roundOff } from '../hooks/useMath';
 import { roundOffSchema } from '../utils/validationSchemas';
 import ResultDisplay from './ResultDisplay';
-import '../styles/styles.css'
+import '../styles/styles.css';
 
 const RoundOff = () => {
     const [result, setResult] = useState(null);
     const initialValues = { number: '', decimals: '' };
 
     const handleSubmit = (values) => {
-        const result = roundOff(parseFloat(values.number), parseInt(values.decimals));
-        const cientific = result.toExponential(values.decimals);
-        const [base, exponente] = cientific.split("e");
-        setResult(`${base} × 10^${parseInt(exponente)}`);
+        const number = parseFloat(values.number);
+        const decimals = parseInt(values.decimals);
+        const roundedNumber = roundOff(number, decimals);
+        const exponent = Math.floor(Math.log10(Math.abs(roundedNumber)));
+        const adjustedNumber = roundedNumber / Math.pow(10, exponent + 1);
+        const finalResult = `${adjustedNumber.toFixed(decimals)} × 10^${exponent + 1}`;
+        setResult(finalResult);
     };
-
     return (
         <section>
             <h2>Redondeo al Valor Más Próximo</h2>
