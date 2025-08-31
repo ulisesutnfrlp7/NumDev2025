@@ -3,8 +3,8 @@
 import * as Yup from 'yup';
 
 export const roundOffSchema = Yup.object({
-    number: Yup.number().required('Requerido'),
-    decimals: Yup.number().required('Requerido').min(0, 'Debe ser un número positivo'),
+    number: Yup.string().required('Requerido'),
+    decimals: Yup.string().required('Requerido').min(0, 'Debe ser un número positivo'),
 });
 
 export const errorAbsoluteSchema = Yup.object({

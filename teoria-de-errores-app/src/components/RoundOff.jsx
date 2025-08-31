@@ -9,8 +9,18 @@ const RoundOff = () => {
     const [result, setResult] = useState(null);
     const initialValues = { number: '', decimals: '' };
 
+    const parseNumber = (value) => {
+        if (typeof value === "string" && value.includes("/")) {
+            const [num, den] = value.split("/").map(Number);
+            if (!isNaN(num) && !isNaN(den) && den !== 0) {
+                return num / den;
+            }
+        }
+        return parseFloat(value);
+        };
+
     const handleSubmit = (values) => {
-        const number = parseFloat(values.number);
+        const number = parseNumber(values.number);
         const decimals = parseInt(values.decimals);
         const roundedNumber = roundOff(number, decimals);
         const exponent = Math.floor(Math.log10(Math.abs(roundedNumber)));
