@@ -33,7 +33,6 @@ function TheoryApp() {
                 <p className="mb-3">
                 Si <strong>a<sub>m+1</sub> &lt; 5</strong>, entonces el número se queda igual hasta la posición <em>m</em>.
                 </p>
-               
             </div>
 
             {/* Caso 2 */}

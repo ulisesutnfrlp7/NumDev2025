@@ -158,6 +158,51 @@ const PracticeExamples = () => {
                             c) <span style={{fontWeight: '600', color: '#2563eb'}}>355/113</span>
                         </p>
                     </div>
+                    <div 
+                        style={{
+                            backgroundColor: '#ffffff',
+                            borderRadius: '0.75rem',
+                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                            padding: '2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '11rem',
+                            width: '100%',
+                            maxWidth: '36rem',
+                            margin: '0 auto',
+                            marginBottom: '0' 
+                        }}
+                    >
+                        <h3 style={{
+                            fontSize: '1.5rem',
+                            fontWeight: 'bold',
+                            color: '#1d4ed8',
+                            marginBottom: '0.5rem',
+                            textAlign: 'center',
+                            margin: '0 0 0.5rem 0' 
+                        }}>
+                            Ejemplo 3 - Redondeo al Valor Más Próximo
+                        </h3>
+                        <p style={{
+                            fontSize: '0.95rem',
+                            fontWeight: '500',
+                            color: '#374151',
+                            textAlign: 'center',
+                            lineHeight: '1.5',
+                            margin: '0'
+                        }}>
+                            Redondear <span style={{fontWeight: '600', color: '#2563eb'}}>al valor más próximo</span>, tomando 
+                            el valor aproximado de <strong>a</strong> con 3 cifras significativas.
+                            <br />
+                            a) <span style={{fontWeight: '600', color: '#2563eb'}}>a = 3.14159265</span>
+                            <br />
+                            b) <span style={{fontWeight: '600', color: '#2563eb'}}>a = 2.71828183</span>
+                            <br />
+                            c) <span style={{fontWeight: '600', color: '#2563eb'}}>a = 1.41421356</span>
+                        </p>
+                    </div>
                 </div>
             )}
         </div>
