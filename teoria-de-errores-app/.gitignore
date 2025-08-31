@@ -1,52 +1,37 @@
-# Node modules
+# 📦 Dependencias
 node_modules/
 
-# Build output
+# 🛠️ Build de Vite
 dist/
-build/
 
-# Vite cache
-.vite/
+# 🧪 Archivos temporales y logs
+*.log
+*.tmp
+*.swp
+*.swo
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Environment variables
+# ⚙️ Configuración local
 .env
 .env.local
-.env.*.local
-
-# IDEs and editors
 .vscode/
 .idea/
-*.sublime-workspace
-*.sublime-project
 
-# OS-specific
+# 🚀 Archivos de deploy (si usás carpeta externa)
+gh-pages/
+
+# 🧼 Sistema operativo
 .DS_Store
 Thumbs.db
 
-# Optional: Vercel / Netlify
-.vercel/
-.netlify/
+# 🔍 Archivos de debugging o profiling
+*.trace
+*.prof
 
-# TypeScript
-*.tsbuildinfo
+# 📚 Documentación generada
+*.docx
+*.pdf
+*.xlsx
 
-# Coverage reports
-coverage/
-
-# Misc
-*.log
-*.bak
-*.tmp
-*.swp
-*.lock
-
-# Optional: local dev tools
-local.env
-*.sqlite
-*.db
+# 🧩 Subapps específicas (si querés ignorar builds por unidad)
+**/dist/
+**/node_modules/
