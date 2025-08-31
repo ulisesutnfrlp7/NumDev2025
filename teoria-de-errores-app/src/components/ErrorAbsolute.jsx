@@ -11,10 +11,24 @@ const ErrorAbsolute = () => {
     const [result, setResult] = useState(null);
     const initialValues = { measured: '', actual: '' };
 
+    const parseNumber = (value) => {
+        if (typeof value === "string" && value.includes("/")) {
+            const [num, den] = value.split("/").map(Number);
+            if (!isNaN(num) && !isNaN(den) && den !== 0) {
+                return num / den;
+            }
+        }
+        return parseFloat(value);
+        };
+
     const handleSubmit = (values) => {
-        const result = calculateErrorAbsolute(parseFloat(values.measured), parseFloat(values.actual));
+        const measured = parseNumber(values.measured);
+        const actual = parseNumber(values.actual);
+
+        const result = calculateErrorAbsolute(measured, actual);
         setResult(result);
     };
+    
 
     return (
         <section>

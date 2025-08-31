@@ -8,6 +8,6 @@ export const roundOffSchema = Yup.object({
 });
 
 export const errorAbsoluteSchema = Yup.object({
-    measured: Yup.number().required('Requerido'),
-    actual: Yup.number().required('Requerido'),
+    measured: Yup.string().required('Requerido'),
+    actual: Yup.string().required('Requerido'),
 });
