@@ -6,5 +6,5 @@ export const roundOff = (number, decimals) => {
 };
 
 export const calculateErrorAbsolute = (measured, actual) => {
-    return Math.abs(measured - actual);
+    return measured - actual;
 }
