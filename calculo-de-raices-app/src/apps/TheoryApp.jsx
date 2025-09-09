@@ -2,6 +2,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import Teorema1 from '../components/Teorema1';
+import Teorema2 from '../components/Teorema2'
 import VentajasDesventajas from '../components/VentajasYDesventajas';
 
 function TheoryApp() {
@@ -21,6 +22,7 @@ function TheoryApp() {
           Definición del Método, Teoremas, Ventajas, Desventajas y Criterios de Paro
         </h1>
         <Teorema1 />
+        <Teorema2 />
         <VentajasDesventajas />
       </div>
     </div>
