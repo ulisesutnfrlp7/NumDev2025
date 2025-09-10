@@ -4,22 +4,27 @@
 
 import { useNavigate } from 'react-router-dom';
 import NewtonMethodCalculator from '../components/NewtonMethodCalculator';
+import Ejercicio1 from '../components/Ejercicio1';
+import Ejercicio2 from '../components/Ejercicio2';
 
 function PracticeApp() {
     const navigate = useNavigate();
     return (
-        <div className="app">
+        <div className="min-h-screen bg-gradient-to-r from-blue-200 to-indigo-400 p-6 relative text-gray-800">
             <button
                 onClick={() => navigate("/")}
-                className="mt-8 px-6 py-3 bg-green-600 text-white rounded-xl text-lg font-semibold hover:bg-green-700 transition"
-                style={{ position: "absolute", top: "100px", left: "40px" }}
+                className="absolute top-6 left-6 px-6 py-3 bg-blue-600 text-white rounded-xl text-lg font-semibold hover:bg-blue-700 hover:scale-105 transition-transform shadow-md"
             >
                 ⬅ Volver al Home
             </button>
-            <h1 className="mt-20 mb-8 text-3xl font-bold text-green-700 text-center drop-shadow-sm tracking-wide">
-                Análisis Numérico - <span className="text-green-800">UNIDAD 6:</span> <span className="text-green-600">CÁLCULO DE RAÍCES</span>
-            </h1>
-            <NewtonMethodCalculator />
+            <div className="max-w-4xl mx-auto">
+                <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center">
+                Unidad 6: Método de Newton para el Cálculo de Raíces
+                </h1>
+                <Ejercicio1 />
+                <Ejercicio2 />
+                <NewtonMethodCalculator />
+            </div>
         </div>
     );
 };
