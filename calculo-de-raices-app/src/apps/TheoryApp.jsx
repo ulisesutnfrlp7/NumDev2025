@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Teorema1 from '../components/Teorema1';
 import Teorema2 from '../components/Teorema2'
 import VentajasDesventajas from '../components/VentajasYDesventajas';
+import NewtonMethod from '../components/NewtonMethod';
 
 function TheoryApp() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function TheoryApp() {
         <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center">
           Definición del Método, Teoremas, Ventajas, Desventajas y Criterios de Paro
         </h1>
+        <NewtonMethod />
         <Teorema1 />
         <Teorema2 />
         <VentajasDesventajas />
