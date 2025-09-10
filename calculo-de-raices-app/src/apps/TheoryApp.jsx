@@ -1,9 +1,10 @@
-// src/apps/TheoryApp.jsx
-
 import { useNavigate } from 'react-router-dom';
 import Teorema1 from '../components/Teorema1';
-import Teorema2 from '../components/Teorema2'
+import Teorema2 from '../components/Teorema2';
 import VentajasDesventajas from '../components/VentajasYDesventajas';
+import Teorema3 from '../components/Teorema3';
+import CriterioDeParo from '../components/CriterioDeParo';
+
 
 function TheoryApp() {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ function TheoryApp() {
         </h1>
         <Teorema1 />
         <Teorema2 />
+        <Teorema3 />
+        <CriterioDeParo />
         <VentajasDesventajas />
       </div>
     </div>
