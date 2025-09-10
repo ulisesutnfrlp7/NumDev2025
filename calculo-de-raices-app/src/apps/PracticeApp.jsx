@@ -1,5 +1,6 @@
 // src/apps/PracticeApp.jsx
-
+import Ejercicio1 from '../components/Ejercicio1';
+import Ejercicio2 from '../components/Ejercicio2';
 import { useNavigate } from 'react-router-dom';
 import NewtonMethodCalculator from '../components/NewtonMethodCalculator';
 
@@ -19,11 +20,12 @@ function PracticeApp() {
         <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center">
           Unidad 6: Método de Newton para el Cálculo de Raíces
         </h1>
+          <Ejercicio1 />
+          <Ejercicio2 />
 
         <NewtonMethodCalculator />
       </div>
     </div>
   );
 }
-
-export default PracticeApp;
+export default PracticeApp
