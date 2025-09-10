@@ -1,4 +1,6 @@
-const CriterioDeParo = () => {
+// src/components/CriteriosDeParo.jsx
+
+const CriteriosDeParo = () => {
 	return (
 		<section className="mb-8 bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
 			<h2 className="text-2xl font-semibold mb-4 text-blue-600 border-b pb-2">
@@ -36,4 +38,4 @@ const CriterioDeParo = () => {
 	);
 };
 
-export default CriterioDeParo;
+export default CriteriosDeParo;
