@@ -10,12 +10,12 @@ const Teorema3 = () => {
 				<ul className="list-disc list-inside space-y-2 pl-4 text-gray-700">
 					<li>
 						<span className="font-semibold">Condición de la función:</span> La función es
-						<span className="font-mono"> f(x) &isin; C&sup2;[a,b]</span>, lo que significa que
-						es continua, y sus derivadas primera y segunda también lo son en el intervalo [a,b].
+						<span className="font-mono"> f(x) &isin; C&sup2; [a, b]</span>, lo que significa que
+						es continua, y sus derivadas primera y segunda también lo son en el intervalo [a, b].
 					</li>
 					<li>
 						<span className="font-semibold">Condición de la raíz:</span> El punto
-						<span className="font-mono"> p &isin; [a,b]</span> es una raíz de la función, por lo tanto,
+						<span className="font-mono"> p &isin; [a, b]</span> es una raíz de la función, por lo tanto,
 						<span className="font-mono"> f(p) = 0</span>.
 					</li>
 					<li>

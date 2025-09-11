@@ -17,6 +17,9 @@ const Ejercicio1 = () => {
         <p className="mb-2">
             X<sub>0</sub> = 3
         </p>
+        <p className="mb-3">
+        &epsilon; = 10<sup>-6</sup> (para asegurar precisión).
+        </p>
         <p className="mb-4">
             ¿Cuántas iteraciones fueron necesarias para hallar la raíz exacta usando este método?
         </p>

@@ -13,17 +13,17 @@ const Teorema2 = () => {
         </p>
         <ul className="list-disc list-inside mb-4 text-gray-700">
           <li>
-            g(x) continua en [a,b].
+            g(x) continua en [a, b].
           </li>
           <li>
-            g(x) &epsilon; [a,b] para todo x &epsilon; [a,b].
+            g(x) &epsilon; [a, b] para todo x &epsilon; [a, b].
           </li>
           <li>
-            g'(x) existe para todo x &epsilon; (a,b) y siendo 0 &lt; k &lt; 1, y cumpliéndose que |g'(x)| &lt;= k para todo x &epsilon; (a,b).
+            g'(x) existe para todo x &epsilon; (a,b) y siendo 0 &lt; k &lt; 1, y cumpliéndose que |g'(x)| &lt;= k para todo x &epsilon; (a, b).
           </li>
         </ul>
         <p className="mb-4">
-          <span className="font-semibold">Conclusión:</span> Para cualquier punto <strong>P<sub>0</sub></strong> &epsilon; [a,b], la sucesión definida por la técnica punto fijo P<sub>n</sub> = g(P<sub>n</sub> - 1); n &gt;= 1 converge al único punto fijo p en [a,b].
+          <span className="font-semibold">Conclusión:</span> Para cualquier punto <strong>P<sub>0</sub></strong> &epsilon; [a,b], la sucesión definida por la técnica punto fijo P<sub>n</sub> = g(P<sub>n</sub> - 1); n &gt;= 1 converge al único punto fijo p en [a, b].
         </p>
         <p className="italic text-gray-600">
           (Esto se demuestra rigurosamente con el uso del Teorema 1 y el Teorema del Valor Medio aplicado a la sucesión definida por P<sub>n</sub> = g(P<sub>n</sub> - 1), como muestra el apunte).
