@@ -11,11 +11,16 @@ const Teorema1 = () => {
       <div className="mb-6">
         <h3 className="text-xl font-semibold text-gray-800 mb-2">Parte a) Existencia</h3>
         <p className="mb-2">
-          <span className="font-semibold">Hipótesis:</span> g(x) es una función continua en un intervalo cerrado [a, b].
+          <span className="font-semibold">Hipótesis:</span>
         </p>
-        <p className="mb-2">
-          g(x) “mapea” el intervalo en sí mismo, es decir, para toda x en [a, b], el resultado g(x) también está en [a, b].
-        </p>
+        <ul className="list-disc list-inside mb-4 text-gray-700">
+          <li>
+            g(x) es una función continua en un intervalo cerrado [a, b].
+          </li>
+          <li>
+            g(x) “mapea” el intervalo en sí mismo, es decir, para toda x en [a, b], el resultado g(x) también está en [a, b].
+          </li>
+        </ul>
         <p className="mb-4">
           <span className="font-semibold">Conclusión:</span> Existe al menos un punto fijo <strong>p</strong> en [a, b] tal que <strong>p = g(p)</strong>.
         </p>
