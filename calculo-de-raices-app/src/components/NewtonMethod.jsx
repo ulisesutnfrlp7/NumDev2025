@@ -1,4 +1,5 @@
 // src/components/NewtonMethod
+import ejemplo from '../img/ejemplo.png'
 
 const NewtonMethod = () => {
   return (
@@ -40,6 +41,9 @@ const NewtonMethod = () => {
         <p className="bg-gray-100 p-3 rounded-lg font-mono text-center text-lg">
           xₙ₊₁ = xₙ - f(xₙ) / f′(xₙ), &nbsp; si f′(xₙ) ≠ 0
         </p>
+      </div>
+      <div className='flex justify-center items-center'>
+        <img src={ejemplo} alt="Ejemplo" className='border border-gray-200'/>
       </div>
     </section>
   );
