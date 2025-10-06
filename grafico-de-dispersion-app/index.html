@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Scatter Plot Interactivo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: Arial; max-width: 900px; margin: 50px auto; text-align: center; }
+  canvas { background: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+  button { margin: 5px; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; }
+  button.active { background-color: #4CAF50; color: white; }
+</style>
+</head>
+<body>
+<h2>Precio vs m² por Barrio</h2>
+
+<div>
+  <button class="filter-btn active" data-barrio="All">Todos</button>
+  <button class="filter-btn" data-barrio="A">Barrio A</button>
+  <button class="filter-btn" data-barrio="B">Barrio B</button>
+  <button class="filter-btn" data-barrio="C">Barrio C</button>
+</div>
+
+<canvas id="scatterChart" width="800" height="450"></canvas>
+
+<script>
+const ctx = document.getElementById('scatterChart').getContext('2d');
+
+// Datos en memoria
+const datos = [
+  { m2: 50, precio: 200000, barrio: 'A' },
+  { m2: 70, precio: 250000, barrio: 'A' },
+  { m2: 60, precio: 220000, barrio: 'B' },
+  { m2: 80, precio: 300000, barrio: 'B' },
+  { m2: 55, precio: 210000, barrio: 'C' },
+  { m2: 90, precio: 350000, barrio: 'C' },
+  { m2: 65, precio: 260000, barrio: 'A' },
+  { m2: 75, precio: 280000, barrio: 'B' },
+  { m2: 60, precio: 230000, barrio: 'C' }
+];
+
+// Separar por barrios
+const clusters = { A: [], B: [], C: [] };
+datos.forEach(d => {
+  const point = { x: d.m2, y: d.precio, r: 5 + d.precio/50000 }; // tamaño proporcional
+  clusters[d.barrio].push(point);
+});
+
+// Configuración inicial: vacía
+const data = {
+  datasets: [
+    { label: 'Barrio A', data: [], backgroundColor: 'rgba(255,99,132,0.7)', borderColor: 'rgba(255,99,132,1)' },
+    { label: 'Barrio B', data: [], backgroundColor: 'rgba(54,162,235,0.7)', borderColor: 'rgba(54,162,235,1)' },
+    { label: 'Barrio C', data: [], backgroundColor: 'rgba(75,192,192,0.7)', borderColor: 'rgba(75,192,192,1)' }
+  ]
+};
+
+const config = {
+  type: 'bubble',
+  data: data,
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: 'Precio vs m² por Barrio', font: { size: 20 } },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return `${context.dataset.label}: m² ${context.raw.x}, Precio $${context.raw.y}`;
+          }
+        },
+        backgroundColor: '#333',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        padding: 10
+      },
+      legend: { position: 'top' }
+    },
+    animation: { duration: 800, easing: 'easeOutBounce' },
+    scales: {
+      x: { title: { display: true, text: 'm²' } },
+      y: { title: { display: true, text: 'Precio ($)' } }
+    }
+  }
+};
+
+const scatterChart = new Chart(ctx, config);
+
+// Función para animar clusters de a uno
+function animateClusters() {
+  let i = 0;
+  const barrios = ['A','B','C'];
+  function addNext() {
+    if (i >= barrios.length) return;
+    scatterChart.data.datasets[i].data = clusters[barrios[i]];
+    scatterChart.update();
+    i++;
+    setTimeout(addNext, 700); // espera entre clusters
+  }
+  addNext();
+}
+
+// Inicialmente animamos todos
+animateClusters();
+
+// Filtros interactivos
+const buttons = document.querySelectorAll('.filter-btn');
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const barrio = btn.dataset.barrio;
+
+    scatterChart.data.datasets.forEach(ds => ds.data = []); // vaciamos
+    if (barrio === 'All') {
+      animateClusters();
+    } else {
+      scatterChart.data.datasets.forEach(ds => {
+        if (ds.label === `Barrio ${barrio}`) ds.data = clusters[barrio];
+      });
+      scatterChart.update();
+    }
+  });
+});
+</script>
+</body>
+</html>
