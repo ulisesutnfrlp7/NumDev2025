@@ -2,8 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Scatter Plot Interactivo</title>
+<title>Scatter Plot Interactivo desde XLSX</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
 <style>
   body { font-family: Arial; max-width: 900px; margin: 50px auto; text-align: center; }
   canvas { background: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
@@ -21,32 +23,41 @@
   <button class="filter-btn" data-barrio="C">Barrio C</button>
 </div>
 
+<div>
+  <button id="zoomIn">Acercar</button>
+  <button id="zoomOut">Alejar</button>
+  <button id="resetZoom">Reset Zoom</button>
+  <button id="toggleTooltip">Mostrar/Ocultar Tooltips</button>
+</div>
+
 <canvas id="scatterChart" width="800" height="450"></canvas>
 
 <script>
+
 const ctx = document.getElementById('scatterChart').getContext('2d');
+let tooltipsEnabled = true;
 
-// Datos en memoria
-const datos = [
-  { m2: 50, precio: 200000, barrio: 'A' },
-  { m2: 70, precio: 250000, barrio: 'A' },
-  { m2: 60, precio: 220000, barrio: 'B' },
-  { m2: 80, precio: 300000, barrio: 'B' },
-  { m2: 55, precio: 210000, barrio: 'C' },
-  { m2: 90, precio: 350000, barrio: 'C' },
-  { m2: 65, precio: 260000, barrio: 'A' },
-  { m2: 75, precio: 280000, barrio: 'B' },
-  { m2: 60, precio: 230000, barrio: 'C' }
-];
+// Cargar XLSX desde la misma carpeta
+async function cargarDatos() {
+  const res = await fetch('datos.xlsx');
+  const arrayBuffer = await res.arrayBuffer();
+  const workbook = XLSX.read(arrayBuffer, { type: "array" });
+  const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+  const jsonData = XLSX.utils.sheet_to_json(firstSheet);
 
-// Separar por barrios
-const clusters = { A: [], B: [], C: [] };
-datos.forEach(d => {
-  const point = { x: d.m2, y: d.precio, r: 5 + d.precio/50000 }; // tamaño proporcional
-  clusters[d.barrio].push(point);
-});
+  const clusters = { A: [], B: [], C: [] };
+  jsonData.forEach(d => {
+    const barrio = d.neighborhood.trim();
+    const m2 = parseFloat(d.area_m2);
+    const precio = parseFloat(d.price_kUSD);
+    if (['A','B','C'].includes(barrio) && !isNaN(m2) && !isNaN(precio)) {
+      clusters[barrio].push({ x: m2, y: precio });
+    }
+  });
+  return clusters;
+}
 
-// Configuración inicial: vacía
+// Inicializar gráfico vacío
 const data = {
   datasets: [
     { label: 'Barrio A', data: [], backgroundColor: 'rgba(255,99,132,0.7)', borderColor: 'rgba(255,99,132,1)' },
@@ -56,70 +67,85 @@ const data = {
 };
 
 const config = {
-  type: 'bubble',
+  type: 'scatter',
   data: data,
   options: {
     responsive: true,
     plugins: {
       title: { display: true, text: 'Precio vs m² por Barrio', font: { size: 20 } },
       tooltip: {
+        enabled: tooltipsEnabled,
         callbacks: {
-          label: function(context) {
-            return `${context.dataset.label}: m² ${context.raw.x}, Precio $${context.raw.y}`;
-          }
+          label: ctx => `${ctx.dataset.label}: ${ctx.raw.x}m², precio ${ctx.raw.y} kUSD`
         },
         backgroundColor: '#333',
         titleColor: '#fff',
         bodyColor: '#fff',
         padding: 10
       },
-      legend: { position: 'top' }
+      legend: { position: 'top' },
+      zoom: {
+        pan: { enabled: true, mode: 'xy', modifierKey: null },
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: 'xy'
+        }
+      }
     },
     animation: { duration: 800, easing: 'easeOutBounce' },
     scales: {
-      x: { title: { display: true, text: 'm²' } },
-      y: { title: { display: true, text: 'Precio ($)' } }
-    }
+      x: { min: 0, max: 150, title: { display: true, text: 'm²' } },
+      y: { min: 0, max: 400, title: { display: true, text: 'Precio (KUSD)' } }
+    },
+    elements: { point: { pointStyle: 'cross', radius: 8, borderWidth: 2 } }
   }
 };
 
 const scatterChart = new Chart(ctx, config);
 
-// Función para animar clusters de a uno
-function animateClusters() {
-  let i = 0;
-  const barrios = ['A','B','C'];
-  function addNext() {
-    if (i >= barrios.length) return;
-    scatterChart.data.datasets[i].data = clusters[barrios[i]];
-    scatterChart.update();
-    i++;
-    setTimeout(addNext, 700); // espera entre clusters
-  }
-  addNext();
-}
-
-// Inicialmente animamos todos
-animateClusters();
-
-// Filtros interactivos
-const buttons = document.querySelectorAll('.filter-btn');
-buttons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    buttons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const barrio = btn.dataset.barrio;
-
-    scatterChart.data.datasets.forEach(ds => ds.data = []); // vaciamos
-    if (barrio === 'All') {
-      animateClusters();
-    } else {
-      scatterChart.data.datasets.forEach(ds => {
-        if (ds.label === `Barrio ${barrio}`) ds.data = clusters[barrio];
-      });
+// Cargar y animar clusters
+cargarDatos().then(clusters => {
+  function animateClusters() {
+    let i = 0;
+    const barrios = ['A','B','C'];
+    function addNext() {
+      if (i >= barrios.length) return;
+      scatterChart.data.datasets[i].data = clusters[barrios[i]];
       scatterChart.update();
+      i++;
+      setTimeout(addNext, 700);
     }
+    addNext();
+  }
+  animateClusters();
+
+  // Filtros
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const barrio = btn.dataset.barrio;
+      scatterChart.data.datasets.forEach(ds => ds.data = []);
+      if (barrio === 'All') animateClusters();
+      else {
+        scatterChart.data.datasets.forEach(ds => {
+          if (ds.label === `Barrio ${barrio}`) ds.data = clusters[barrio];
+        });
+        scatterChart.update();
+      }
+    });
   });
+});
+
+// Botones de zoom y tooltip
+document.getElementById('zoomIn').addEventListener('click', () => scatterChart.zoom(1.2));
+document.getElementById('zoomOut').addEventListener('click', () => scatterChart.zoom(0.8));
+document.getElementById('resetZoom').addEventListener('click', () => scatterChart.resetZoom());
+document.getElementById('toggleTooltip').addEventListener('click', () => {
+  tooltipsEnabled = !tooltipsEnabled;
+  scatterChart.options.plugins.tooltip.enabled = tooltipsEnabled;
+  scatterChart.update();
 });
 </script>
 </body>
