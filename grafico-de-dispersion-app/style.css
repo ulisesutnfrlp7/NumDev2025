@@ -1,0 +1,113 @@
+/* style.css - estilos comunes */
+:root{
+  --accent:#4CAF50;
+  --bg:#fafafa;
+  --card:#ffffff;
+  --muted:#777;
+}
+
+*{box-sizing:border-box}
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background:var(--bg);
+  color:#222;
+  margin:0;
+  padding:0;
+  -webkit-font-smoothing:antialiased;
+}
+.header {
+  background: #2c3e50;
+  color: white;
+  padding: 18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.header h1{margin:0;font-size:18px}
+.nav{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.nav a{
+  color:white;
+  text-decoration:none;
+  padding:8px 12px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.06);
+  font-size:14px;
+}
+.nav a.active{background:var(--accent); color:#fff}
+.container{
+  max-width:1150px;
+  margin:20px auto;
+  padding:18px;
+  background:var(--card);
+  border-radius:8px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+.controls{
+  margin:12px 0;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.controls button{
+  padding:8px 12px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  background:#eee;
+}
+.controls button.active{background:var(--accent); color:white}
+.canvas-wrap{
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.chart-card{
+  flex:1 1 700px;
+  min-width:340px;
+  padding:12px;
+  border-radius:8px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+.info-card{
+  width:360px;
+  min-width:280px;
+  padding:12px;
+  border-radius:8px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
+  max-height:520px;
+  overflow:auto;
+}
+.fit-row{display:flex;align-items:center;justify-content:space-between;margin:6px 0}
+.fit-row small{color:var(--muted)}
+.calculos{
+  font-family: "Courier New", monospace;
+  background:#f7f7f7;
+  padding:10px;
+  border-radius:6px;
+  margin-top:8px;
+  white-space:pre-wrap;
+}
+.kv{font-weight:700}
+.legend-swatch{display:inline-block;width:14px;height:10px;margin-right:8px;border-radius:2px;vertical-align:middle}
+.footer{
+  text-align:center;
+  color:#666;
+  padding:14px;
+  font-size:13px;
+  margin-top:16px;
+}
+
+/* responsive */
+@media (max-width:900px){
+  .canvas-wrap{flex-direction:column}
+  .info-card{width:100%}
+}

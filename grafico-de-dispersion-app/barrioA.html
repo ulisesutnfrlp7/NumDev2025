@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Barrio A — Análisis de Ajustes</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+</head>
+<body>
+  <header class="header">
+    <h1>Barrio A — Ajustes</h1>
+    <nav class="nav">
+      <a href="index.html">Inicio</a>
+      <a href="barrioA.html" class="active">Barrio A</a>
+      <a href="barrioB.html">Barrio B</a>
+      <a href="barrioC.html">Barrio C</a>
+      <a href="herramientas.html">Herramientas</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="controls">
+      <div><button id="refresh">Refrescar datos</button></div>
+      <div style="margin-left:auto;">
+        <button id="zoomIn">Acercar</button>
+        <button id="zoomOut">Alejar</button>
+        <button id="resetZoom">Reset</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <div class="chart-card">
+        <canvas id="chartBarrioA" width="800" height="480"></canvas>
+      </div>
+
+      <aside class="info-card">
+        <h3>Resultados (Barrio A)</h3>
+
+        <div id="resumenFits">
+          <!-- Se rellenará con resultados -->
+        </div>
+
+        <hr/>
+        <h4>Cálculos paso a paso</h4>
+        <div id="calculosA" class="calculos"></div>
+      </aside>
+    </div>
+
+    <div class="footer">Análisis detallado — Barrio A</div>
+  </main>
+
+  <script src="js/graficos.js"></script>
+  <script src="js/calculos.js"></script>
+  <script src="js/barrioA.js"></script>
+</body>
+</html>
