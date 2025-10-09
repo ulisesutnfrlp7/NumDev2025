@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>Herramientas utilizadas</title>
+  <title>Herramientas Utilizadas</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="header">
-    <h1>Herramientas utilizadas</h1>
+    <h1>HERRAMIENTAS UTILIZADAS</h1>
     <nav class="nav">
       <a href="index.html">Inicio</a>
       <a href="barrioA.html">Barrio A</a>
@@ -18,44 +18,44 @@
   </header>
 
   <main class="container">
-    <section>
-      <h2>Resumen</h2>
-      <p>Este proyecto usa las siguientes librerías y convenciones:</p>
-      <ul>
+    <section class="tools-section">
+      <h2>📦 Librerías y Convenciones</h2>
+      <p>Este proyecto utiliza las siguientes herramientas:</p>
+      <ul class="tools-list">
         <li><strong>Chart.js</strong> — visualización de gráficos (scatter y líneas de ajuste).</li>
         <li><strong>chartjs-plugin-zoom</strong> — paneo y zoom interactivo.</li>
-        <li><strong>xlsx (SheetJS)</strong> — lectura del archivo <code>datos.xlsx</code> para extraer filas con columnas <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</li>
-        <li><strong>numeric.js</strong> — solución de sistemas lineales (se usa para el ajuste cuadrático con sistema 3x3).</li>
+        <li><strong>xlsx (SheetJS)</strong> — lectura del archivo <code>datos.xlsx</code> para extraer columnas <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</li>
+        <li><strong>numeric.js</strong> — resolución de sistemas lineales (usado en ajuste cuadrático).</li>
         <li><strong>calculos.js</strong> — funciones matemáticas implementadas:
-          <ul>
+          <ul class="tools-sublist">
             <li><em>linealFit</em> — mínimos cuadrados para y = m x + b.</li>
-            <li><em>cuadraticoFit</em> — ajuste polinomial de grado 2 via sistema normal (resuelto con numeric.solve).</li>
-            <li><em>exponencialFit</em> — regresión exponencial y = a e^{b x} usando log transform en y.</li>
-            <li><em>potencialFit</em> — regresión potencial y = a x^{b} usando log-log.</li>
-            <li><em>calcularR2</em> — coeficiente de determinación R² calculado sobre las predicciones del modelo.</li>
+            <li><em>cuadraticoFit</em> — ajuste polinomial de grado 2 vía sistema normal.</li>
+            <li><em>exponencialFit</em> — regresión y = a·e^{bx} usando log transform.</li>
+            <li><em>potencialFit</em> — regresión y = a·x^{b} usando log-log.</li>
+            <li><em>calcularR2</em> — coeficiente de determinación R².</li>
           </ul>
         </li>
         <li><strong>Convenciones</strong>:
-          <ul>
-            <li>Se espera que <code>datos.xlsx</code> tenga encabezados: <code>neighborhood</code> ('A','B','C'), <code>area_m2</code> (numérico), <code>price_kUSD</code> (numérico).</li>
-            <li>Las páginas son multipágina por simplicidad y escalabilidad; cada una carga las mismas utilidades JS compartidas.</li>
+          <ul class="tools-sublist">
+            <li><code>datos.xlsx</code> debe tener encabezados: <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</li>
+            <li>Multipágina por simplicidad y escalabilidad; cada vista carga utilidades JS compartidas.</li>
           </ul>
         </li>
       </ul>
     </section>
 
-    <section style="margin-top:12px">
-      <h3>Funciones clave (resumen)</h3>
+    <section class="functions-summary">
+      <h2>🧮 Funciones Clave</h2>
       <div class="calculos">
-        linealFit(data) -> {m, b, formula}  
-        cuadraticoFit(data) -> {a, b, c, formula}  
-        exponencialFit(data) -> {a, b, formula}  
-        potencialFit(data) -> {a, b, formula}  
-        calcularR2(data, predictorFn) -> R2
+        linealFit(data) → {m, b, formula}  
+        cuadraticoFit(data) → {a, b, c, formula}  
+        exponencialFit(data) → {a, b, formula}  
+        potencialFit(data) → {a, b, formula}  
+        calcularR2(data, predictorFn) → R2
       </div>
     </section>
 
-    <div class="footer">Fin — Documentación técnica</div>
+    <div class="footer">Fin — Documentación Técnica</div>
   </main>
 </body>
 </html>

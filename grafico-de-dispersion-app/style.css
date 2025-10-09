@@ -1,13 +1,13 @@
 /* style.css - estilos comunes */
-:root{
-  --accent:#4CAF50;
-  --bg:#fafafa;
-  --card:#ffffff;
-  --muted:#777;
+:root {
+  --accent: #4CAF50;
+  --bg: #31453a;         /* fondo general más suave */
+  --card: #e7dddd;        /* fondo de tarjetas más cálido y sutil */
+  --muted: #777;
 }
 
 *{box-sizing:border-box}
-body{
+body {
   font-family: Arial, Helvetica, sans-serif;
   background:var(--bg);
   color:#222;

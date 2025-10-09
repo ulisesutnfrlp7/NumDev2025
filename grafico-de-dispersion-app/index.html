@@ -11,7 +11,7 @@
 </head>
 <body>
   <header class="header">
-    <h1>Precio vs m² — General</h1>
+    <h1>ANÁLISIS NUMÉRICO - UNIDAD 8: AJUSTE POR MÉTODO DE MÍNIMOS CUADRADOS</h1>
     <nav class="nav">
       <a href="index.html" class="active">Inicio</a>
       <a href="barrioA.html">Barrio A</a>
@@ -24,10 +24,7 @@
   <main class="container">
     <div class="controls">
       <div>
-        <button class="filter-btn active" data-barrio="All">Todos</button>
-        <button class="filter-btn" data-barrio="A">Barrio A</button>
-        <button class="filter-btn" data-barrio="B">Barrio B</button>
-        <button class="filter-btn" data-barrio="C">Barrio C</button>
+        <button class="filter-btn active" data-barrio="All">TODOS</button>
       </div>
 
       <div id="fits-controls" style="display:none;">
@@ -52,16 +49,15 @@
 
       <aside class="info-card">
         <h3>Información</h3>
-        <div class="fit-row"><div><span class="legend-swatch" style="background:#ff6384"></span> Barrio A</div><small>color</small></div>
-        <div class="fit-row"><div><span class="legend-swatch" style="background:#36a2eb"></span> Barrio B</div><small>color</small></div>
-        <div class="fit-row"><div><span class="legend-swatch" style="background:#4bc0c0"></span> Barrio C</div><small>color</small></div>
+        <div class="fit-row"><div><span class="legend-swatch" style="background:#ff6384"></span> Barrio A</div></div>
+        <div class="fit-row"><div><span class="legend-swatch" style="background:#36a2eb"></span> Barrio B</div></div>
+        <div class="fit-row"><div><span class="legend-swatch" style="background:#4bc0c0"></span> Barrio C</div></div>
         <hr/>
-        <p class="muted">Selección de barrio filtrará puntos; activar ajustes mostrará las curvas calculadas con R².</p>
       </aside>
     </div>
 
     <div style="margin-top:14px;">
-      <small class="muted">Asegurate de mantener el archivo <strong>datos.xlsx</strong> en la misma carpeta. Columnas esperadas: <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</small>
+      <small class="muted">Siempre hay que asegurarse de mantener el archivo <strong>datos.xlsx</strong> en la misma carpeta. Columnas esperadas: <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</small>
     </div>
 
     <div class="footer">Proyecto — Visualización de Ajustes por Barrio (2025)</div>
