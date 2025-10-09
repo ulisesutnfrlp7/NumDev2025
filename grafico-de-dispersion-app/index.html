@@ -2,42 +2,80 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Scatter Plot Interactivo desde XLSX</title>
+<title>Scatter Plot Interactivo con Ajustes</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
 <style>
-  body { font-family: Arial; max-width: 900px; margin: 50px auto; text-align: center; }
-  canvas { background: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-  button { margin: 5px; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; }
+  body { font-family: Arial; max-width: 1200px; margin: 20px auto; text-align: center; }
+  h2 { margin-bottom: 10px; }
+  .controls { margin: 15px 0; padding: 10px; background: #f5f5f5; border-radius: 5px; }
+  .control-section { margin: 10px 0; }
+  .control-section label { font-weight: bold; margin-right: 10px; }
+  button { margin: 3px; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; background: #ddd; }
   button.active { background-color: #4CAF50; color: white; }
+  canvas { background: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin: 20px 0; }
+  .fit-checkbox { margin: 0 10px; }
+  .fit-checkbox input { margin-right: 5px; }
+  .zoom-buttons { margin: 10px 0; }
 </style>
 </head>
 <body>
 <h2>Precio vs m² por Barrio</h2>
 
-<div>
-  <button class="filter-btn active" data-barrio="All">Todos</button>
-  <button class="filter-btn" data-barrio="A">Barrio A</button>
-  <button class="filter-btn" data-barrio="B">Barrio B</button>
-  <button class="filter-btn" data-barrio="C">Barrio C</button>
-</div>
+<div class="controls">
+  <div class="control-section">
+    <label>Seleccionar Barrio:</label>
+    <button class="filter-btn active" data-barrio="All">Todos</button>
+    <button class="filter-btn" data-barrio="A">Barrio A</button>
+    <button class="filter-btn" data-barrio="B">Barrio B</button>
+    <button class="filter-btn" data-barrio="C">Barrio C</button>
+  </div>
 
-<div>
-  <button id="zoomIn">Acercar</button>
-  <button id="zoomOut">Alejar</button>
-  <button id="resetZoom">Reset Zoom</button>
-  <button id="toggleTooltip">Mostrar/Ocultar Tooltips</button>
+  <div class="control-section" id="fits-controls" style="display:none;">
+    <label>Mostrar Ajustes:</label>
+    <div>
+      <label class="fit-checkbox"><input type="checkbox" class="fit-toggle" data-fit="lineal" checked> Lineal <span class="r2-value">R² = --</span></label>
+      <label class="fit-checkbox"><input type="checkbox" class="fit-toggle" data-fit="exponencial" checked> Exponencial <span class="r2-value">R² = --</span></label>
+      <label class="fit-checkbox"><input type="checkbox" class="fit-toggle" data-fit="potencial" checked> Potencial <span class="r2-value">R² = --</span></label>
+      <label class="fit-checkbox"><input type="checkbox" class="fit-toggle" data-fit="cuadratico" checked> Cuadrático <span class="r2-value">R² = --</span></label>
+    </div>
+  </div>
+
+  <div class="control-section zoom-buttons">
+    <button id="zoomIn">Acercar</button>
+    <button id="zoomOut">Alejar</button>
+    <button id="resetZoom">Reset Zoom</button>
+    <button id="toggleTooltip">Mostrar/Ocultar Tooltips</button>
+  </div>
 </div>
 
 <canvas id="scatterChart" width="800" height="450"></canvas>
 
 <script>
-
 const ctx = document.getElementById('scatterChart').getContext('2d');
 let tooltipsEnabled = true;
+let currentBarrio = 'All';
+let currentClusters = {};
+let fitLines = { lineal: [], exponencial: [], potencial: [], cuadratico: [] };
+let visibleFits = { lineal: true, exponencial: true, potencial: true, cuadratico: true };
 
-// Cargar XLSX desde la misma carpeta
+// Colores para los ajustes
+const fitColors = {
+  lineal: 'rgba(255,0,0,0.6)',
+  exponencial: 'rgba(0,255,0,0.6)',
+  potencial: 'rgba(0,0,255,0.6)',
+  cuadratico: 'rgba(255,165,0,0.6)'
+};
+
+const barrioColors = {
+  A: { bg: 'rgba(255,99,132,0.7)', border: 'rgba(255,99,132,1)' },
+  B: { bg: 'rgba(54,162,235,0.7)', border: 'rgba(54,162,235,1)' },
+  C: { bg: 'rgba(75,192,192,0.7)', border: 'rgba(75,192,192,1)' }
+};
+
+// Cargar XLSX
 async function cargarDatos() {
   const res = await fetch('datos.xlsx');
   const arrayBuffer = await res.arrayBuffer();
@@ -57,12 +95,146 @@ async function cargarDatos() {
   return clusters;
 }
 
-// Inicializar gráfico vacío
+// Funciones de ajuste
+function linealFit(data) {
+  if (data.length < 2) return null;
+  const n = data.length;
+  const sumX = data.reduce((s, p) => s + p.x, 0);
+  const sumY = data.reduce((s, p) => s + p.y, 0);
+  const sumXY = data.reduce((s, p) => s + p.x * p.y, 0);
+  const sumX2 = data.reduce((s, p) => s + p.x * p.x, 0);
+  
+  const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+  const b = (sumY - m * sumX) / n;
+  
+  return { m, b, formula: `y = ${m.toFixed(2)}x + ${b.toFixed(2)}` };
+}
+
+function cuadraticoFit(data) {
+  if (data.length < 3) return null;
+  const n = data.length;
+  const sumX = data.reduce((s, p) => s + p.x, 0);
+  const sumX2 = data.reduce((s, p) => s + p.x * p.x, 0);
+  const sumX3 = data.reduce((s, p) => s + p.x * p.x * p.x, 0);
+  const sumX4 = data.reduce((s, p) => s + p.x * p.x * p.x * p.x, 0);
+  const sumY = data.reduce((s, p) => s + p.y, 0);
+  const sumXY = data.reduce((s, p) => s + p.x * p.y, 0);
+  const sumX2Y = data.reduce((s, p) => s + p.x * p.x * p.y, 0);
+
+  const A = [[n, sumX, sumX2], [sumX, sumX2, sumX3], [sumX2, sumX3, sumX4]];
+  const b = [sumY, sumXY, sumX2Y];
+  
+  try {
+    const coeff = numeric.solve(A, b);
+    return { a: coeff[2], b: coeff[1], c: coeff[0], formula: `y = ${coeff[2].toFixed(3)}x² + ${coeff[1].toFixed(2)}x + ${coeff[0].toFixed(2)}` };
+  } catch {
+    return null;
+  }
+}
+
+function exponencialFit(data) {
+  if (data.length < 2) return null;
+  const filtered = data.filter(p => p.y > 0);
+  if (filtered.length < 2) return null;
+
+  const n = filtered.length;
+  const sumX = filtered.reduce((s, p) => s + p.x, 0);
+  const sumLnY = filtered.reduce((s, p) => s + Math.log(p.y), 0);
+  const sumXLnY = filtered.reduce((s, p) => s + p.x * Math.log(p.y), 0);
+  const sumX2 = filtered.reduce((s, p) => s + p.x * p.x, 0);
+
+  const b = (n * sumXLnY - sumX * sumLnY) / (n * sumX2 - sumX * sumX);
+  const a = Math.exp((sumLnY - b * sumX) / n);
+
+  return { a, b, formula: `y = ${a.toFixed(2)}e^(${b.toFixed(3)}x)` };
+}
+
+function potencialFit(data) {
+  if (data.length < 2) return null;
+  const filtered = data.filter(p => p.x > 0 && p.y > 0);
+  if (filtered.length < 2) return null;
+
+  const n = filtered.length;
+  const sumLnX = filtered.reduce((s, p) => s + Math.log(p.x), 0);
+  const sumLnY = filtered.reduce((s, p) => s + Math.log(p.y), 0);
+  const sumLnXLnY = filtered.reduce((s, p) => s + Math.log(p.x) * Math.log(p.y), 0);
+  const sumLnX2 = filtered.reduce((s, p) => s + Math.log(p.x) * Math.log(p.x), 0);
+
+  const b = (n * sumLnXLnY - sumLnX * sumLnY) / (n * sumLnX2 - sumLnX * sumLnX);
+  const a = Math.exp((sumLnY - b * sumLnX) / n);
+
+  return { a, b, formula: `y = ${a.toFixed(2)}x^(${b.toFixed(3)})` };
+}
+
+// Calcular R²
+function calcularR2(data, predictions) {
+  const meanY = data.reduce((s, p) => s + p.y, 0) / data.length;
+  const ssRes = data.reduce((s, p, i) => {
+    const x = p.x;
+    const yPred = predictions(x);
+    return s + Math.pow(p.y - yPred, 2);
+  }, 0);
+  const ssTot = data.reduce((s, p) => s + Math.pow(p.y - meanY, 2), 0);
+  return 1 - (ssRes / ssTot);
+}
+
+// Generar puntos para las líneas de ajuste
+function generateFitPoints(fit, type, xMin = 0, xMax = 150) {
+  const points = [];
+  for (let x = xMin; x <= xMax; x += 2) {
+    let y;
+    if (type === 'lineal') {
+      y = fit.m * x + fit.b;
+    } else if (type === 'cuadratico') {
+      y = fit.a * x * x + fit.b * x + fit.c;
+    } else if (type === 'exponencial') {
+      y = fit.a * Math.exp(fit.b * x);
+    } else if (type === 'potencial') {
+      y = fit.a * Math.pow(x, fit.b);
+    }
+    if (y >= 0 && y <= 500) points.push({ x, y });
+  }
+  return points;
+}
+
+// Calcular todos los ajustes
+function calcularAjustes(data) {
+  const ajustes = {};
+  const lineal = linealFit(data);
+  const cuadratico = cuadraticoFit(data);
+  const exponencial = exponencialFit(data);
+  const potencial = potencialFit(data);
+
+  if (lineal) {
+    const r2 = calcularR2(data, x => lineal.m * x + lineal.b);
+    ajustes.lineal = { fit: lineal, points: generateFitPoints(lineal, 'lineal'), r2 };
+  }
+  if (cuadratico) {
+    const r2 = calcularR2(data, x => cuadratico.a * x * x + cuadratico.b * x + cuadratico.c);
+    ajustes.cuadratico = { fit: cuadratico, points: generateFitPoints(cuadratico, 'cuadratico'), r2 };
+  }
+  if (exponencial) {
+    const r2 = calcularR2(data, x => exponencial.a * Math.exp(exponencial.b * x));
+    ajustes.exponencial = { fit: exponencial, points: generateFitPoints(exponencial, 'exponencial'), r2 };
+  }
+  if (potencial) {
+    const r2 = calcularR2(data, x => potencial.a * Math.pow(x, potencial.b));
+    ajustes.potencial = { fit: potencial, points: generateFitPoints(potencial, 'potencial'), r2 };
+  }
+
+  return ajustes;
+}
+
+// Inicializar gráfico
 const data = {
   datasets: [
-    { label: 'Barrio A', data: [], backgroundColor: 'rgba(255,99,132,0.7)', borderColor: 'rgba(255,99,132,1)' },
-    { label: 'Barrio B', data: [], backgroundColor: 'rgba(54,162,235,0.7)', borderColor: 'rgba(54,162,235,1)' },
-    { label: 'Barrio C', data: [], backgroundColor: 'rgba(75,192,192,0.7)', borderColor: 'rgba(75,192,192,1)' }
+    { label: 'Lineal', data: [], type: 'line', borderColor: fitColors.lineal, borderWidth: 3, fill: false, pointRadius: 0, tension: 0, order: 0 },
+    { label: 'Exponencial', data: [], type: 'line', borderColor: fitColors.exponencial, borderWidth: 3, fill: false, pointRadius: 0, tension: 0, order: 0 },
+    { label: 'Potencial', data: [], type: 'line', borderColor: fitColors.potencial, borderWidth: 3, fill: false, pointRadius: 0, tension: 0, order: 0 },
+    { label: 'Cuadrático', data: [], type: 'line', borderColor: fitColors.cuadratico, borderWidth: 3, fill: false, pointRadius: 0, tension: 0, order: 0 },
+    { label: 'Barrio A', data: [], backgroundColor: barrioColors.A.bg, borderColor: barrioColors.A.border, pointStyle: 'cross', radius: 8, borderWidth: 2, order: 1 },
+    { label: 'Barrio B', data: [], backgroundColor: barrioColors.B.bg, borderColor: barrioColors.B.border, pointStyle: 'cross', radius: 8, borderWidth: 2, order: 1 },
+    { label: 'Barrio C', data: [], backgroundColor: barrioColors.C.bg, borderColor: barrioColors.C.border, pointStyle: 'cross', radius: 8, borderWidth: 2, order: 1 }
   ]
 };
 
@@ -76,7 +248,13 @@ const config = {
       tooltip: {
         enabled: tooltipsEnabled,
         callbacks: {
-          label: ctx => `${ctx.dataset.label}: ${ctx.raw.x}m², precio ${ctx.raw.y} kUSD`
+          label: ctx => {
+            if (ctx.datasetIndex < 3) {
+              return `${ctx.dataset.label}: ${ctx.raw.x}m², precio ${ctx.raw.y} kUSD`;
+            } else {
+              return `${ctx.dataset.label}: ${ctx.raw.x.toFixed(1)}m² → ${ctx.raw.y.toFixed(2)} kUSD`;
+            }
+          }
         },
         backgroundColor: '#333',
         titleColor: '#fff',
@@ -86,67 +264,91 @@ const config = {
       legend: { position: 'top' },
       zoom: {
         pan: { enabled: true, mode: 'xy', modifierKey: null },
-        zoom: {
-          wheel: { enabled: true },
-          pinch: { enabled: true },
-          mode: 'xy'
-        }
+        zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }
       }
     },
     animation: { duration: 800, easing: 'easeOutBounce' },
     scales: {
       x: { min: 0, max: 150, title: { display: true, text: 'm²' } },
       y: { min: 0, max: 400, title: { display: true, text: 'Precio (KUSD)' } }
-    },
-    elements: { point: { pointStyle: 'cross', radius: 8, borderWidth: 2 } }
+    }
   }
 };
 
 const scatterChart = new Chart(ctx, config);
 
-// Cargar y animar clusters
+// Cargar datos
 cargarDatos().then(clusters => {
-  function animateClusters() {
-    let i = 0;
-    const barrios = ['A','B','C'];
-    function addNext() {
-      if (i >= barrios.length) return;
-      scatterChart.data.datasets[i].data = clusters[barrios[i]];
-      scatterChart.update();
-      i++;
-      setTimeout(addNext, 700);
-    }
-    addNext();
-  }
-  animateClusters();
+  currentClusters = clusters;
 
-  // Filtros
+  function actualizarGrafico() {
+    scatterChart.data.datasets[4].data = currentBarrio === 'All' || currentBarrio === 'A' ? clusters.A : [];
+    scatterChart.data.datasets[5].data = currentBarrio === 'All' || currentBarrio === 'B' ? clusters.B : [];
+    scatterChart.data.datasets[6].data = currentBarrio === 'All' || currentBarrio === 'C' ? clusters.C : [];
+
+    // Mostrar/ocultar ajustes
+    const dataForFits = currentBarrio === 'All' ? [...clusters.A, ...clusters.B, ...clusters.C] : clusters[currentBarrio];
+    
+    if (dataForFits.length > 0) {
+      const ajustes = calcularAjustes(dataForFits);
+      
+      scatterChart.data.datasets[0].data = visibleFits.lineal && ajustes.lineal ? ajustes.lineal.points : [];
+      scatterChart.data.datasets[1].data = visibleFits.exponencial && ajustes.exponencial ? ajustes.exponencial.points : [];
+      scatterChart.data.datasets[2].data = visibleFits.potencial && ajustes.potencial ? ajustes.potencial.points : [];
+      scatterChart.data.datasets[3].data = visibleFits.cuadratico && ajustes.cuadratico ? ajustes.cuadratico.points : [];
+
+      // Actualizar valores R²
+      document.querySelectorAll('.fit-toggle').forEach(cb => {
+        const fit = cb.dataset.fit;
+        const r2Span = cb.parentElement.querySelector('.r2-value');
+        if (ajustes[fit]) {
+          r2Span.textContent = `R² = ${ajustes[fit].r2.toFixed(4)}`;
+        } else {
+          r2Span.textContent = 'R² = N/A';
+        }
+      });
+    } else {
+      scatterChart.data.datasets.slice(0, 4).forEach(ds => ds.data = []);
+    }
+
+    scatterChart.update();
+  }
+
+  // Filtros de barrio
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const barrio = btn.dataset.barrio;
-      scatterChart.data.datasets.forEach(ds => ds.data = []);
-      if (barrio === 'All') animateClusters();
-      else {
-        scatterChart.data.datasets.forEach(ds => {
-          if (ds.label === `Barrio ${barrio}`) ds.data = clusters[barrio];
-        });
-        scatterChart.update();
-      }
+      currentBarrio = btn.dataset.barrio;
+      document.getElementById('fits-controls').style.display = currentBarrio === 'All' ? 'none' : 'block';
+      actualizarGrafico();
     });
   });
+
+  // Controles de ajustes
+  document.querySelectorAll('.fit-toggle').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      const fitType = checkbox.dataset.fit;
+      visibleFits[fitType] = checkbox.checked;
+      actualizarGrafico();
+    });
+  });
+
+  // Botones de zoom
+  document.getElementById('zoomIn').addEventListener('click', () => scatterChart.zoom(1.2));
+  document.getElementById('zoomOut').addEventListener('click', () => scatterChart.zoom(0.8));
+  document.getElementById('resetZoom').addEventListener('click', () => scatterChart.resetZoom());
+  
+  document.getElementById('toggleTooltip').addEventListener('click', () => {
+    tooltipsEnabled = !tooltipsEnabled;
+    scatterChart.options.plugins.tooltip.enabled = tooltipsEnabled;
+    scatterChart.update();
+  });
+
+  // Inicializar
+  actualizarGrafico();
 });
 
-// Botones de zoom y tooltip
-document.getElementById('zoomIn').addEventListener('click', () => scatterChart.zoom(1.2));
-document.getElementById('zoomOut').addEventListener('click', () => scatterChart.zoom(0.8));
-document.getElementById('resetZoom').addEventListener('click', () => scatterChart.resetZoom());
-document.getElementById('toggleTooltip').addEventListener('click', () => {
-  tooltipsEnabled = !tooltipsEnabled;
-  scatterChart.options.plugins.tooltip.enabled = tooltipsEnabled;
-  scatterChart.update();
-});
 </script>
 </body>
 </html>
