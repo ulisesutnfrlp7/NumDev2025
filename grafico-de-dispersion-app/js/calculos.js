@@ -138,7 +138,7 @@ window.Calculos = (function(){
         `Σx² = ${sumX2.toFixed(6)}`,
         `m = (n·Σxy - Σx·Σy) / (n·Σx² - (Σx)²) = ${m.toFixed(6)}`,
         `b = (Σy - m·Σx) / n = ${b.toFixed(6)}`,
-        `Fórmula: y = ${m.toFixed(6)} x + ${b.toFixed(6)}`
+        `FÓRMULA: y = ${m.toFixed(6)} x + ${b.toFixed(6)}`
       ].join('\n');
     }
   
@@ -163,7 +163,7 @@ window.Calculos = (function(){
         `Σy = ${sumY.toFixed(6)}`,
         `Σxy = ${sumXY.toFixed(6)}`,
         `Σx²y = ${sumX2Y.toFixed(6)}`,
-        `Sistema normal (A·coeff = b):`,
+        `SISTEMA NORMAL (A·coeff = b):`,
         `A = [ [${A[0][0].toFixed(6)}, ${A[0][1].toFixed(6)}, ${A[0][2].toFixed(6)}],`,
         `      [${A[1][0].toFixed(6)}, ${A[1][1].toFixed(6)}, ${A[1][2].toFixed(6)}],`,
         `      [${A[2][0].toFixed(6)}, ${A[2][1].toFixed(6)}, ${A[2][2].toFixed(6)}] ]`,
@@ -171,8 +171,8 @@ window.Calculos = (function(){
       ].join('\n');
       try {
         const coeff = numeric.solve(A,bV);
-        text += `\nSolución (c, b, a) = [ ${coeff[0].toFixed(6)}, ${coeff[1].toFixed(6)}, ${coeff[2].toFixed(6)} ]`;
-        text += `\nFórmula: y = ${coeff[2].toFixed(6)} x² + ${coeff[1].toFixed(6)} x + ${coeff[0].toFixed(6)}`;
+        text += `\nSOLUCIÓN (c, b, a) = [ ${coeff[0].toFixed(6)}, ${coeff[1].toFixed(6)}, ${coeff[2].toFixed(6)} ]`;
+        text += `\nFÓRMULA: y = ${coeff[2].toFixed(6)} x² + ${coeff[1].toFixed(6)} x + ${coeff[0].toFixed(6)}`;
       } catch(e){
         text += `\nNo se pudo resolver el sistema: ${e && e.message ? e.message : e}`;
       }
@@ -198,7 +198,7 @@ window.Calculos = (function(){
         `Σx² = ${sumX2.toFixed(6)}`,
         `b = (n·Σx·ln(y) - Σx·Σln(y)) / (n·Σx² - (Σx)²) = ${b.toFixed(6)}`,
         `a = exp( (Σln(y) - b·Σx) / n ) = ${a.toFixed(6)}`,
-        `Fórmula: y = ${a.toFixed(6)} e^{${b.toFixed(6)} x}`
+        `FÓRMULA: y = ${a.toFixed(6)} e^{${b.toFixed(6)} x}`
       ].join('\n');
     }
   
@@ -221,7 +221,7 @@ window.Calculos = (function(){
         `Σ(ln(x))² = ${sumLnX2.toFixed(6)}`,
         `b = (n·Σln(x)ln(y) - Σln(x)Σln(y)) / (n·Σ(ln(x))² - (Σln(x))²) = ${b.toFixed(6)}`,
         `a = exp( (Σln(y) - b·Σln(x)) / n ) = ${a.toFixed(6)}`,
-        `Fórmula: y = ${a.toFixed(6)} x^{${b.toFixed(6)}}`
+        `FÓRMULA: y = ${a.toFixed(6)} x^{${b.toFixed(6)}}`
       ].join('\n');
     }
   

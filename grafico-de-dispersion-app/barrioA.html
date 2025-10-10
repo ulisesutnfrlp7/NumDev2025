@@ -38,14 +38,32 @@
 
       <aside class="info-card">
         <h3>Resultados (Barrio A)</h3>
-
-        <div id="resumenFits">
-          <!-- Se rellenará con resultados -->
-        </div>
-
+        <div id="resumenFits"></div>
+      
         <hr/>
-        <h3>Cálculos Realizados</h3>
-        <div id="calculosA" class="calculos"></div>
+        <section class="calculos-realizados">
+          <h3>📐 Cálculos Realizados</h3>
+      
+          <div class="calculo-bloque">
+            <h4>AJUSTE LINEAL</h4>
+            <pre class="calculo-texto" id="calculoLineal"></pre>
+          </div>
+      
+          <div class="calculo-bloque">
+            <h4>AJUSTE CUADRÁTICO</h4>
+            <pre class="calculo-texto" id="calculoCuadratico"></pre>
+          </div>
+      
+          <div class="calculo-bloque">
+            <h4>AJUSTE EXPONENCIAL</h4>
+            <pre class="calculo-texto" id="calculoExponencial"></pre>
+          </div>
+      
+          <div class="calculo-bloque">
+            <h4>AJUSTE POTENCIAL</h4>
+            <pre class="calculo-texto" id="calculoPotencial"></pre>
+          </div>
+        </section>
       </aside>
     </div>
 
@@ -55,5 +73,9 @@
   <script src="js/graficos.js"></script>
   <script src="js/calculos.js"></script>
   <script src="js/barrioA.js"></script>
+  <div id="imgModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImg" alt="Apunte">
+  </div>
 </body>
 </html>

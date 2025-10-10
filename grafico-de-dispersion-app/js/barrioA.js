@@ -105,35 +105,52 @@
   
       // rellenar resumenFits
       const resumen = document.getElementById('resumenFits');
+      function crearFitCard(nombre, formula, r2, imgSrc) {
+        const card = document.createElement('div');
+        card.className = 'fit-card';
+      
+        const titulo = document.createElement('h4');
+        titulo.textContent = nombre;
+        card.appendChild(titulo);
+      
+        const formulaEl = document.createElement('div');
+        formulaEl.className = 'formula';
+        formulaEl.textContent = formula;
+        card.appendChild(formulaEl);
+      
+        const r2El = document.createElement('div');
+        r2El.className = 'r2';
+        r2El.textContent = `R² = ${r2.toFixed(6)}`;
+        card.appendChild(r2El);
+
+        card.addEventListener('click', () => {
+          const modal = document.getElementById('imgModal');
+          const modalImg = document.getElementById('modalImg');
+          modalImg.src = imgSrc;
+          modal.style.display = 'flex';
+        });
+
+        return card;
+      }
+      document.querySelector('.modal-close').addEventListener('click', () => {
+        document.getElementById('imgModal').style.display = 'none';
+      });
+      window.addEventListener('click', (e) => {
+        const modal = document.getElementById('imgModal');
+        if (e.target === modal) modal.style.display = 'flex';
+      });
+      
       resumen.innerHTML = '';
-      if(ajustes.lineal){
-        const div = document.createElement('div');
-        div.innerHTML = `<strong>Lineal:</strong> ${ajustes.lineal.fit.formula} — R² = ${ajustes.lineal.r2.toFixed(6)}`;
-        resumen.appendChild(div);
-      }
-      if(ajustes.cuadratico){
-        const div = document.createElement('div');
-        div.innerHTML = `<strong>Cuadrático:</strong> ${ajustes.cuadratico.fit.formula} — R² = ${ajustes.cuadratico.r2.toFixed(6)}`;
-        resumen.appendChild(div);
-      }
-      if(ajustes.exponencial){
-        const div = document.createElement('div');
-        div.innerHTML = `<strong>Exponencial:</strong> ${ajustes.exponencial.fit.formula} — R² = ${ajustes.exponencial.r2.toFixed(6)}`;
-        resumen.appendChild(div);
-      }
-      if(ajustes.potencial){
-        const div = document.createElement('div');
-        div.innerHTML = `<strong>Potencial:</strong> ${ajustes.potencial.fit.formula} — R² = ${ajustes.potencial.r2.toFixed(6)}`;
-        resumen.appendChild(div);
-      }
-  
+      if (ajustes.lineal) resumen.appendChild(crearFitCard('LINEAL', ajustes.lineal.fit.formula, ajustes.lineal.r2, 'img/lineal.png'));
+      if (ajustes.cuadratico) resumen.appendChild(crearFitCard('CUADRÁTICO', ajustes.cuadratico.fit.formula, ajustes.cuadratico.r2, 'img/cuadratico.png'));
+      if (ajustes.exponencial) resumen.appendChild(crearFitCard('EXPONENCIAL', ajustes.exponencial.fit.formula, ajustes.exponencial.r2, 'img/exponencial.png'));
+      if (ajustes.potencial) resumen.appendChild(crearFitCard('POTENCIAL', ajustes.potencial.fit.formula, ajustes.potencial.r2, 'img/potencial.png'));
+
       // mostrar pasos
-      const calcDiv = document.getElementById('calculosA');
-      calcDiv.textContent = '';
-      calcDiv.textContent += 'AJUSTE LINEAL:\n' + Calculos.textoPasosLineal(data) + '\n\n';
-      calcDiv.textContent += 'AJUSTE CUADRÁTICO:\n' + Calculos.textoPasosCuadratico(data) + '\n\n';
-      calcDiv.textContent += 'AJUSTE EXPONENCIAL:\n' + Calculos.textoPasosExponencial(data) + '\n\n';
-      calcDiv.textContent += 'AJUSTE POTENCIAL:\n' + Calculos.textoPasosPotencial(data) + '\n\n';
+      document.getElementById('calculoLineal').textContent = Calculos.textoPasosLineal(data);
+      document.getElementById('calculoCuadratico').textContent = Calculos.textoPasosCuadratico(data);
+      document.getElementById('calculoExponencial').textContent = Calculos.textoPasosExponencial(data);
+      document.getElementById('calculoPotencial').textContent = Calculos.textoPasosPotencial(data);
     }
   
     document.getElementById('refresh').addEventListener('click', render);
