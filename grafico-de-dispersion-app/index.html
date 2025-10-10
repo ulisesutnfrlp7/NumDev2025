@@ -24,7 +24,7 @@
   <main class="container">
     <div class="controls">
       <div>
-        <button class="filter-btn active" data-barrio="All">TODOS</button>
+        <button class="filter-btn active" data-barrio="All">Todos</button>
       </div>
 
       <div id="fits-controls" style="display:none;">
@@ -57,7 +57,10 @@
     </div>
 
     <div style="margin-top:14px;">
-      <small class="muted">Siempre hay que asegurarse de mantener el archivo <strong>datos.xlsx</strong> en la misma carpeta. Columnas esperadas: <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</small>
+      <small class="muted">
+        Siempre hay que asegurarse de mantener el archivo <strong>datos.xlsx</strong> en la misma carpeta. 
+        Columnas esperadas: <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.
+      </small>
     </div>
 
     <div class="footer">Proyecto — Visualización de Ajustes por Barrio (2025)</div>
@@ -66,7 +69,7 @@
   <script src="js/graficos.js"></script>
   <script src="js/calculos.js"></script>
   <script>
-    // Código específico de la página de inicio: usa DataLoader y ChartFactory desde graficos.js y Calculos desde calculos.js
+    // Código principal de la página
     (async function(){
       const ctx = document.getElementById('scatterChart').getContext('2d');
       let tooltipsEnabled = true;
@@ -85,7 +88,7 @@
         C: { bg: 'rgba(75,192,192,0.8)', border:'rgba(75,192,192,1)' }
       };
 
-      // dataset placeholders
+      // datasets base
       const baseDatasets = [
         { label:'Lineal', data:[], type:'line', borderColor:fitColors.lineal, borderWidth:3, fill:false, pointRadius:0, tension:0 },
         { label:'Exponencial', data:[], type:'line', borderColor:fitColors.exponencial, borderWidth:3, fill:false, pointRadius:0, tension:0 },
@@ -96,37 +99,96 @@
         { label:'Barrio C', data:[], backgroundColor:barrioColors.C.bg, borderColor:barrioColors.C.border, pointStyle:'cross', radius:7, borderWidth:2 }
       ];
 
+      // creación del gráfico
       const scatterChart = new Chart(ctx, {
         type:'scatter',
         data:{ datasets: baseDatasets },
         options: {
-          responsive:true,
-          plugins:{
-            title:{display:true,text:'Precio vs m² por Barrio',font:{size:18}},
-            legend:{position:'top'},
-            tooltip:{
-              enabled:true,
-              callbacks:{
-                label: function(ctx){
-                  if(ctx.dataset.type==='line') return `${ctx.dataset.label}: ${ctx.parsed.x} → ${ctx.parsed.y}`;
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Precio vs m² por Barrio',
+              color: '#f0f0f0',
+              font: {
+                size: 20,
+                weight: 'bold',
+                family: 'Segoe UI'
+              }
+            },
+            legend: {
+              position: 'top',
+              labels: {
+                color: '#f0f0f0',
+                font: { size: 13, family: 'Segoe UI' },
+                boxWidth: 14
+              }
+            },
+            tooltip: {
+              enabled: true,
+              backgroundColor: '#222',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              borderColor: '#00c896',
+              borderWidth: 1,
+              cornerRadius: 6,
+              padding: 10,
+              callbacks: {
+                label: function(ctx) {
+                  if (ctx.dataset.type === 'line') {
+                    return `${ctx.dataset.label}: ${ctx.parsed.x} → ${ctx.parsed.y}`;
+                  }
                   return `${ctx.dataset.label}: ${ctx.raw.x.toFixed(1)} m² → ${ctx.raw.y.toFixed(2)} kUSD`;
                 }
               }
             },
-            zoom:{
-              pan:{enabled:true, mode:'xy'},
-              zoom:{wheel:{enabled:true}, pinch:{enabled:true}, mode:'xy'}
+            zoom: {
+              pan: { enabled: true, mode: 'xy' },
+              zoom: {
+                wheel: { enabled: true },
+                pinch: { enabled: true },
+                mode: 'xy'
+              }
             }
           },
-          scales:{
-            x:{min:0, max:150, title:{display:true,text:'m²'}},
-            y:{min:0, max:400, title:{display:true,text:'Precio (kUSD)'}}
+          scales: {
+            x: {
+              min: 0,
+              max: 150,
+              title: {
+                display: true,
+                text: 'm²',
+                color: '#f0f0f0',
+                font: { size: 14 }
+              },
+              ticks: {
+                color: '#f0f0f0',
+                font: { size: 12 }
+              },
+              grid: { color: 'rgba(255,255,255,0.08)' }
+            },
+            y: {
+              min: 0,
+              max: 400,
+              title: {
+                display: true,
+                text: 'Precio (kUSD)',
+                color: '#f0f0f0',
+                font: { size: 14 }
+              },
+              ticks: {
+                color: '#f0f0f0',
+                font: { size: 12 }
+              },
+              grid: { color: 'rgba(255,255,255,0.08)' }
+            }
           }
         }
-      });
+      }); // ✅ cierre correcto del Chart
 
       // Cargar datos
       const clusters = await DataLoader.loadXLSX('datos.xlsx');
+
       function actualizar(){
         scatterChart.data.datasets[4].data = (currentBarrio==='All' || currentBarrio==='A')? clusters.A : [];
         scatterChart.data.datasets[5].data = (currentBarrio==='All' || currentBarrio==='B')? clusters.B : [];
@@ -140,7 +202,7 @@
           scatterChart.data.datasets[2].data = visibleFits.potencial && ajustes.potencial ? ajustes.potencial.points : [];
           scatterChart.data.datasets[3].data = visibleFits.cuadratico && ajustes.cuadratico ? ajustes.cuadratico.points : [];
 
-          // actualizar R2 mostrados
+          // actualizar R²
           document.querySelector('.r2-lineal').textContent = ajustes.lineal ? `R²=${ajustes.lineal.r2.toFixed(4)}` : 'R²=N/A';
           document.querySelector('.r2-exponencial').textContent = ajustes.exponencial ? `R²=${ajustes.exponencial.r2.toFixed(4)}` : 'R²=N/A';
           document.querySelector('.r2-potencial').textContent = ajustes.potencial ? `R²=${ajustes.potencial.r2.toFixed(4)}` : 'R²=N/A';
@@ -154,7 +216,7 @@
         scatterChart.update();
       }
 
-      // filtros UI
+      // Filtros UI
       document.querySelectorAll('.filter-btn').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -181,7 +243,7 @@
         scatterChart.update();
       });
 
-      // inicial
+      // Inicial
       actualizar();
     })();
   </script>

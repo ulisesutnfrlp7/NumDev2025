@@ -27,13 +27,75 @@
       datasets.push({ label:'Barrio B', data: data, backgroundColor: colors.barrio.bg, borderColor: colors.barrio.border, pointStyle:'cross', radius:7, borderWidth:2 });
   
       const options = {
-        responsive:true,
-        plugins:{
-          title:{display:true,text:'Barrio B — Precio vs m²'},
-          legend:{position:'top'},
-          zoom:{pan:{enabled:true,mode:'xy'},zoom:{wheel:{enabled:true},mode:'xy'}}
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Barrio B — Precio vs m²',
+            color: '#f0f0f0', // título blanco
+            font: { size: 18, weight: 'bold' }
+          },
+          legend: {
+            position: 'top',
+            labels: {
+              color: '#f0f0f0',
+              font: { size: 13 }
+            }
+          },
+          tooltip: {
+            bodyColor: '#fff',
+            titleColor: '#fff',
+            backgroundColor: '#333',
+            borderColor: '#00c896',
+            borderWidth: 1,
+            callbacks: {
+              label: function(ctx) {
+                if (ctx.dataset.type === 'line') {
+                  return `${ctx.dataset.label}: ${ctx.parsed.x} → ${ctx.parsed.y}`;
+                }
+                return `${ctx.dataset.label}: ${ctx.raw.x.toFixed(1)} m² → ${ctx.raw.y.toFixed(2)} kUSD`;
+              }
+            }
+          },
+          zoom: {
+            pan: { enabled: true, mode: 'xy' },
+            zoom: { wheel: { enabled: true }, mode: 'xy' }
+          }
         },
-        scales:{ x:{min:0,max:150,title:{display:true,text:'m²'}}, y:{min:0,max:400,title:{display:true,text:'Precio (kUSD)'}} }
+        scales: {
+          x: {
+            min: 0,
+            max: 150,
+            title: {
+              display: true,
+              text: 'm²',
+              color: '#f0f0f0',
+              font: { size: 14 }
+            },
+            ticks: {
+              color: '#f0f0f0'
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          },
+          y: {
+            min: 0,
+            max: 400,
+            title: {
+              display: true,
+              text: 'Precio (kUSD)',
+              color: '#f0f0f0',
+              font: { size: 14 }
+            },
+            ticks: {
+              color: '#f0f0f0'
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.1)'
+            }
+          }
+        }
       };
   
       if(chart) chart.destroy();
