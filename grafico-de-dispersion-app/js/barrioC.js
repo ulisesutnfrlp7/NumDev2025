@@ -32,7 +32,7 @@
           title: {
             display: true,
             text: 'Barrio C — Precio vs m²',
-            color: '#f0f0f0', // título blanco
+            color: '#f0f0f0',
             font: { size: 18, weight: 'bold' }
           },
           legend: {
