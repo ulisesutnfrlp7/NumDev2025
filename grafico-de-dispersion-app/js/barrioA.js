@@ -19,7 +19,6 @@
       const ajustes = Calculos.calcularAjustes(data);
   
       const datasets = [];
-      // fits
       if(ajustes.lineal) datasets.push({ label:'Lineal', type:'line', data:ajustes.lineal.points, borderColor:colors.fit_lineal, borderWidth:2, pointRadius:0, fill:false });
       if(ajustes.exponencial) datasets.push({ label:'Exponencial', type:'line', data:ajustes.exponencial.points, borderColor:colors.fit_exponencial, borderWidth:2, pointRadius:0, fill:false });
       if(ajustes.potencial) datasets.push({ label:'Potencial', type:'line', data:ajustes.potencial.points, borderColor:colors.fit_potencial, borderWidth:2, pointRadius:0, fill:false });
@@ -105,7 +104,7 @@
   
       // rellenar resumenFits
       const resumen = document.getElementById('resumenFits');
-      function crearFitCard(nombre, formula, r2, imgSrc) {
+      function crearFitCard(nombre, formula, r2, r2adj, imgSrc) {
         const card = document.createElement('div');
         card.className = 'fit-card';
       
@@ -117,10 +116,13 @@
         formulaEl.className = 'formula';
         formulaEl.textContent = formula;
         card.appendChild(formulaEl);
-      
+
         const r2El = document.createElement('div');
         r2El.className = 'r2';
-        r2El.textContent = `R² = ${r2.toFixed(6)}`;
+        r2El.innerHTML = `
+        <div>R² = ${r2.toFixed(6)}</div>
+        <div>R² AJUSTADO = ${r2adj ? r2adj.toFixed(6) : '—'}</div>
+        `;
         card.appendChild(r2El);
 
         card.addEventListener('click', () => {
@@ -139,12 +141,18 @@
         const modal = document.getElementById('imgModal');
         if (e.target === modal) modal.style.display = 'flex';
       });
+      document.getElementById('btnExplicacionR2').addEventListener('click', () => {
+        const modal = document.getElementById('imgModal');
+        const modalImg = document.getElementById('modalImg');
+        modalImg.src = 'img/rdos.png';
+        modal.style.display = 'flex';
+      });
       
       resumen.innerHTML = '';
-      if (ajustes.lineal) resumen.appendChild(crearFitCard('LINEAL', ajustes.lineal.fit.formula, ajustes.lineal.r2, 'img/lineal.png'));
-      if (ajustes.cuadratico) resumen.appendChild(crearFitCard('CUADRÁTICO', ajustes.cuadratico.fit.formula, ajustes.cuadratico.r2, 'img/cuadratico.png'));
-      if (ajustes.exponencial) resumen.appendChild(crearFitCard('EXPONENCIAL', ajustes.exponencial.fit.formula, ajustes.exponencial.r2, 'img/exponencial.png'));
-      if (ajustes.potencial) resumen.appendChild(crearFitCard('POTENCIAL', ajustes.potencial.fit.formula, ajustes.potencial.r2, 'img/potencial.png'));
+      if (ajustes.lineal) resumen.appendChild(crearFitCard('LINEAL', ajustes.lineal.fit.formula, ajustes.lineal.r2, ajustes.lineal.r2adj, 'img/lineal.png'));
+      if (ajustes.cuadratico) resumen.appendChild(crearFitCard('CUADRÁTICO', ajustes.cuadratico.fit.formula, ajustes.cuadratico.r2, ajustes.cuadratico.r2adj ,'img/cuadratico.png'));
+      if (ajustes.exponencial) resumen.appendChild(crearFitCard('EXPONENCIAL', ajustes.exponencial.fit.formula, ajustes.exponencial.r2, ajustes.exponencial.r2adj ,'img/exponencial.png'));
+      if (ajustes.potencial) resumen.appendChild(crearFitCard('POTENCIAL', ajustes.potencial.fit.formula, ajustes.potencial.r2, ajustes.potencial.r2adj, 'img/potencial.png'));
 
       // mostrar pasos
       document.getElementById('calculoLineal').textContent = Calculos.textoPasosLineal(data);

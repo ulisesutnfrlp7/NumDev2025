@@ -1,5 +1,5 @@
 // js/calculos.js
-// Implementa linealFit, cuadraticoFit, exponencialFit, potencialFit, calcularR2, generateFitPoints
+// Implementa linealFit, cuadraticoFit, exponencialFit, potencialFit, calcularR2, calcularR2Ajustado, generateFitPoints
 window.Calculos = (function(){
 
     function linealFit(data){
@@ -77,6 +77,14 @@ window.Calculos = (function(){
       const ssTot = data.reduce((s,p)=> s + Math.pow(p.y - meanY,2), 0);
       return ssTot === 0 ? 1 : 1 - (ssRes/ssTot);
     }
+
+    function calcularR2Ajustado(r2, n, p){
+      // p = número total de parámetros del modelo (incluye intercepto)
+      if (!isFinite(r2) || n <= p) return NaN; // no puede calcularse si n <= p
+      // usando 1 - [SSE/(n-p)] / [SST/(n-1)]
+      // algebraicamente: 1 - (1 - r2) * (n - 1) / (n - p)
+      return 1 - (1 - r2) * ((n - 1) / (n - p));
+    }
   
     function generateFitPoints(fit, type, xMin=0, xMax=150){
       const pts = [];
@@ -96,6 +104,7 @@ window.Calculos = (function(){
   
     function calcularAjustes(data){
       const result = {};
+      const n = data.length;
       const L = linealFit(data);
       const Q = cuadraticoFit(data);
       const E = exponencialFit(data);
@@ -103,19 +112,23 @@ window.Calculos = (function(){
   
       if(L){
         const r2 = calcularR2(data, x => L.m*x + L.b);
-        result.lineal = { fit: L, points: generateFitPoints(L,'lineal'), r2 };
+        const r2adj = calcularR2Ajustado(r2, n, 2); // lineal: p = 2 (b0, b1)
+        result.lineal = { fit: L, points: generateFitPoints(L,'lineal'), r2, r2adj };
       }
       if(Q){
         const r2 = calcularR2(data, x => Q.a*x*x + Q.b*x + Q.c);
-        result.cuadratico = { fit: Q, points: generateFitPoints(Q,'cuadratico'), r2 };
+        const r2adj = calcularR2Ajustado(r2, n, 3); // cuadrático: p = 3 (b0,b1,b2)
+        result.cuadratico = { fit: Q, points: generateFitPoints(Q,'cuadratico'), r2, r2adj };
       }
       if(E){
         const r2 = calcularR2(data, x => E.a * Math.exp(E.b * x));
-        result.exponencial = { fit: E, points: generateFitPoints(E,'exponencial'), r2 };
+        const r2adj = calcularR2Ajustado(r2, n, 2); // exponencial: p = 2 (a,b)
+        result.exponencial = { fit: E, points: generateFitPoints(E,'exponencial'), r2, r2adj };
       }
       if(P){
         const r2 = calcularR2(data, x => P.a * Math.pow(x, P.b));
-        result.potencial = { fit: P, points: generateFitPoints(P,'potencial'), r2 };
+        const r2adj = calcularR2Ajustado(r2, n, 2); // potencial: p = 2 (a,b)
+        result.potencial = { fit: P, points: generateFitPoints(P,'potencial'), r2, r2adj };
       }
       return result;
     }
@@ -227,7 +240,7 @@ window.Calculos = (function(){
   
     return {
       linealFit, cuadraticoFit, exponencialFit, potencialFit,
-      calcularR2, generateFitPoints, calcularAjustes,
+      calcularR2, calcularR2Ajustado, generateFitPoints, calcularAjustes,
       textoPasosLineal, textoPasosCuadratico, textoPasosExponencial, textoPasosPotencial
     };
   })();
