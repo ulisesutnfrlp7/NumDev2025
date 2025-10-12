@@ -2,6 +2,7 @@
 // Implementa linealFit, cuadraticoFit, exponencialFit, potencialFit, calcularR2, calcularR2Ajustado, generateFitPoints
 window.Calculos = (function(){
 
+    // Obtención de las fórmulas de las funciones
     function linealFit(data){
       if (!data || data.length < 2) return null;
       const n = data.length;
@@ -70,6 +71,8 @@ window.Calculos = (function(){
       return { a, b, formula: `y = ${a.toFixed(6)} x^{${b.toFixed(6)}}` };
     }
   
+    // Cálculo de R2 y R2 AJUSTE de forma agnóstica al modelo. Depende únicamente
+    // de la función predictor que se pasa como argumento
     function calcularR2(data, predictor){
       if(!data || data.length===0) return NaN;
       const meanY = data.reduce((s,p)=>s+p.y,0)/data.length;
@@ -106,10 +109,11 @@ window.Calculos = (function(){
       const result = {};
       const n = data.length;
       const L = linealFit(data);
-      const Q = cuadraticoFit(data);
+      const Q = cuadraticoFit(data); // se guardan las fórmulas en esas variables
       const E = exponencialFit(data);
       const P = potencialFit(data);
   
+      // se pasan como parámetro las funciones para poder calcular R2 y R2 AJUSTE
       if(L){
         const r2 = calcularR2(data, x => L.m*x + L.b);
         const r2adj = calcularR2Ajustado(r2, n, 2); // lineal: p = 2 (b0, b1)
