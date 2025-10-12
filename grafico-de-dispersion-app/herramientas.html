@@ -1,0 +1,85 @@
+<!-- herramientas.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Herramientas Utilizadas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>HERRAMIENTAS UTILIZADAS</h1>
+    <nav class="nav">
+      <a href="index.html">Inicio</a>
+      <a href="barrioA.html">Barrio A</a>
+      <a href="barrioB.html">Barrio B</a>
+      <a href="barrioC.html">Barrio C</a>
+      <a href="herramientas.html" class="active">Herramientas</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="languages-used">
+      <h2>🧰 Lenguajes Utilizados</h2>
+      <ul class="tools-list">
+        <li><strong>HTML</strong> — estructura semántica del contenido y navegación multipágina.</li>
+        <li><strong>CSS</strong> — estilos visuales, disposición jerárquica y armonía técnica.</li>
+        <li><strong>JavaScript</strong> — lógica de gráficos, cálculos matemáticos y manipulación dinámica del DOM.</li>
+      </ul>
+    </section>
+    <section class="tools-section">
+      <h2>📦 Librerías y Convenciones</h2>
+      <p>Este proyecto utiliza las siguientes herramientas:</p>
+      <ul class="tools-list">
+        <li><strong>Chart.js</strong> — visualización de gráficos (scatter y líneas de ajuste).</li>
+        <li><strong>chartjs-plugin-zoom</strong> — paneo y zoom interactivo.</li>
+        <li><strong>xlsx (SheetJS)</strong> — lectura del archivo <code>datos.xlsx</code> para extraer columnas <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</li>
+        <li><strong>numeric.js</strong> — resolución de sistemas lineales (usado en ajuste cuadrático).</li>
+        <li><strong>calculos.js</strong> — funciones matemáticas implementadas:
+          <ul class="tools-sublist">
+            <li><em>linealFit</em> — mínimos cuadrados para y = m x + b.</li>
+            <li><em>cuadraticoFit</em> — ajuste polinomial de grado 2 vía sistema normal.</li>
+            <li><em>exponencialFit</em> — regresión y = a·e^{bx} usando log transform.</li>
+            <li><em>potencialFit</em> — regresión y = a·x^{b} usando log-log.</li>
+            <li><em>calcularR2</em> — coeficiente de determinación R².</li>
+          </ul>
+        </li>
+        <li><strong>Convenciones</strong>:
+          <ul class="tools-sublist">
+            <li><code>datos.xlsx</code> debe tener encabezados: <code>neighborhood</code>, <code>area_m2</code>, <code>price_kUSD</code>.</li>
+            <li>Multipágina por simplicidad y escalabilidad; cada vista carga utilidades JS compartidas.</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section class="functions-summary">
+      <h2>🧮 Funciones Clave</h2>
+      <p>
+        Estas funciones calculan los distintos tipos de ajustes utilizando mínimos cuadrados, minimizando el error.
+      </p>
+      <div class="calculos">
+        linealFit(data) → {m, b, formula}  
+        cuadraticoFit(data) → {a, b, c, formula}  
+        exponencialFit(data) → {a, b, formula}  
+        potencialFit(data) → {a, b, formula}  
+        calcularR2(data, predictorFn) → R2
+      </div>
+    </section>
+
+    <section class="ai-tools">
+      <h2>🤖 Inteligencias Artificiales Utilizadas</h2>
+      <p>
+        Para enriquecer el análisis, la documentación y la depuración técnica, se utilizaron asistentes basados en inteligencia artificial que aportaron precisión, claridad y velocidad en distintas etapas del proyecto:
+      </p>
+      <ul class="tools-list">
+        <li><strong>ChatGPT</strong> — generación de explicaciones matemáticas, revisión de fórmulas y redacción técnica asistida.</li>
+        <li><strong>Microsoft Copilot</strong> — asistencia contextual en depuración de código, estructuración de prompts y validación semántica de flujos.</li>
+        <li><strong>Gemini</strong> — apoyo en exploración de convenciones, documentación de procesos y sugerencias pedagógicas.</li>
+      </ul>
+    </section>
+
+    <div class="footer">Fin — Documentación Técnica</div>
+  </main>
+</body>
+</html>
