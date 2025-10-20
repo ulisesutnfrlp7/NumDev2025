@@ -5,7 +5,7 @@ import InitialValueTaylorSolver from './components/InitialValueTaylorSolver';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="a min-h-screen bg-gray-50">
       <InitialValueTaylorSolver />
       <BoundaryValueSolver />
     </div>

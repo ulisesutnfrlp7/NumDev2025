@@ -283,36 +283,167 @@ const InitialValueTaylorSolver = () => {
 
         {activeTab === 'theory' && (
           <div className="bg-white rounded-lg shadow-lg p-8 space-y-4">
-            <h2 className="text-2xl font-bold">Método de Taylor para EDOs — Resumen</h2>
-            <div className="bg-yellow-50 p-4 rounded">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Método de Taylor para Ecuaciones Diferenciales Ordinarias</h2>
+
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
               <p className="text-gray-700">
-                Resumen rápido (LaTeX):
+                El <b>método de Taylor</b> es una técnica numérica utilizada para aproximar la solución de una <b>ecuación diferencial ordinaria (EDO)</b> de la forma:
               </p>
-              <pre className="bg-white p-3 rounded text-sm font-mono text-gray-800 whitespace-pre-wrap">
-{`Expansión: y(x+h)=y(x)+h y'(x)+h^2/2 y''(x)+... 
-Con y'=f(x,y), y''=f_x + f_y f, ...`}
-              </pre>
+              <p className="text-center font-serif text-lg my-2">
+                y' = f(x, y), &nbsp; &nbsp; y(x₀) = y₀
+              </p>
               <p className="text-gray-700">
-                - Ventaja: orden alto por paso si se calculan derivadas.  
-                - Desventaja: cálculo de derivadas costoso y susceptible a errores numéricos si se abusa del orden.
+                donde se conoce el valor inicial <b>y(x₀) = y₀</b> y se desea estimar el valor de <b>y(x)</b> en puntos sucesivos del intervalo.
               </p>
             </div>
 
-            <div className="bg-white p-4 rounded border">
-              <h3 className="font-semibold">Comparación breve</h3>
-              <ul className="list-disc pl-5 text-gray-700">
-                <li><b>Euler:</b> simple, 1 evaluación de f; baja precisión.</li>
-                <li><b>Taylor:</b> mayor precisión por paso si se usan derivadas; coste adicional.</li>
-                <li><b>RK4:</b> buen compromiso: 4 evaluaciones de f, robusto, frecuente en práctica.</li>
-              </ul>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">1. Formulación general</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Sea <i>y(x)</i> una función suficientemente derivable. Su desarrollo de Taylor alrededor de un punto <i>xₙ</i> es:
+            </p>
+
+            <p className="text-center font-serif text-lg my-2">
+              y(xₙ₊₁) = y(xₙ) + h y'(xₙ) + <sup>h²</sup>/<sub>2!</sub> y''(xₙ) + <sup>h³</sup>/<sub>3!</sub> y'''(xₙ) + … + <sup>hᵖ</sup>/<sub>p!</sub> y⁽ᵖ⁾(xₙ)
+            </p>
+
+            <p className="text-gray-700">
+              Sustituyendo <i>y'(xₙ) = f(xₙ, yₙ)</i> y expresando las derivadas superiores en función de <i>f</i> y sus derivadas parciales, se obtiene la <b>fórmula general del método de Taylor de orden p</b>:
+            </p>
+
+            <p className="text-center font-serif text-lg my-2">
+              yₙ₊₁ = yₙ + h f(xₙ, yₙ) + <sup>h²</sup>/<sub>2!</sub> Df(xₙ, yₙ) + <sup>h³</sup>/<sub>3!</sub> D²f(xₙ, yₙ) + … + <sup>hᵖ</sup>/<sub>p!</sub> Dᵖ⁻¹f(xₙ, yₙ)
+            </p>
+
+            <p className="text-gray-700">
+              donde <b>D</b> denota el operador de <b>derivada total</b> aplicado recursivamente:
+            </p>
+
+            <p className="text-center font-serif text-lg my-2">
+              Df = ∂f/∂x + f ∂f/∂y
+            </p>
+
+            <p className="text-gray-700">
+              y, en general:
+            </p>
+
+            <p className="text-center font-serif text-lg my-2">
+              Dᵏf = D(Dᵏ⁻¹f)
+            </p>
+
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">2. Tipo de problemas que resuelve</h3>
+            <p className="text-gray-700">
+              El método de Taylor se aplica a <b>problemas de valor inicial</b> (PVI) de primer orden, donde la derivada de la incógnita depende de <i>x</i> y <i>y</i>.  
+              Se utiliza principalmente cuando se conoce la expresión analítica de <i>f(x, y)</i> y se pueden calcular (o aproximar numéricamente) sus derivadas parciales.
+            </p>
+
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">3. Construcción de las derivadas sucesivas</h3>
+            <p className="text-gray-700">
+              Las derivadas necesarias se calculan de forma recursiva aplicando la regla de la derivada total:
+            </p>
+
+            <ul className="list-disc list-inside text-gray-700 space-y-1">
+              <li>y' = f(x, y)</li>
+              <li>y'' = f<sub>x</sub> + f f<sub>y</sub></li>
+              <li>y''' = f<sub>xx</sub> + 2f f<sub>xy</sub> + f² f<sub>yy</sub> + f<sub>x</sub> f<sub>y</sub> + f f<sub>yy</sub> f</li>
+            </ul>
+
+            <p className="text-gray-700">
+              En la práctica, estas derivadas se pueden estimar numéricamente mediante <b>diferencias finitas centradas</b> en torno a <i>(xₙ, yₙ)</i>.
+            </p>
+
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">4. Ejemplo paso a paso</h3>
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+              <p className="text-gray-700">
+                Consideremos la ecuación:
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y' = x + y, &nbsp;&nbsp; y(0) = 1, &nbsp;&nbsp; h = 0.1
+              </p>
+              <p className="text-gray-700">
+                Aplicamos el método de Taylor de orden 2.  
+                Tenemos: y'' = f<sub>x</sub> + f f<sub>y</sub> = 1 + (x + y)(1) = 1 + x + y.
+              </p>
+
+              <p className="text-gray-700 mt-2">
+                Entonces:
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y₁ = y₀ + h f(x₀, y₀) + <sup>h²</sup>/<sub>2</sub> y''(x₀, y₀)
+              </p>
+
+              <p className="text-gray-700">
+                Sustituyendo valores:
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y₁ = 1 + 0.1(0 + 1) + (0.1)²/2 (1 + 0 + 1) = 1 + 0.1 + 0.01 = <b>1.11</b>
+              </p>
+              <p className="text-gray-700">
+                Este valor aproxima y(0.1). Repetimos el proceso con (x₁, y₁) = (0.1, 1.11) para hallar y₂, etc.
+              </p>
             </div>
 
-            <div className="bg-green-50 p-4 rounded">
-              <h3 className="font-semibold">Uso práctico</h3>
-              <p className="text-gray-700">El componente de la pestaña "Calculadora" permite probar distintos órdenes y comparar con solución exacta si la proporcionas.</p>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">5. Interpretación geométrica</h3>
+            <p className="text-gray-700">
+              El método de Taylor extiende la idea del método de Euler: en lugar de avanzar con una recta tangente (solo usa y′),
+              utiliza una <b>curva de Taylor local</b> que incorpora curvaturas y tendencias futuras de la solución.  
+              Esto mejora la aproximación y reduce el error local de truncamiento.
+            </p>
+
+            <div className="flex justify-center my-4">
+              <svg width="500" height="220" viewBox="0 0 500 220" className="border rounded bg-white">
+                <line x1="40" y1="180" x2="460" y2="180" stroke="#ccc" />
+                <line x1="40" y1="20" x2="40" y2="180" stroke="#ccc" />
+                <path d="M40 150 Q 150 100, 260 120 T 460 60" fill="none" stroke="#0ea5e9" strokeWidth="2" />
+                <path d="M40 150 L 260 120" stroke="#16a34a" strokeDasharray="6 3" strokeWidth="2" />
+                <text x="70" y="100" fill="#0ea5e9" fontSize="12">Curva de Taylor</text>
+                <text x="200" y="140" fill="#16a34a" fontSize="12">Tangente (Euler)</text>
+              </svg>
             </div>
+
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">6. Comparación con otros métodos</h3>
+            <table className="w-full text-left border border-gray-200">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2">Método</th>
+                  <th className="px-4 py-2">Orden</th>
+                  <th className="px-4 py-2">Precisión</th>
+                  <th className="px-4 py-2">Costo computacional</th>
+                  <th className="px-4 py-2">Requiere derivadas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t">
+                  <td className="px-4 py-2">Euler</td>
+                  <td className="px-4 py-2 text-center">1</td>
+                  <td className="px-4 py-2">Baja</td>
+                  <td className="px-4 py-2">Muy bajo</td>
+                  <td className="px-4 py-2 text-center">No</td>
+                </tr>
+                <tr className="border-t">
+                  <td className="px-4 py-2">Taylor (orden p)</td>
+                  <td className="px-4 py-2 text-center">p</td>
+                  <td className="px-4 py-2">Alta (dependiendo de p)</td>
+                  <td className="px-4 py-2">Moderado / Alto</td>
+                  <td className="px-4 py-2 text-center">Sí</td>
+                </tr>
+                <tr className="border-t">
+                  <td className="px-4 py-2">Runge–Kutta (RK4)</td>
+                  <td className="px-4 py-2 text-center">4</td>
+                  <td className="px-4 py-2">Muy alta</td>
+                  <td className="px-4 py-2">Moderado</td>
+                  <td className="px-4 py-2 text-center">No</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p className="text-gray-700 mt-4">
+              En resumen, el método de Taylor es <b>altamente preciso</b> si se pueden calcular derivadas de orden superior de <i>f</i>.  
+              Sin embargo, su implementación puede ser costosa o compleja cuando <i>f(x, y)</i> es complicada.  
+              Por ello, métodos como <b>Runge–Kutta</b> son más comunes en la práctica, ya que logran una precisión similar sin derivadas explícitas.
+            </p>
           </div>
         )}
+
 
         {activeTab === 'solver' && (
           <div className="space-y-6">
