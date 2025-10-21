@@ -8,10 +8,10 @@ const BoundaryValueSolver = () => {
   const [expandedSteps, setExpandedSteps] = useState({});
   
   const [formData, setFormData] = useState({
-    A: '0',
+    A: '1',
     B: '-4',
     C: '4',
-    D: 'Math.exp(-3*x)',
+    D: 'Math.exp(3*x)',
     x0: '0',
     y0: '0',
     xf: '1',
@@ -48,6 +48,7 @@ const BoundaryValueSolver = () => {
       const A = parseFloat(formData.A);
       const B = parseFloat(formData.B);
       const C = parseFloat(formData.C);
+      const D = formData.D;
       const x0 = parseFloat(formData.x0);
       const xf = parseFloat(formData.xf);
       const y0 = parseFloat(formData.y0);
@@ -73,24 +74,52 @@ const BoundaryValueSolver = () => {
 
       steps.push({
         title: 'Paso 1: Fórmulas de Taylor',
-        content: `Para un problema de contorno de la forma: Ay'' + By' + Cy = D
-
-Usando series de Taylor alrededor de xₙ:
-• y'ₙ = (yₙ₊₁ - yₙ₋₁) / (2h)
-• y''ₙ = (yₙ₊₁ - 2yₙ + yₙ₋₁) / h²
-
-Sustituyendo en la ecuación diferencial y multiplicando por h²:
-(${coefYnMinus1.toFixed(4)})yₙ₋₁ + (${coefYn.toFixed(4)})yₙ + (${coefYnPlus1.toFixed(4)})yₙ₊₁ = h²·D`
+        content: (
+          <div className="space-y-2 text-gray-700 text-xl">
+            <p>Para un problema de contorno de la forma:</p>
+            <p className="font-mono">Ay″ + By′ + Cy = D(x)</p>
+      
+            <p>Usando series de Taylor alrededor de xₙ:</p>
+            <ul className="list-disc list-inside ml-4">
+              <li>y′ₙ ≈ (yₙ₊₁ − yₙ₋₁) / (2h)</li>
+              <li>y″ₙ ≈ (yₙ₊₁ − 2yₙ + yₙ₋₁) / h²</li>
+            </ul>
+      
+            <p>Al sustituir en la ecuación y multiplicar por h² para simplificar la expresión:</p>
+            <p className="font-mono">
+              ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
+            </p>
+          </div>
+        )
       });
 
       steps.push({
         title: 'Paso 2: Datos del Problema',
-        content: `• Ecuación: ${A !== 0 ? A + "y''" : ''}${B !== 0 ? (B > 0 ? ' + ' : ' ') + B + "y'" : ''}${C !== 0 ? (C > 0 ? ' + ' : ' ') + C + 'y' : ''} = D(x)
-• Condición inicial: y(${x0}) = ${y0}
-• Condición final: ${formData.finalConditionType === 'value' ? `y(${xf}) = ${formData.yf}` : `y'(${xf}) = ${formData.yfPrime}`}
-• Paso h = ${h}
-• Dominio: [${x0}, ${xf}]
-• Número de puntos: ${n + 1}`
+        content: (
+          <div className="space-y-2 text-gray-700 text-xl leading-relaxed">
+            <p>📘 <span className="font-semibold text-blue-900">ECUACIÓN DIFERENCIAL PLANTEADA</span></p>
+            <p className="font-mono text-blue-800">
+              {A !== 0 ? `${A}y″` : ''}{B !== 0 ? `${B > 0 ? ' + ' : ' '}${B}y′` : ''}{C !== 0 ? `${C > 0 ? ' + ' : ' '}${C}y` : ''} = {D}
+            </p>
+      
+            <p>📌 <span className="font-semibold">CONDICIONES DE CONTORNO</span></p>
+            <ul className="list-disc list-inside ml-4">
+              <li>Condición inicial: <span className="font-mono">y({x0}) = {y0}</span></li>
+              <li>Condición final: <span className="font-mono">
+                {formData.finalConditionType === 'value'
+                  ? `y(${xf}) = ${formData.yf}`
+                  : `y′(${xf}) = ${formData.yfPrime}`}
+              </span></li>
+            </ul>
+      
+            <p>⚙️ <span className="font-semibold">PARÁMETROS NUMÉRICOS</span></p>
+            <ul className="list-disc list-inside ml-4">
+              <li>Paso <span className="font-mono">h = {h}</span></li>
+              <li>Dominio de trabajo: <span className="font-mono">[{x0}, {xf}]</span></li>
+              <li>Número de puntos: <span className="font-mono">{n + 1}</span></li>
+            </ul>
+          </div>
+        )
       });
 
       for (let i = 1; i < n; i++) {
@@ -163,32 +192,101 @@ Sustituyendo en la ecuación diferencial y multiplicando por h²:
 
         steps.push({
           title: 'Paso 3: Punto Fantasma',
-          content: `Como la condición final es una derivada y'(${xf}) = ${yfPrime},
-necesitamos un "punto fantasma" y${n+1} fuera del dominio.
-
-Usando: y'ₙ = (yₙ₊₁ - yₙ₋₁) / (2h)
-
-Despejando: y${n+1} = y${n-1} + 2h·y'${n}
-y${n+1} - y${n-1} = ${(2 * h * yfPrime).toFixed(4)}`
-        });
+          content: (
+            <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
+              <p>
+                Como la condición final es una <span className="font-semibold text-blue-900">derivada</span>{' '}
+                <span className="font-mono">y′({xf}) = {yfPrime}</span>, necesitamos introducir un
+                <span className="font-semibold text-blue-900"> punto fantasma </span>
+                fuera del dominio, que llamaremos <span className="font-mono">yₙ₊₁</span>.
+              </p>
+        
+              <p>Partimos de la aproximación central para la derivada:</p>
+              <div className="bg-white p-3 rounded-lg font-mono text-center text-xl">
+                y′ₙ = (yₙ₊₁ − yₙ₋₁) / (2h)
+              </div>
+        
+              <p>Despejando el punto fantasma:</p>
+              <div className="bg-white p-3 rounded-lg font-mono text-center text-xl">
+                yₙ₊₁ = yₙ₋₁ + 2h·y′ₙ
+              </div>
+        
+              <p>Por lo tanto:</p>
+              <div className="bg-blue-100 border-l-4 border-blue-600 p-3 rounded font-mono text-xl text-blue-800">
+                yₙ₊₁ − yₙ₋₁ = {(2 * h * yfPrime).toFixed(4)}
+              </div>
+        
+              <p className="text-gray-600 italic">
+                Este punto auxiliar se utiliza para cerrar el sistema cuando la condición de contorno es una derivada.
+              </p>
+            </div>
+          )
+        });        
       }
 
       steps.push({
         title: `Paso ${formData.finalConditionType === 'derivative' ? '4' : '3'}: Sistema de Ecuaciones`,
-        content: `Sistema lineal resultante (${equations.length} ecuaciones con ${equations.length} incógnitas):
-
-${equations.map((eq, idx) => `Ecuación ${idx + 1}: ${eq.display}`).join('\n')}`
-      });
+        content: (
+          <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
+            <p>
+              A partir de las sustituciones realizadas, obtenemos el siguiente
+              <span className="font-semibold text-blue-900"> sistema lineal de ecuaciones</span>,
+              donde cada ecuación corresponde a un punto interior del dominio.
+            </p>
+      
+            <div className="bg-blue-200 p-4 rounded-lg overflow-x-auto font-mono text-xl">
+              {equations.map((eq, idx) => (
+                <div key={idx} className="border-b border-gray-200 py-1">
+                  <span className="font-semibold text-gray-800">Ecuación {idx + 1}:</span>{' '}
+                  <span className="text-blue-800">{eq.display}</span>
+                </div>
+              ))}
+            </div>
+      
+            <p>
+              En forma matricial, el sistema puede representarse como:
+            </p>
+            <div className="bg-gray-100 p-3 rounded-lg font-mono text-center text-sm">
+              [A]·{`{y}`} = {`{b}`}
+            </div>
+      
+            <p className="text-gray-600 italic">
+              Donde [A] es una matriz tridiagonal que contiene los coeficientes
+              de cada ecuación, {`{y}`} el vector de incógnitas y {`{b}`} el
+              vector de términos independientes.
+            </p>
+          </div>
+        )
+      });      
 
       steps.push({
-        title: `Paso ${formData.finalConditionType === 'derivative' ? '5' : '4'}: Solución`,
-        content: `Este sistema se puede resolver usando métodos como:
-• Eliminación de Gauss
-• Factorización LU
-• Método de Thomas (para sistemas tridiagonales)
-
-La solución numérica proporciona los valores de y en cada punto del dominio.`
-      });
+        title: `Paso ${formData.finalConditionType === 'derivative' ? '5' : '4'}: Solución Numérica`,
+        content: (
+          <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
+            <p>
+              Para obtener los valores de <span className="font-mono">y₁, y₂, ..., yₙ</span>,
+              resolvemos el sistema lineal mediante algún método numérico apropiado.
+            </p>
+      
+            <ul className="list-disc list-inside ml-4 text-blue-800">
+              <li>Eliminación de Gauss</li>
+              <li>Factorización LU</li>
+              <li>Método de Thomas (ideal para sistemas tridiagonales)</li>
+            </ul>
+      
+            <p>
+              El resultado final permite estimar el comportamiento de la función{' '}
+              <span className="font-mono">y(x)</span> dentro del intervalo definido,
+              respetando las condiciones de contorno impuestas.
+            </p>
+      
+            <div className="bg-green-50 border-l-4 border-green-600 p-3 rounded text-green-900 text-xl">
+              ✅ La solución numérica obtenida proporciona una aproximación estable y coherente
+              con el modelo físico representado por la ecuación diferencial.
+            </div>
+          </div>
+        )
+      });      
 
       setSolution({
         points,
@@ -261,9 +359,22 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
               <div className="bg-blue-100 border-l-4 border-blue-600 p-6 rounded">
                 <h3 className="font-bold text-lg text-blue-900 mb-3">Definición</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Un problema de contorno es una ecuación diferencial de segundo orden 
-                  donde conocemos los valores de la función en los extremos del dominio 
-                  (o sus derivadas), y necesitamos encontrar los valores en los puntos intermedios.
+                  Los Problemas de Contorno se refieren a problemas donde tenemos una ecuación 
+                  diferencial de segundo orden con ciertas condiciones iniciales y finales en un 
+                  dominio de trabajo sobre el eje X. Estos problemas se pueden resolver en forma 
+                  numérica mediante el uso de Series de Taylor.
+                </p>
+              </div>
+
+              <div className="bg-green-100 border-l-4 border-green-600 p-6 rounded">
+                <h3 className="font-bold text-lg text-green-900 mb-3">
+                  Ejemplo Práctico: Barra de Metal
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Imagina una barra de metal de 10 cm de largo que marcamos cada 1 cm. 
+                  Aplicamos temperatura en ambos extremos. El problema de contorno nos 
+                  permite calcular la temperatura en cada punto intermedio de la barra, 
+                  sabiendo que depende de las temperaturas de los puntos vecinos.
                 </p>
               </div>
 
@@ -272,31 +383,31 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">1. Ecuación Diferencial</div>
-                    <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       Ay'' + By' + Cy = D(x)
                     </div>
                   </div>
                   <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">2. Condición Inicial</div>
-                    <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       y(x₀) = y₀
                     </div>
                   </div>
                   <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">3. Condición Final</div>
-                    <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       y(xf) = yf o y'(xf) = y'f
                     </div>
                   </div>
                   <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">4. Dominio de Trabajo</div>
-                    <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       x₀ ≤ x ≤ xf
                     </div>
                   </div>
                   <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">5. Paso "h"</div>
-                    <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       xₙ₊₁ = xₙ + h
                     </div>
                   </div>
@@ -310,22 +421,10 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
                 <p className="text-gray-700 mb-3">
                   Aproximamos las derivadas usando desarrollos de Taylor:
                 </p>
-                <div className="bg-white p-4 rounded-lg font-mono text-sm space-y-2">
+                <div className="bg-white p-4 rounded-lg font-mono text-xl space-y-2">
                   <div>y'ₙ = (yₙ₊₁ - yₙ₋₁) / (2h)</div>
                   <div>y''ₙ = (yₙ₊₁ - 2yₙ + yₙ₋₁) / h²</div>
                 </div>
-              </div>
-
-              <div className="bg-green-100 border-l-4 border-green-600 p-6 rounded">
-                <h3 className="font-bold text-lg text-green-900 mb-3">
-                  Ejemplo Práctico: Barra de Metal
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Imagina una barra de metal de 10 cm de largo que marcamos cada 1 cm. 
-                  Aplicamos temperatura en ambos extremos. El problema de contorno nos 
-                  permite calcular la temperatura en cada punto intermedio de la barra, 
-                  sabiendo que depende de las temperaturas de los puntos vecinos.
-                </p>
               </div>
             </div>
           </div>
@@ -568,7 +667,7 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
                         Tabla de Puntos del Dominio
                       </span>
                     </div>
-                    <div className="p-6 bg-white overflow-x-auto">
+                    <div className="p-6 bg-blue-50 overflow-x-auto">
                       <table className="w-full">
                         <thead>
                           <tr className="bg-gray-100">

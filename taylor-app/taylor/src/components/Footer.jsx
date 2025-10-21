@@ -4,7 +4,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-900 text-white py-3 mt-auto">
+    <footer className="bg-blue-900 text-white py-3 mt-auto font-mono">
       <div className="container mx-auto px-4 text-center text-sm">
         <p>
           © {new Date().getFullYear()} NUMDEV — Grupo de Análisis Numérico. Todos los derechos reservados.

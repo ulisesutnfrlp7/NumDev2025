@@ -21,7 +21,7 @@ const InitialValueTaylorSolver = () => {
     y0: '1',
     xf: '1',
     h: '0.1',
-    order: '3',
+    order: '2',
     exact: ''              // expresion opcional de solución exacta y(x)
   });
   const [error, setError] = useState('');
