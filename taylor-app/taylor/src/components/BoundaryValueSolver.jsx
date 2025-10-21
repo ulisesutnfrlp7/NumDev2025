@@ -203,10 +203,10 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 p-6">
+    <div className="min-h-screen bg-blue-250 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6 border-t-4 border-blue-600">
+        <div className="bg-blue-50 rounded-lg shadow-lg p-6 mb-6 border-t-4 border-blue-600">
           <div className="flex items-center gap-4 mb-2">
             <div className="bg-blue-600 p-3 rounded-lg">
               <Calculator className="text-white" size={32} />
@@ -252,7 +252,7 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
 
         {/* Theory Tab */}
         {activeTab === 'theory' && (
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-blue-50 rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               ¿Qué es un Problema de Contorno?
             </h2>
@@ -267,31 +267,37 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
                 </p>
               </div>
 
-              <div className="bg-purple-50 p-6 rounded-lg">
+              <div className="bg-purple-100 p-6 rounded-lg">
                 <h3 className="font-bold text-lg text-gray-800 mb-4">Elementos de un Problema de Contorno</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white p-4 rounded-lg shadow">
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">1. Ecuación Diferencial</div>
                     <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       Ay'' + By' + Cy = D(x)
                     </div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow">
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">2. Condición Inicial</div>
                     <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       y(x₀) = y₀
                     </div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow">
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
                     <div className="font-semibold text-blue-700 mb-2">3. Condición Final</div>
                     <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       y(xf) = yf o y'(xf) = y'f
                     </div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow">
-                    <div className="font-semibold text-blue-700 mb-2">4. Dominio</div>
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
+                    <div className="font-semibold text-blue-700 mb-2">4. Dominio de Trabajo</div>
                     <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
                       x₀ ≤ x ≤ xf
+                    </div>
+                  </div>
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
+                    <div className="font-semibold text-blue-700 mb-2">5. Paso "h"</div>
+                    <div className="text-sm text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                      xₙ₊₁ = xₙ + h
                     </div>
                   </div>
                 </div>
@@ -329,7 +335,7 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
         {activeTab === 'solver' && (
           <div className="space-y-6">
             {/* Input Form */}
-            <div className="bg-white rounded-lg shadow-lg p-8">
+            <div className="bg-blue-50 rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Ingrese los Datos del Problema
               </h2>
@@ -520,7 +526,7 @@ La solución numérica proporciona los valores de y en cada punto del dominio.`
 
             {/* Solution Display */}
             {solution && (
-              <div className="bg-white rounded-lg shadow-lg p-8">
+              <div className="bg-blue-50 rounded-lg shadow-lg p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <CheckCircle className="text-green-600" size={28} />
                   <h2 className="text-2xl font-bold text-gray-800">

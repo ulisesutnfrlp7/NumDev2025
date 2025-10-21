@@ -249,16 +249,16 @@ const InitialValueTaylorSolver = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 p-6">
+    <div className="min-h-screen bg-blue-250 p-6">
       <div className="max-w-5xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6 border-t-4 border-blue-600">
+        <div className="bg-blue-50 rounded-lg shadow-lg p-6 mb-6 border-t-4 border-blue-600">
           <div className="flex items-center gap-4 mb-2">
             <div className="bg-blue-600 p-3 rounded-lg">
               <Calculator className="text-white" size={28} />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Taylor — Problemas de Valor Inicial</h1>
-              <p className="text-gray-600 mt-1">Método de Taylor (EDO 1º orden) — Interactivo</p>
+              <p className="text-gray-600 mt-1">Método de Taylor (EDO 1º orden) — UTN FRLP</p>
             </div>
           </div>
         </div>
@@ -282,7 +282,7 @@ const InitialValueTaylorSolver = () => {
         </div>
 
         {activeTab === 'theory' && (
-          <div className="bg-white rounded-lg shadow-lg p-8 space-y-4">
+          <div className="bg-blue-50 rounded-lg shadow-lg p-8 space-y-4">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Método de Taylor para Ecuaciones Diferenciales Ordinarias</h2>
 
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
@@ -297,7 +297,7 @@ const InitialValueTaylorSolver = () => {
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">1. Formulación general</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">1. FÓRMULA GENERAL</h3>
             <p className="text-gray-700 leading-relaxed">
               Sea <i>y(x)</i> una función suficientemente derivable. Su desarrollo de Taylor alrededor de un punto <i>xₙ</i> es:
             </p>
@@ -330,38 +330,41 @@ const InitialValueTaylorSolver = () => {
               Dᵏf = D(Dᵏ⁻¹f)
             </p>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">2. Tipo de problemas que resuelve</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">2. TIPO DE PROBLEMAS QUE RESUELVE</h3>
             <p className="text-gray-700">
-              El método de Taylor se aplica a <b>problemas de valor inicial</b> (PVI) de primer orden, donde la derivada de la incógnita depende de <i>x</i> y <i>y</i>.  
+              El método de Taylor se aplica a <b>problemas de valor inicial</b> (PVI) de primer orden, donde la derivada de la incógnita depende de <i>x</i> e <i>y</i>.  
               Se utiliza principalmente cuando se conoce la expresión analítica de <i>f(x, y)</i> y se pueden calcular (o aproximar numéricamente) sus derivadas parciales.
             </p>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">3. Construcción de las derivadas sucesivas</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">3. CONSTRUCCIÓN DE LAS DERIVADAS SUCESIVAS</h3>
             <p className="text-gray-700">
               Las derivadas necesarias se calculan de forma recursiva aplicando la regla de la derivada total:
             </p>
 
-            <ul className="list-disc list-inside text-gray-700 space-y-1">
+            <ul className="list-disc list-inside text-center font-serif text-lg space-y-1">
               <li>y' = f(x, y)</li>
-              <li>y'' = f<sub>x</sub> + f f<sub>y</sub></li>
-              <li>y''' = f<sub>xx</sub> + 2f f<sub>xy</sub> + f² f<sub>yy</sub> + f<sub>x</sub> f<sub>y</sub> + f f<sub>yy</sub> f</li>
+              <li>y'' = f<sub>x</sub> + f(x, y) f<sub>y</sub></li>
             </ul>
 
             <p className="text-gray-700">
               En la práctica, estas derivadas se pueden estimar numéricamente mediante <b>diferencias finitas centradas</b> en torno a <i>(xₙ, yₙ)</i>.
             </p>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">4. Ejemplo paso a paso</h3>
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">4. EJEMPLO PASO A PASO</h3>
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
               <p className="text-gray-700">
                 Consideremos la ecuación:
               </p>
               <p className="text-center font-serif text-lg my-2">
-                y' = x + y, &nbsp;&nbsp; y(0) = 1, &nbsp;&nbsp; h = 0.1
+                y' = x + y, &nbsp;&nbsp; y(0) = 1, &nbsp;&nbsp; h = 0.1, &nbsp;&nbsp; hallar y(0.5)
               </p>
               <p className="text-gray-700">
                 Aplicamos el método de Taylor de orden 2.  
-                Tenemos: y'' = f<sub>x</sub> + f f<sub>y</sub> = 1 + (x + y)(1) = 1 + x + y.
+                Tenemos:
+              </p>
+
+              <p className="text-center font-serif text-lg my-2">
+                y'' = f<sub>x</sub> + f(x, y) f<sub>y</sub> = 1 + (x + y)(1) = 1 + x + y.
               </p>
 
               <p className="text-gray-700 mt-2">
@@ -378,11 +381,30 @@ const InitialValueTaylorSolver = () => {
                 y₁ = 1 + 0.1(0 + 1) + (0.1)²/2 (1 + 0 + 1) = 1 + 0.1 + 0.01 = <b>1.11</b>
               </p>
               <p className="text-gray-700">
-                Este valor aproxima y(0.1). Repetimos el proceso con (x₁, y₁) = (0.1, 1.11) para hallar y₂, etc.
+                Y ahora, continuamos aplicando el método de Taylor de orden 2 con los valores obtenidos en cada paso:
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y₂ = 1.11 + 0.1(0.1 + 1.11) + 0.005(1 + 0.1 + 1.11) = 1.11 + 0.121 + 0.01105 = <b>1.24205</b>
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y₃ = 1.24205 + 0.1(0.2 + 1.24205) + 0.005(1 + 0.2 + 1.24205) = 1.24205 + 0.144205 + 0.01121 = <b>1.397465</b>
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y₄ = 1.397465 + 0.1(0.3 + 1.397465) + 0.005(1 + 0.3 + 1.397465) = 1.397465 + 0.1697465 + 0.0119873 = <b>1.5791988</b>
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                y₅ = 1.5791988 + 0.1(0.4 + 1.5791988) + 0.005(1 + 0.4 + 1.5791988) = 1.5791988 + 0.19791988 + 0.012896 = <b>1.7900147</b>
+              </p>
+
+              <p className="text-gray-700 mt-2">
+                Por lo tanto, el valor aproximado de <b>y(0.5)</b> usando el método de Taylor de orden 2 con paso h = 0.1 es:
+              </p>
+              <p className="text-center font-serif text-lg my-2">
+                <b>y(0.5) ≈ 1.7900147</b>
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">5. Interpretación geométrica</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">5. INTERPRETACIÓN GEOMÉTRICA</h3>
             <p className="text-gray-700">
               El método de Taylor extiende la idea del método de Euler: en lugar de avanzar con una recta tangente (solo usa y′),
               utiliza una <b>curva de Taylor local</b> que incorpora curvaturas y tendencias futuras de la solución.  
@@ -400,15 +422,15 @@ const InitialValueTaylorSolver = () => {
               </svg>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">6. Comparación con otros métodos</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mt-6">6. COMPARACIÓN CON OTROS MÉTODOS</h3>
             <table className="w-full text-left border border-gray-200">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-4 py-2">Método</th>
-                  <th className="px-4 py-2">Orden</th>
-                  <th className="px-4 py-2">Precisión</th>
-                  <th className="px-4 py-2">Costo computacional</th>
-                  <th className="px-4 py-2">Requiere derivadas</th>
+                  <th className="px-4 py-2">MÉTODO</th>
+                  <th className="px-4 py-2">ORDEN</th>
+                  <th className="px-4 py-2">PRECISIÓN</th>
+                  <th className="px-4 py-2">COSTO COMPUTACIONAL</th>
+                  <th className="px-4 py-2">REQUIERE DERIVADAS</th>
                 </tr>
               </thead>
               <tbody>
@@ -447,7 +469,7 @@ const InitialValueTaylorSolver = () => {
 
         {activeTab === 'solver' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-blue-50 rounded-lg shadow-lg p-6">
               <h2 className="text-xl font-bold mb-4">Datos de la EDO (y' = f(x,y))</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -516,7 +538,7 @@ const InitialValueTaylorSolver = () => {
             )}
 
             {result && (
-              <div className="bg-white rounded-lg shadow-lg p-6 space-y-4">
+              <div className="bg-blue-50 rounded-lg shadow-lg p-6 space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <CheckCircle className="text-green-600" size={22} />
                   <h3 className="text-lg font-bold">Resultados</h3>
