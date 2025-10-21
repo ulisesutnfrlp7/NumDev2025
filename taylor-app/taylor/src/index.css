@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes aurora {
+    from {
+      background-position: 50% 50%, 50% 50%;
+    }
+    to {
+      background-position: 350% 50%, 350% 50%;
+    }
+  }
+  
+  .aurora-bg {
+    background-image: radial-gradient(circle at 20% 20%, #60a5fa, transparent),
+                      radial-gradient(circle at 80% 80%, #3b82f6, transparent);
+    background-size: 200% 200%;
+    animation: aurora 60s linear infinite;
+  }
