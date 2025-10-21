@@ -297,7 +297,7 @@ const InitialValueTaylorSolver = () => {
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">1. FÓRMULA GENERAL</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">1. FÓRMULA GENERAL</h3>
             <p className="text-gray-700 leading-relaxed">
               Sea <i>y(x)</i> una función suficientemente derivable. Su desarrollo de Taylor alrededor de un punto <i>xₙ</i> es:
             </p>
@@ -330,13 +330,13 @@ const InitialValueTaylorSolver = () => {
               Dᵏf = D(Dᵏ⁻¹f)
             </p>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">2. TIPO DE PROBLEMAS QUE RESUELVE</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">2. TIPO DE PROBLEMAS QUE RESUELVE</h3>
             <p className="text-gray-700">
               El método de Taylor se aplica a <b>problemas de valor inicial</b> (PVI) de primer orden, donde la derivada de la incógnita depende de <i>x</i> e <i>y</i>.  
               Se utiliza principalmente cuando se conoce la expresión analítica de <i>f(x, y)</i> y se pueden calcular (o aproximar numéricamente) sus derivadas parciales.
             </p>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">3. CONSTRUCCIÓN DE LAS DERIVADAS SUCESIVAS</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">3. CONSTRUCCIÓN DE LAS DERIVADAS SUCESIVAS</h3>
             <p className="text-gray-700">
               Las derivadas necesarias se calculan de forma recursiva aplicando la regla de la derivada total:
             </p>
@@ -350,7 +350,7 @@ const InitialValueTaylorSolver = () => {
               En la práctica, estas derivadas se pueden estimar numéricamente mediante <b>diferencias finitas centradas</b> en torno a <i>(xₙ, yₙ)</i>.
             </p>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">4. EJEMPLO PASO A PASO</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">4. EJEMPLO PASO A PASO</h3>
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
               <p className="text-gray-700">
                 Consideremos la ecuación:
@@ -404,7 +404,7 @@ const InitialValueTaylorSolver = () => {
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">5. INTERPRETACIÓN GEOMÉTRICA</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">5. INTERPRETACIÓN GEOMÉTRICA</h3>
             <p className="text-gray-700">
               El método de Taylor extiende la idea del método de Euler: en lugar de avanzar con una recta tangente (solo usa y′),
               utiliza una <b>curva de Taylor local</b> que incorpora curvaturas y tendencias futuras de la solución.  
@@ -422,7 +422,7 @@ const InitialValueTaylorSolver = () => {
               </svg>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-800 mt-6">6. COMPARACIÓN CON OTROS MÉTODOS</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">6. COMPARACIÓN CON OTROS MÉTODOS</h3>
             <table className="w-full text-left border border-gray-200">
               <thead>
                 <tr className="bg-gray-100">

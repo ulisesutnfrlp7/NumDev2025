@@ -16,7 +16,7 @@ const BoundaryValueSolver = () => {
     y0: '0',
     xf: '1',
     yf: '-2',
-    yfPrime: '',
+    yfPrime: '2',
     h: '0.25',
     finalConditionType: 'value'
   });
@@ -86,7 +86,7 @@ const BoundaryValueSolver = () => {
             </ul>
       
             <p>Al sustituir en la ecuación y multiplicar por h² para simplificar la expresión:</p>
-            <p className="font-mono">
+            <p className="font-mono text-xl">
               ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
             </p>
           </div>
@@ -229,6 +229,16 @@ const BoundaryValueSolver = () => {
         content: (
           <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
             <p>
+              Una vez hallada la formula iterativa:
+              <p className="font-mono text-xl">
+                ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
+              </p>
+              debemos comenzar a recorrer el intervalo desde n=1 a 
+              diferencia de los Problemas de Valor Inicial que arrancábamos desde n=0 (no tomamos n=0 
+              porque al tener que usar yₙ₋₁ nos iríamos afuera del intervalo necesitando un valor de 
+              y₋₁ que no existe) 
+            </p>
+            <p>
               A partir de las sustituciones realizadas, obtenemos el siguiente
               <span className="font-semibold text-blue-900"> sistema lineal de ecuaciones</span>,
               donde cada ecuación corresponde a un punto interior del dominio.
@@ -257,7 +267,7 @@ const BoundaryValueSolver = () => {
             </p>
           </div>
         )
-      });      
+      });
 
       steps.push({
         title: `Paso ${formData.finalConditionType === 'derivative' ? '5' : '4'}: Solución Numérica`,
@@ -371,10 +381,19 @@ const BoundaryValueSolver = () => {
                   Ejemplo Práctico: Barra de Metal
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Imagina una barra de metal de 10 cm de largo que marcamos cada 1 cm. 
-                  Aplicamos temperatura en ambos extremos. El problema de contorno nos 
-                  permite calcular la temperatura en cada punto intermedio de la barra, 
-                  sabiendo que depende de las temperaturas de los puntos vecinos.
+                  Imaginate una barra de metal de 10 cm de largo a la cual marcamos cada 1 cm.
+                  Acto seguido, aplicamos temperatura en ambos extremos (ecuación diferencial)
+                  de manera que se pueda medir la temperatura inicial y final en cada uno de ellos 
+                  (condición inicial y final). A partir de este problema de contorno, calcularemos
+                  la temperatura en cada punto intermedio de la barra, sabiendo que depende de las 
+                  temperaturas de los puntos vecinos.
+                </p>
+                <br/>
+                <p className="text-gray-700 leading-relaxed">
+                  Si uno va recorriendo cada punto del dominio con el paso “h”, lo que se logra es 
+                  un sistema de “n” ecuaciones con “n” incógnitas donde cada una de las incógnitas 
+                  que se resolverán por algún método de resolución de sistemas de ecuaciones lineales 
+                  (por eso son temas correlativos), serán las temperaturas de cada punto del dominio.
                 </p>
               </div>
 
