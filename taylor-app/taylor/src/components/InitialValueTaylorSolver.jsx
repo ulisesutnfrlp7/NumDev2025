@@ -240,7 +240,7 @@ const InitialValueTaylorSolver = () => {
           <circle cx="12" cy="8" r="6" fill="#0ea5e9" /> <text x="26" y="12" fontSize="12">Aproximación (Taylor)</text>
           {pathExact && (
             <>
-              <circle cx="12" cy="28" r="6" fill="#16a34a" /> <text x="26" y="32" fontSize="12">Solución exacta</text>
+              <circle cx="12" cy="28" r="6" fill="#16a34a" /> <text x="26" y="32" fontSize="12">Solución Exacta</text>
             </>
           )}
         </g>
@@ -481,7 +481,7 @@ const InitialValueTaylorSolver = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Solución exacta (opcional)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Solución Exacta (opcional)</label>
                   <input name="exact" value={form.exact} onChange={handleChange}
                     className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg font-mono" />
                   <p className="text-xs text-gray-500 mt-1">Si la tienes, pon y(x) en términos de x (opcional) — se mostrará en el gráfico.</p>

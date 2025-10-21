@@ -233,7 +233,7 @@ const BoundaryValueSolver = () => {
               <p className="font-mono text-xl">
                 ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
               </p>
-              debemos comenzar a recorrer el intervalo desde n=1 a 
+              debemos comenzar a recorrer el intervalo desde n=1, a 
               diferencia de los Problemas de Valor Inicial que arrancábamos desde n=0 (no tomamos n=0 
               porque al tener que usar yₙ₋₁ nos iríamos afuera del intervalo necesitando un valor de 
               y₋₁ que no existe) 
