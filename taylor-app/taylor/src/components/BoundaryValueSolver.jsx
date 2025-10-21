@@ -227,18 +227,56 @@ const BoundaryValueSolver = () => {
       steps.push({
         title: `Paso ${formData.finalConditionType === 'derivative' ? '4' : '3'}: Sistema de Ecuaciones`,
         content: (
-          <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
+          <div className="space-y-4 text-gray-700 text-xl leading-relaxed">
             <p>
-              Una vez hallada la formula iterativa:
-              <p className="font-mono text-xl">
-                ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
-              </p>
+              Una vez hallada la fórmula iterativa general:
+            </p>
+            <div className="bg-white p-3 rounded-lg font-mono text-center text-xl">
+              ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2.toFixed(4)})·{D} (xₙ)
+            </div>
+
+            <p>
               debemos comenzar a recorrer el intervalo desde n=1, a 
               diferencia de los Problemas de Valor Inicial que arrancábamos desde n=0 (no tomamos n=0 
               porque al tener que usar yₙ₋₁ nos iríamos afuera del intervalo necesitando un valor de 
-              y₋₁ que no existe) 
+              y₋₁ que no existe).
             </p>
-            <p>
+      
+            <p>Reemplazando los valores de cada punto <span className="font-mono">xₙ</span> y las condiciones de contorno conocidas...</p>
+      
+            <div className="bg-blue-50 p-4 rounded-lg space-y-6">
+              {equations.map((eq, idx) => {
+                const label = String.fromCharCode(97 + idx); // ecuaciones “a”, “b”, “c”...
+                return (
+                  <div key={idx} className="border-b border-gray-300 pb-4">
+                    <p className="font-semibold text-blue-900 mb-2">• Para n = {eq.point}</p>
+      
+                    {/* Ecuación general */}
+                    <div className="font-mono text-center text-lg">
+                      {coefYnMinus1.toFixed(2)}·yₙ₋₁ {coefYn >= 0 ? '+' : ''}{coefYn.toFixed(2)}·yₙ {coefYnPlus1 >= 0 ? '+' : ''}{coefYnPlus1.toFixed(2)}·yₙ₊₁ = {(h2).toFixed(4)}·{D.replace(/Math\./g, '')}(xₙ)
+                    </div>
+      
+                    <p className="text-gray-600 italic mt-2">
+                      Sustituyendo valores: xₙ = {eq.x.toFixed(4)}, h = {h}, y₀ = {y0}{formData.finalConditionType === 'value' ? `, yₙ = ${formData.yf}` : ''}
+                    </p>
+      
+                    {/* Desarrollo con valores sustituidos */}
+                    <div className="font-mono bg-white text-center text-lg mt-2 p-2 rounded">
+                      {eq.display}
+                    </div>
+                    <br/>
+                    <div className="bg-yellow-200 p-2 rounded text-center font-mono text-xl mt-2 inline-block">
+                      <span className="font-semibold text-black">
+                        {eq.display.split('=')[0].trim()} = {eq.rightSide.toFixed(4)}
+                      </span>{' '}
+                      <span className="text-gray-700">Ecuación “{label}”</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+      
+            <p className="mt-4">
               A partir de las sustituciones realizadas, obtenemos el siguiente
               <span className="font-semibold text-blue-900"> sistema lineal de ecuaciones</span>,
               donde cada ecuación corresponde a un punto interior del dominio.
@@ -261,13 +299,58 @@ const BoundaryValueSolver = () => {
             </div>
       
             <p className="text-gray-600 italic">
-              Donde [A] es una matriz tridiagonal que contiene los coeficientes
-              de cada ecuación, {`{y}`} el vector de incógnitas y {`{b}`} el
+              Donde [A] es una matriz tridiagonal con los coeficientes, {`{y}`} el vector de incógnitas y {`{b}`} el
               vector de términos independientes.
             </p>
           </div>
         )
       });
+
+      /* steps.push({
+        title: Paso ${formData.finalConditionType === 'derivative' ? '4' : '3'}: Sistema de Ecuaciones,
+        content: (
+          <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
+            <p>
+              Una vez hallada la formula iterativa:
+              <p className="font-mono text-xl">
+                ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
+              </p>
+              debemos comenzar a recorrer el intervalo desde n=1, a 
+              diferencia de los Problemas de Valor Inicial que arrancábamos desde n=0 (no tomamos n=0 
+              porque al tener que usar yₙ₋₁ nos iríamos afuera del intervalo necesitando un valor de 
+              y₋₁ que no existe)
+            </p>
+            <p>
+              A partir de las sustituciones realizadas, obtenemos el siguiente
+              <span className="font-semibold text-blue-900"> sistema lineal de ecuaciones</span>,
+              donde cada ecuación corresponde a un punto interior del dominio.
+            </p>
+      
+            <div className="bg-blue-200 p-4 rounded-lg overflow-x-auto font-mono text-xl">
+              {equations.map((eq, idx) => (
+                <div key={idx} className="border-b border-gray-200 py-1">
+                  <span className="font-semibold text-gray-800">Ecuación {idx + 1}:</span>{' '}
+                  <span className="text-blue-800">{eq.display}</span>
+                </div>
+              ))}
+            </div>
+      
+            <p>
+              En forma matricial, el sistema puede representarse como:
+            </p>
+            <div className="bg-gray-100 p-3 rounded-lg font-mono text-center text-sm">
+              [A]·{{y}} = {{b}}
+            </div>
+      
+            <p className="text-gray-600 italic">
+              Donde [A] es una matriz tridiagonal que contiene los coeficientes
+              de cada ecuación, {{y}} el vector de incógnitas y {{b}} el
+              vector de términos independientes.
+            </p>
+          </div>
+        )
+      }); */
+      
 
       steps.push({
         title: `Paso ${formData.finalConditionType === 'derivative' ? '5' : '4'}: Solución Numérica`,
@@ -296,7 +379,7 @@ const BoundaryValueSolver = () => {
             </div>
           </div>
         )
-      });      
+      });
 
       setSolution({
         points,

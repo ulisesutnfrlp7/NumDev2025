@@ -19,10 +19,10 @@ const InitialValueTaylorSolver = () => {
     f: 'x + y',            // ejemplo por defecto
     x0: '0',
     y0: '1',
-    xf: '1',
+    xf: '0.5',
     h: '0.1',
     order: '2',
-    exact: ''              // expresion opcional de solución exacta y(x)
+    exact: '¿C1?*exp(x) - x - 1 ---> Obtenemos C1...'              // expresion opcional de solución exacta y(x)
   });
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
@@ -297,7 +297,7 @@ const InitialValueTaylorSolver = () => {
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold text-purple-700 mt-6">1. FÓRMULA GENERAL</h3>
+            <h3 className="text-xl font-semibold text-purple-700 mt-6">1. FÓRMULA GENERAL E INFORMACIÓN INICIAL DE UN PVI A RESOLVER</h3>
             <p className="text-gray-700 leading-relaxed">
               Sea <i>y(x)</i> una función suficientemente derivable. Su desarrollo de Taylor alrededor de un punto <i>xₙ</i> es:
             </p>
@@ -329,6 +329,36 @@ const InitialValueTaylorSolver = () => {
             <p className="text-center font-serif text-lg my-2">
               Dᵏf = D(Dᵏ⁻¹f)
             </p>
+
+            <div className="bg-purple-100 p-6 rounded-lg">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Información Inicial de un PVI</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
+                    <div className="font-semibold text-blue-700 mb-2">1. Ecuación Diferencial</div>
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                      y' = f(x, y(x) = dy/dx)
+                    </div>
+                  </div>
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
+                    <div className="font-semibold text-blue-700 mb-2">2. Condición Inicial que debe satisfacer la ecuación</div>
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                      y(x₀) = y₀
+                    </div>
+                  </div>
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
+                    <div className="font-semibold text-blue-700 mb-2">3. Dominio de Trabajo en el eje de las "x"</div>
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                      x₀ ≤ x ≤ xf
+                    </div>
+                  </div>
+                  <div className="bg-blue-100 p-4 rounded-lg shadow">
+                    <div className="font-semibold text-blue-700 mb-2">4. Paso "h" para recorrer el Dominio de Trabajo</div>
+                    <div className="text-xl text-gray-700 bg-gray-100 p-2 rounded font-mono">
+                      xₙ₊₁ = xₙ + h
+                    </div>
+                  </div>
+                </div>
+            </div>
 
             <h3 className="text-xl font-semibold text-purple-700 mt-6">2. TIPO DE PROBLEMAS QUE RESUELVE</h3>
             <p className="text-gray-700">
