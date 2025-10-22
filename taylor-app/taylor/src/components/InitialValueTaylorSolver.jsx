@@ -362,7 +362,7 @@ const InitialValueTaylorSolver = () => {
 
             <h3 className="text-xl font-semibold text-purple-700 mt-6">2. TIPO DE PROBLEMAS QUE RESUELVE</h3>
             <p className="text-gray-700">
-              El método de Taylor se aplica a <b>problemas de valor inicial</b> (PVI) de primer orden, donde la derivada de la incógnita depende de <i>x</i> e <i>y</i>.  
+              El método de Taylor se aplica a <b>problemas de valor inicial</b> (PVI) que implican ecuaciones diferenciales ordinarias de primer orden, donde la derivada de la incógnita depende de <i>x</i> e <i>y</i>.  
               Se utiliza principalmente cuando se conoce la expresión analítica de <i>f(x, y)</i> y se pueden calcular (o aproximar numéricamente) sus derivadas parciales.
             </p>
 
