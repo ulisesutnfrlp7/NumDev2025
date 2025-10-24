@@ -1,6 +1,5 @@
-// src/components/BoundaryValueSolver.jsx
-
 import React, { useState } from 'react';
+import { lusolve, parse } from 'https://esm.sh/mathjs';
 import { Calculator, BookOpen, ChevronDown, ChevronUp, AlertCircle, CheckCircle } from 'lucide-react';
 
 const BoundaryValueSolver = () => {
@@ -11,7 +10,7 @@ const BoundaryValueSolver = () => {
     A: '1',
     B: '-4',
     C: '4',
-    D: 'Math.exp(3*x)',
+    D: 'exp(3*x)',
     x0: '0',
     y0: '0',
     xf: '1',
@@ -35,11 +34,13 @@ const BoundaryValueSolver = () => {
 
   const evaluateExpression = (expr, x) => {
     try {
-      return eval(expr.replace(/\^/g, '**'));
+      const compiledExpr = parse(expr);
+      return compiledExpr.evaluate({ x: x });
     } catch (e) {
-      throw new Error(`Error evaluando expresión: ${expr}`);
+      throw new Error(`Error evaluando expresión D(x): "${expr}". ${e.message}`);
     }
   };
+
 
   const solveBoundaryProblem = () => {
     try {
@@ -55,6 +56,10 @@ const BoundaryValueSolver = () => {
       const h = parseFloat(formData.h);
       
       const n = Math.round((xf - x0) / h);
+      if (n <= 0 || !Number.isInteger(n)) {
+        throw new Error(`El valor de 'n' (${n}) debe ser un entero positivo. Revisa x0, xf y h.`);
+      }
+
       const points = [];
       
       for (let i = 0; i <= n; i++) {
@@ -68,23 +73,23 @@ const BoundaryValueSolver = () => {
       const steps = [];
 
       const h2 = h * h;
-      const coefYnMinus1 = 1 - (B * h) / 2;
-      const coefYn = -2 - A * h2;
-      const coefYnPlus1 = 1 + (B * h) / 2;
-
+      const coefYnMinus1 = A - (B * h) / 2;
+      const coefYn = (-2 * A) + (C * h2);
+      const coefYnPlus1 = A + (B * h) / 2;
+      
       steps.push({
         title: 'Paso 1: Fórmulas de Taylor',
         content: (
           <div className="space-y-2 text-gray-700 text-xl">
             <p>Para un problema de contorno de la forma:</p>
             <p className="font-mono">Ay″ + By′ + Cy = D(x)</p>
-      
+    
             <p>Usando series de Taylor alrededor de xₙ:</p>
             <ul className="list-disc list-inside ml-4">
               <li>y′ₙ ≈ (yₙ₊₁ − yₙ₋₁) / (2h)</li>
               <li>y″ₙ ≈ (yₙ₊₁ − 2yₙ + yₙ₋₁) / h²</li>
             </ul>
-      
+    
             <p>Al sustituir en la ecuación y multiplicar por h² para simplificar la expresión:</p>
             <p className="font-mono text-xl">
               ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
@@ -101,7 +106,7 @@ const BoundaryValueSolver = () => {
             <p className="font-mono text-blue-800">
               {A !== 0 ? `${A}y″` : ''}{B !== 0 ? `${B > 0 ? ' + ' : ' '}${B}y′` : ''}{C !== 0 ? `${C > 0 ? ' + ' : ' '}${C}y` : ''} = {D}
             </p>
-      
+    
             <p>📌 <span className="font-semibold">CONDICIONES DE CONTORNO</span></p>
             <ul className="list-disc list-inside ml-4">
               <li>Condición inicial: <span className="font-mono">y({x0}) = {y0}</span></li>
@@ -111,7 +116,7 @@ const BoundaryValueSolver = () => {
                   : `y′(${xf}) = ${formData.yfPrime}`}
               </span></li>
             </ul>
-      
+    
             <p>⚙️ <span className="font-semibold">PARÁMETROS NUMÉRICOS</span></p>
             <ul className="list-disc list-inside ml-4">
               <li>Paso <span className="font-mono">h = {h}</span></li>
@@ -130,7 +135,7 @@ const BoundaryValueSolver = () => {
         let eq = {
           point: i,
           x: xi,
-          coefficients: new Array(n + 1).fill(0),
+          coefficients: new Array(n + 2).fill(0),
           rightSide: rightSide,
           display: ''
         };
@@ -157,7 +162,7 @@ const BoundaryValueSolver = () => {
 
         equations.push(eq);
       }
-
+      
       if (formData.finalConditionType === 'derivative') {
         const yfPrime = parseFloat(formData.yfPrime);
         const xn = points[n].x;
@@ -200,28 +205,28 @@ const BoundaryValueSolver = () => {
                 <span className="font-semibold text-blue-900"> punto fantasma </span>
                 fuera del dominio, que llamaremos <span className="font-mono">yₙ₊₁</span>.
               </p>
-        
+      
               <p>Partimos de la aproximación central para la derivada:</p>
               <div className="bg-white p-3 rounded-lg font-mono text-center text-xl">
                 y′ₙ = (yₙ₊₁ − yₙ₋₁) / (2h)
               </div>
-        
+      
               <p>Despejando el punto fantasma:</p>
               <div className="bg-white p-3 rounded-lg font-mono text-center text-xl">
                 yₙ₊₁ = yₙ₋₁ + 2h·y′ₙ
               </div>
-        
+      
               <p>Por lo tanto:</p>
               <div className="bg-blue-100 border-l-4 border-blue-600 p-3 rounded font-mono text-xl text-blue-800">
                 yₙ₊₁ − yₙ₋₁ = {(2 * h * yfPrime).toFixed(4)}
               </div>
-        
+      
               <p className="text-gray-600 italic">
                 Este punto auxiliar se utiliza para cerrar el sistema cuando la condición de contorno es una derivada.
               </p>
             </div>
           )
-        });        
+        });
       }
 
       steps.push({
@@ -232,7 +237,7 @@ const BoundaryValueSolver = () => {
               Una vez hallada la fórmula iterativa general:
             </p>
             <div className="bg-white p-3 rounded-lg font-mono text-center text-xl">
-              ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2.toFixed(4)})·{D} (xₙ)
+              ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2.toFixed(4)})·{D.replace(/Math\./g, '')} (xₙ)
             </div>
 
             <p>
@@ -241,26 +246,24 @@ const BoundaryValueSolver = () => {
               porque al tener que usar yₙ₋₁ nos iríamos afuera del intervalo necesitando un valor de 
               y₋₁ que no existe).
             </p>
-      
+    
             <p>Reemplazando los valores de cada punto <span className="font-mono">xₙ</span> y las condiciones de contorno conocidas...</p>
-      
+    
             <div className="bg-blue-50 p-4 rounded-lg space-y-6">
               {equations.map((eq, idx) => {
-                const label = String.fromCharCode(97 + idx); // ecuaciones “a”, “b”, “c”...
+                const label = String.fromCharCode(97 + idx);
                 return (
                   <div key={idx} className="border-b border-gray-300 pb-4">
                     <p className="font-semibold text-blue-900 mb-2">• Para n = {eq.point}</p>
-      
-                    {/* Ecuación general */}
+    
                     <div className="font-mono text-center text-lg">
                       {coefYnMinus1.toFixed(2)}·yₙ₋₁ {coefYn >= 0 ? '+' : ''}{coefYn.toFixed(2)}·yₙ {coefYnPlus1 >= 0 ? '+' : ''}{coefYnPlus1.toFixed(2)}·yₙ₊₁ = {(h2).toFixed(4)}·{D.replace(/Math\./g, '')}(xₙ)
                     </div>
-      
+    
                     <p className="text-gray-600 italic mt-2">
-                      Sustituyendo valores: xₙ = {eq.x.toFixed(4)}, h = {h}, y₀ = {y0}{formData.finalConditionType === 'value' ? `, yₙ = ${formData.yf}` : ''}
+                      Sustituyendo valores: xₙ = {eq.x.toFixed(4)}, h = {h}, y₀ = {y0}{formData.finalConditionType === 'value' && eq.point === n-1 ? `, yₙ = ${formData.yf}` : ''}
                     </p>
-      
-                    {/* Desarrollo con valores sustituidos */}
+    
                     <div className="font-mono bg-white text-center text-lg mt-2 p-2 rounded">
                       {eq.display}
                     </div>
@@ -275,13 +278,13 @@ const BoundaryValueSolver = () => {
                 );
               })}
             </div>
-      
+    
             <p className="mt-4">
               A partir de las sustituciones realizadas, obtenemos el siguiente
               <span className="font-semibold text-blue-900"> sistema lineal de ecuaciones</span>,
               donde cada ecuación corresponde a un punto interior del dominio.
             </p>
-      
+    
             <div className="bg-blue-200 p-4 rounded-lg overflow-x-auto font-mono text-xl">
               {equations.map((eq, idx) => (
                 <div key={idx} className="border-b border-gray-200 py-1">
@@ -290,14 +293,14 @@ const BoundaryValueSolver = () => {
                 </div>
               ))}
             </div>
-      
+    
             <p>
               En forma matricial, el sistema puede representarse como:
             </p>
             <div className="bg-gray-100 p-3 rounded-lg font-mono text-center text-sm">
               [A]·{`{y}`} = {`{b}`}
             </div>
-      
+    
             <p className="text-gray-600 italic">
               Donde [A] es una matriz tridiagonal con los coeficientes, {`{y}`} el vector de incógnitas y {`{b}`} el
               vector de términos independientes.
@@ -305,53 +308,84 @@ const BoundaryValueSolver = () => {
           </div>
         )
       });
+      
+      let matrixA = [];
+      let vectorB = [];
+      let y_solutions = [];
 
-      /* steps.push({
-        title: Paso ${formData.finalConditionType === 'derivative' ? '4' : '3'}: Sistema de Ecuaciones,
-        content: (
-          <div className="space-y-3 text-gray-700 text-xl leading-relaxed">
-            <p>
-              Una vez hallada la formula iterativa:
-              <p className="font-mono text-xl">
-                ({coefYnMinus1.toFixed(4)})·yₙ₋₁ + ({coefYn.toFixed(4)})·yₙ + ({coefYnPlus1.toFixed(4)})·yₙ₊₁ = ({h2})· {D} (xₙ en lugar de x)
-              </p>
-              debemos comenzar a recorrer el intervalo desde n=1, a 
-              diferencia de los Problemas de Valor Inicial que arrancábamos desde n=0 (no tomamos n=0 
-              porque al tener que usar yₙ₋₁ nos iríamos afuera del intervalo necesitando un valor de 
-              y₋₁ que no existe)
-            </p>
-            <p>
-              A partir de las sustituciones realizadas, obtenemos el siguiente
-              <span className="font-semibold text-blue-900"> sistema lineal de ecuaciones</span>,
-              donde cada ecuación corresponde a un punto interior del dominio.
-            </p>
-      
-            <div className="bg-blue-200 p-4 rounded-lg overflow-x-auto font-mono text-xl">
-              {equations.map((eq, idx) => (
-                <div key={idx} className="border-b border-gray-200 py-1">
-                  <span className="font-semibold text-gray-800">Ecuación {idx + 1}:</span>{' '}
-                  <span className="text-blue-800">{eq.display}</span>
-                </div>
-              ))}
-            </div>
-      
-            <p>
-              En forma matricial, el sistema puede representarse como:
-            </p>
-            <div className="bg-gray-100 p-3 rounded-lg font-mono text-center text-sm">
-              [A]·{{y}} = {{b}}
-            </div>
-      
-            <p className="text-gray-600 italic">
-              Donde [A] es una matriz tridiagonal que contiene los coeficientes
-              de cada ecuación, {{y}} el vector de incógnitas y {{b}} el
-              vector de términos independientes.
-            </p>
-          </div>
-        )
-      }); */
-      
+      if (formData.finalConditionType === 'value') {
+        const numUnknowns = n - 1;
+        if (numUnknowns <= 0) {
+          throw new Error("No hay puntos interiores para calcular (n=1). El problema no tiene incógnitas.");
+        }
+        matrixA = Array(numUnknowns).fill(0).map(() => Array(numUnknowns).fill(0));
+        vectorB = Array(numUnknowns).fill(0);
 
+        equations.forEach((eq, j) => {
+          vectorB[j] = eq.rightSide;
+          
+          for (let i = 1; i < n; i++) {
+            if (eq.coefficients[i]) {
+              matrixA[j][i - 1] = eq.coefficients[i];
+            }
+          }
+        });
+
+        y_solutions = lusolve(matrixA, vectorB).map(val => val[0]);
+
+      } else {
+        const numUnknowns = n;
+        matrixA = Array(numUnknowns).fill(0).map(() => Array(numUnknowns).fill(0));
+        vectorB = Array(numUnknowns).fill(0);
+
+        const eq_n = equations.find(e => e.point === n);
+        const phantomEq = equations.find(e => e.isPhantom);
+        
+        if (!eq_n || !phantomEq) {
+          throw new Error("No se pudieron encontrar las ecuaciones para el caso de derivada.");
+        }
+        
+        const Rp = phantomEq.rightSide;
+        const Rn = eq_n.rightSide;
+        
+        const C1 = eq_n.coefficients[n-1] || 0;
+        const C2 = eq_n.coefficients[n] || 0;
+        const C3 = eq_n.coefficients[n+1] || 0;
+
+        equations.forEach((eq, j) => {
+          if (eq.isPhantom || eq.point === n) return;
+
+          vectorB[j] = eq.rightSide;
+          for (let i = 1; i <= n; i++) {
+            if (eq.coefficients[i]) {
+              matrixA[j][i - 1] = eq.coefficients[i];
+            }
+          }
+        });
+
+        matrixA[n-1][n-2] = C1 + C3;
+        matrixA[n-1][n-1] = C2;
+        vectorB[n-1] = Rn - C3 * Rp;
+
+        y_solutions = lusolve(matrixA, vectorB).map(val => val[0]);
+      }
+
+      const solvedPoints = points.map((point) => {
+        const idx = point.index;
+        if (idx === 0) {
+          return { ...point, y: y0 };
+        }
+        if (formData.finalConditionType === 'value' && idx === n) {
+          return { ...point, y: parseFloat(formData.yf) };
+        }
+      
+        if (idx > 0 && idx <= y_solutions.length) {
+          return { ...point, y: y_solutions[idx-1] };
+        }
+        
+        return point;
+      });
+      
       steps.push({
         title: `Paso ${formData.finalConditionType === 'derivative' ? '5' : '4'}: Solución Numérica`,
         content: (
@@ -360,19 +394,22 @@ const BoundaryValueSolver = () => {
               Para obtener los valores de <span className="font-mono">y₁, y₂, ..., yₙ</span>,
               resolvemos el sistema lineal mediante algún método numérico apropiado.
             </p>
-      
+    
             <ul className="list-disc list-inside ml-4 text-blue-800">
               <li>Eliminación de Gauss</li>
               <li>Factorización LU</li>
               <li>Método de Thomas (ideal para sistemas tridiagonales)</li>
             </ul>
-      
+            <p>
+              Nosotros usamos la función lusolve de la librería Mathjs que resuelve el sistema mediante <strong>Factorización LU</strong>
+            </p>
+    
             <p>
               El resultado final permite estimar el comportamiento de la función{' '}
               <span className="font-mono">y(x)</span> dentro del intervalo definido,
               respetando las condiciones de contorno impuestas.
             </p>
-      
+    
             <div className="bg-green-50 border-l-4 border-green-600 p-3 rounded text-green-900 text-xl">
               ✅ La solución numérica obtenida proporciona una aproximación estable y coherente
               con el modelo físico representado por la ecuación diferencial.
@@ -382,13 +419,14 @@ const BoundaryValueSolver = () => {
       });
 
       setSolution({
-        points,
+        points: solvedPoints,
         equations,
         steps,
         n
       });
 
     } catch (err) {
+      console.error(err);
       setError(err.message);
     }
   };
@@ -396,7 +434,6 @@ const BoundaryValueSolver = () => {
   return (
     <div className="min-h-screen bg-blue-250 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="bg-blue-50 rounded-lg shadow-lg p-6 mb-6 border-t-4 border-blue-600">
           <div className="flex items-center gap-4 mb-2">
             <div className="bg-blue-600 p-3 rounded-lg">
@@ -413,7 +450,6 @@ const BoundaryValueSolver = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
         <div className="bg-white rounded-lg shadow-md mb-6 p-2">
           <div className="flex gap-2">
             <button
@@ -441,7 +477,6 @@ const BoundaryValueSolver = () => {
           </div>
         </div>
 
-        {/* Theory Tab */}
         {activeTab === 'theory' && (
           <div className="bg-blue-50 rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
@@ -532,17 +567,14 @@ const BoundaryValueSolver = () => {
           </div>
         )}
 
-        {/* Solver Tab */}
         {activeTab === 'solver' && (
           <div className="space-y-6">
-            {/* Input Form */}
             <div className="bg-blue-50 rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Ingrese los Datos del Problema
               </h2>
 
               <div className="space-y-6">
-                {/* Ecuación Diferencial */}
                 <div className="bg-blue-50 p-6 rounded-lg">
                   <h3 className="font-bold text-gray-800 mb-4">
                     Ecuación Diferencial: Ay'' + By' + Cy = D(x)
@@ -601,9 +633,10 @@ const BoundaryValueSolver = () => {
                       />
                     </div>
                   </div>
+                  
                   <div className="mt-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Función D(x) - Usa 'x' como variable
+                      Función D(x) - Usa 'x' y sintaxis de math.js
                     </label>
                     <input
                       type="text"
@@ -611,15 +644,14 @@ const BoundaryValueSolver = () => {
                       value={formData.D}
                       onChange={handleInputChange}
                       className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none font-mono"
-                      placeholder="Math.exp(-3*x)"
+                      placeholder="exp(-3*x)"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Ejemplos: Math.exp(-3*x), 4*x**2 + 2, Math.sin(x)
+                      Ejemplos: exp(-3*x), 4*x^2 + 2, sin(x), 8*cos(x)
                     </p>
                   </div>
                 </div>
 
-                {/* Condiciones de Contorno */}
                 <div className="bg-purple-50 p-6 rounded-lg">
                   <h3 className="font-bold text-gray-800 mb-4">Condiciones de Contorno</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -714,7 +746,6 @@ const BoundaryValueSolver = () => {
               </div>
             </div>
 
-            {/* Error Display */}
             {error && (
               <div className="bg-red-100 border-l-4 border-red-600 p-4 rounded flex items-start gap-3">
                 <AlertCircle className="text-red-600 flex-shrink-0 mt-1" size={20} />
@@ -725,7 +756,6 @@ const BoundaryValueSolver = () => {
               </div>
             )}
 
-            {/* Solution Display */}
             {solution && (
               <div className="bg-blue-50 rounded-lg shadow-lg p-8">
                 <div className="flex items-center gap-3 mb-6">
@@ -754,19 +784,18 @@ const BoundaryValueSolver = () => {
                       
                       {expandedSteps[idx] && (
                         <div className="p-6 bg-white">
-                          <pre className="whitespace-pre-wrap text-sm text-gray-700 leading-relaxed font-sans">
+                          <div className="whitespace-pre-wrap text-sm text-gray-700 leading-relaxed font-sans">
                             {step.content}
-                          </pre>
+                          </div>
                         </div>
                       )}
                     </div>
                   ))}
 
-                  {/* Tabla de puntos */}
                   <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
                     <div className="bg-green-50 p-4">
                       <span className="font-bold text-gray-800">
-                        Tabla de Puntos del Dominio
+                        Tabla de Solución (Puntos del Dominio)
                       </span>
                     </div>
                     <div className="p-6 bg-blue-50 overflow-x-auto">
@@ -775,17 +804,16 @@ const BoundaryValueSolver = () => {
                           <tr className="bg-gray-100">
                             <th className="px-4 py-2 text-left font-semibold text-gray-700">Índice</th>
                             <th className="px-4 py-2 text-left font-semibold text-gray-700">xₙ</th>
-                            <th className="px-4 py-2 text-left font-semibold text-gray-700">yₙ</th>
+                            <th className="px-4 py-2 text-left font-semibold text-gray-700">yₙ (calculado)</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {solution.points.map((point, idx) => (
-                            <tr key={idx} className="border-t border-gray-200 hover:bg-gray-50">
+                          {solution.points.map((point) => (
+                            <tr key={point.index} className="border-t border-gray-200 hover:bg-gray-50">
                               <td className="px-4 py-2 font-mono">{point.index}</td>
                               <td className="px-4 py-2 font-mono">{point.x.toFixed(4)}</td>
-                              <td className="px-4 py-2 text-gray-500">
-                                {idx === 0 ? formData.y0 : 
-                                (idx === solution.points.length - 1 && formData.finalConditionType === 'value') ? formData.yf : '?'}
+                              <td className="px-4 py-2 font-mono text-blue-800 font-semibold">
+                                {point.y !== undefined ? point.y.toFixed(6) : '?'}
                               </td>
                             </tr>
                           ))}
@@ -804,3 +832,4 @@ const BoundaryValueSolver = () => {
 };
 
 export default BoundaryValueSolver;
+
