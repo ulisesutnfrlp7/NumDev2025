@@ -250,7 +250,7 @@ const BoundaryValueSolver = () => {
             <p>Reemplazando los valores de cada punto <span className="font-mono">xₙ</span> y las condiciones de contorno conocidas...</p>
     
             <div className="bg-blue-50 p-4 rounded-lg space-y-6">
-              {equations.map((eq, idx) => {
+              {equations.filter(eq => !eq.isPhantom).map((eq, idx) => {
                 const label = String.fromCharCode(97 + idx);
                 return (
                   <div key={idx} className="border-b border-gray-300 pb-4">
