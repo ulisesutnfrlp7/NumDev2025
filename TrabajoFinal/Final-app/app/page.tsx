@@ -160,14 +160,14 @@ export default function SimuladorPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-slate-300">País</Label>
+                <Label className="text-slate-300 mb-1" >País</Label>
                 <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                   <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-200">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-900 border-slate-600">
                     {availableCountries.map((country) => (
-                      <SelectItem key={country} value={country}>
+                      <SelectItem className="text-white" key={country} value={country}>
                         {country}
                       </SelectItem>
                     ))}
@@ -176,14 +176,14 @@ export default function SimuladorPage() {
               </div>
 
               <div>
-                <Label className="text-slate-300">Tipo de Aplicación</Label>
+                <Label className="text-slate-300 mb-1">Tipo de Aplicación</Label>
                 <Select value={selectedType} onValueChange={setSelectedType}>
                   <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-200">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-900 border-slate-600">
                     {availableTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
+                      <SelectItem className="text-white" key={type} value={type}>
                         {type.charAt(0).toUpperCase() + type.slice(1)}
                       </SelectItem>
                     ))}
@@ -192,7 +192,7 @@ export default function SimuladorPage() {
               </div>
 
               <div>
-                <Label className="text-slate-300">Horizonte (días)</Label>
+                <Label className="text-slate-300 mb-1">Horizonte (días)</Label>
                 <Input
                   type="number"
                   value={horizonte}
@@ -221,7 +221,7 @@ export default function SimuladorPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-slate-300">Umbral de Descargas</Label>
+                <Label className="text-slate-300 mb-1">Umbral de Descargas</Label>
                 <Input
                   type="number"
                   value={umbral}
@@ -254,7 +254,7 @@ export default function SimuladorPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-slate-300">Costo por Descarga ($)</Label>
+                <Label className="text-slate-300 mb-1">Costo por Descarga ($)</Label>
                 <Input
                   type="number"
                   step="0.1"
@@ -265,7 +265,7 @@ export default function SimuladorPage() {
               </div>
 
               <div>
-                <Label className="text-slate-300">Ingreso por Descarga ($)</Label>
+                <Label className="text-slate-300 mb-1">Ingreso por Descarga ($)</Label>
                 <Input
                   type="number"
                   step="0.1"
