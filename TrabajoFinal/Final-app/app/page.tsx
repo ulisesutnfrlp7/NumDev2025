@@ -80,28 +80,6 @@ const FeaturesSection: React.FC = () => (
     </section>
 );
 
-// Sección de Paper Científico y Validación
-const ValidationSection: React.FC = () => (
-    <section id="validation" className="py-20 md:py-28 bg-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-slate-700/50 p-8 rounded-xl shadow-2xl border border-slate-700">
-            <h2 className="text-3xl font-extrabold text-cyan-400 mb-4">Validación: La Prueba de la Ciencia</h2>
-            <p className="text-lg text-slate-300 mb-6">
-                Nuestra metodología no es una simple adivinanza. Descargue el paper científico que detalla la calibración y validación del modelo de Regresión por Mínimos Cuadrados.
-            </p>
-            <Link href="/acerca">
-                <Button 
-                    variant="outline" 
-                    className="inline-block px-8 py-3 text-base font-semibold rounded-full border border-cyan-400 text-cyan-400 bg-transparent hover:bg-cyan-900/30 transition duration-300"
-                >
-                    <Users className="w-4 h-4 mr-2" />
-                    Conocer al Equipo
-                </Button>
-            </Link>
-        </div>
-    </section>
-);
-
-
 // =================================================================
 // Componente Principal: HomePage (app/page.tsx)
 // =================================================================
@@ -113,7 +91,6 @@ const HomePage: React.FC = () => {
             <main>
                 <HeroSection />
                 <FeaturesSection />
-                <ValidationSection />
             </main>
 
             {/* Footer básico (asumiendo que no está en el layout global) */}
