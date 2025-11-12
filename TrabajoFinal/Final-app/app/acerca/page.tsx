@@ -185,30 +185,30 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
             <TeamMemberCard
-              name="Dr. Elias Vance"
+              name="Dr. Bucchino Ulises"
               title="Científico de Datos, Fundador"
-              focus="Experto en modelado predictivo y validación de datasets. Arquitecto del motor LS y K-Means."
+              focus="Experto en modelado predictivo y validación de datasets. Arquitecto del motor LS."
               icon={<FlaskConical className="w-8 h-8" />}
             />
             
             <TeamMemberCard
-              name="Ava Sharma"
+              name="Barbé Dante"
               title="Especialista en UX/ROI"
-              focus="Enfocada en la utilidad comercial de las proyecciones y la optimización de la retención del usuario."
+              focus="Enfocado en la utilidad comercial de las proyecciones y la optimización de la retención del usuario."
               icon={<Target className="w-8 h-8" />}
             />
 
             <TeamMemberCard
-              name="Ben Carter"
+              name="Andrada Santiago"
               title="Director de Tecnología"
               focus="Responsable de la escalabilidad de la plataforma y la seguridad de los datos (16 años de rigor)."
               icon={<Zap className="w-8 h-8" />}
             />
 
             <TeamMemberCard
-              name="Chloe Lee"
+              name="Soler Tomás"
               title="Líder de Crecimiento & Marketing"
-              focus="Conecta la data predictiva con estrategias de adquisición, crecimiento de usuarios (Growth Hacking) y maximización del Lifetime Value (LTV)."
+              focus="Conecta la data predictiva con estrategias de adquisición, crecimiento de usuarios y maximización del valor de vida del cliente (CLV)."
               icon={<TrendingUp className="w-8 h-8" />}
             />
           </div>
