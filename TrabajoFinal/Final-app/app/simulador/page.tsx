@@ -6,11 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import Link from "next/link"
 import { DownloadChart } from "@/components/download-chart"
 import { loadCSVData, parseCSVData, type ClusterData, predecirDescargas, estimarTiempo } from "@/lib/data-processor"
 import { Calculator, TrendingUp, Clock, DollarSign, Upload } from "lucide-react"
-import { CSVUploader } from "@/components/csv-uploader"
 import { useDataContext } from "@/lib/data-context"
 
 export default function SimuladorPage() {
@@ -26,7 +24,6 @@ export default function SimuladorPage() {
 
   const [prediccion, setPrediccion] = useState<number | null>(null)
   const [tiempoEstimado, setTiempoEstimado] = useState<number | null>(null)
-  const [uploadMessage, setUploadMessage] = useState("")
 
   // Cargar datos iniciales
   useEffect(() => {
@@ -50,21 +47,6 @@ export default function SimuladorPage() {
     }
     if (types.length > 0) {
       setSelectedType(types[0])
-    }
-  }
-
-  const handleCSVUpload = (csvText: string) => {
-    try {
-      const newClusters = parseCSVData(csvText)
-      setClusters(newClusters)
-      updateCountriesAndTypes(newClusters)
-      setPrediccion(null)
-      setTiempoEstimado(null)
-      setUploadMessage("Archivo CSV cargado correctamente. Los datos se han actualizado.")
-      setTimeout(() => setUploadMessage(""), 5000)
-    } catch (error) {
-      setUploadMessage("Error al cargar el archivo CSV. Verifica el formato.")
-      setTimeout(() => setUploadMessage(""), 5000)
     }
   }
 
@@ -101,55 +83,7 @@ export default function SimuladorPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-cyan-400">MobileMetrics Analytics</h1>
-              <p className="text-sm text-slate-400">Simulador de Descargas de Aplicaciones</p>
-            </div>
-            <nav className="flex gap-4">
-              <Link href="/">
-                <Button variant="ghost" className="text-cyan-400">
-                  Simulador
-                </Button>
-              </Link>
-              <Link href="/validacion">
-                <Button variant="ghost" className="text-slate-300 hover:text-cyan-400">
-                  Validación
-                </Button>
-              </Link>
-              <Link href="/paper">
-                <Button variant="ghost" className="text-slate-300 hover:text-cyan-400">
-                  Paper
-                </Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
-
       <main className="container mx-auto px-4 py-8">
-        <Card className="bg-slate-800/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-cyan-400 flex items-center gap-2">
-              <Upload className="w-5 h-5" />
-              Cargar Datos
-            </CardTitle>
-            <CardDescription className="text-slate-400">
-              Sube un archivo CSV con los datos de descargas para análisis personalizado
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <CSVUploader onUpload={handleCSVUpload} />
-            {uploadMessage && (
-              <div className="mt-4 p-3 bg-cyan-900/30 border border-cyan-500/50 rounded text-cyan-300 text-sm">
-                {uploadMessage}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
