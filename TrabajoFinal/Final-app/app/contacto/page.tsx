@@ -63,27 +63,22 @@ export default function ContactPage() {
                 <header className="text-center max-w-3xl mx-auto mb-12 border-b border-slate-800 pb-8">
                     <h2 className="text-5xl font-extrabold text-cyan-400 mb-2">Hablemos de tu Crecimiento</h2>
                     <p className="text-xl text-slate-400">
-                        ¿Necesitas un modelo LS a medida o tienes preguntas sobre la validación? Nuestro equipo está listo para ayudarte.
+                        ¿Necesitas un modelo LS a medida o tienes preguntas sobre el simulador? Nuestro equipo está listo para ayudarte.
                     </p>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
-                    {/* Columna de Información (Chiches) */}
+                    {/* Columna de Información*/}
                     <div className="space-y-6">
-                        <h3 className="text-2xl font-bold text-slate-100 border-b border-slate-700 pb-2 flex items-center gap-2">
-                            <MapPin className="w-5 h-5 text-cyan-400" />
-                            Nuestra Oficina Central
-                        </h3>
                         <Card className="bg-slate-800/50 border-slate-700 p-6 space-y-4">
                             
                             <div className="flex items-start space-x-3">
                                 <MapPin className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-1" />
                                 <div>
-                                    <p className="font-semibold text-slate-200">Dirección Ficticia</p>
+                                    <p className="font-semibold text-slate-200">Dirección Física</p>
                                     <p className="text-slate-400 text-sm">
-                                        Data Science Tower, 100 Analytics Blvd.<br/>
-                                        Silicon Valley, CA 94043, USA.
+                                        Edificio Madero Harbour, Juana Manso 1560, Piso 10. Puerto Madero, C1107ABN, CABA.
                                     </p>
                                 </div>
                             </div>
@@ -92,7 +87,7 @@ export default function ContactPage() {
                                 <Mail className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                                 <div>
                                     <p className="font-semibold text-slate-200">Email de Soporte</p>
-                                    <p className="text-slate-400 text-sm">contacto@mobilemetrics.com</p>
+                                    <p className="text-slate-400 text-sm">soporte@mobilemetrics.com</p>
                                 </div>
                             </div>
 
@@ -100,7 +95,7 @@ export default function ContactPage() {
                                 <Phone className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                                 <div>
                                     <p className="font-semibold text-slate-200">Teléfono (Solo Citas)</p>
-                                    <p className="text-slate-400 text-sm">+1 (555) Data-LS</p>
+                                    <p className="text-slate-400 text-sm">+54 11 5263-0975</p>
                                 </div>
                             </div>
 
@@ -108,19 +103,19 @@ export default function ContactPage() {
                                 <Clock className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                                 <div>
                                     <p className="font-semibold text-slate-200">Horario</p>
-                                    <p className="text-slate-400 text-sm">Lunes - Viernes: 9:00 - 18:00 (PST)</p>
+                                    <p className="text-slate-400 text-sm">Lunes - Viernes: 9:00 - 18:00 (GMT-3)</p>
                                 </div>
                             </div>
                         </Card>
                     </div>
 
-                    {/* Columna de Formulario (El Chicho Principal) */}
+                    {/* Columna de Formulario*/}
                     <div className="lg:col-span-2">
                         <Card className="bg-slate-800/50 border-slate-700">
                             <CardHeader>
                                 <CardTitle className="text-2xl font-bold text-cyan-400">Envíanos un Mensaje Directo</CardTitle>
                                 <CardDescription className="text-slate-400">
-                                    Déjanos saber sobre tu aplicación, el clúster de interés (país/tipo) y el desafío a resolver.
+                                    Déjanos saber sobre tu aplicación, la categoría de interés (país/tipo) y el desafío a resolver.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
