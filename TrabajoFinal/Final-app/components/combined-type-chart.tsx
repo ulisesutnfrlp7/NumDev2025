@@ -121,7 +121,7 @@ export function CombinedTypeChart({ clusters, typeName }: CombinedTypeChartProps
       datasets.push({
         label: `${country}`,
         data: fitPoints,
-        borderColor: 'red',
+        borderColor: 'white',
         borderWidth: 3,
         pointRadius: 0,
         showLine: true,
@@ -130,7 +130,7 @@ export function CombinedTypeChart({ clusters, typeName }: CombinedTypeChartProps
         tension: 0.4,
         yAxisID: "y",
       })
-      
+
       // Dataset de puntos de muestreo
       datasets.push({
         label: `${country} (datos)`,
