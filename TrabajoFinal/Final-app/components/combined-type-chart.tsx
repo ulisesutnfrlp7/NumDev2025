@@ -14,17 +14,14 @@ interface CombinedTypeChartProps {
 // Mapa de colores por país
 const countryColors: Record<string, { bg: string; border: string; line: string }> = {
   ARG: { bg: "rgba(59, 130, 246, 0.5)", border: "rgba(59, 130, 246, 1)", line: "rgb(59, 130, 246)" },
-  BRA: { bg: "rgba(34, 197, 94, 0.5)", border: "rgba(34, 197, 94, 1)", line: "rgb(34, 197, 94)" },
   MEX: { bg: "rgba(239, 68, 68, 0.5)", border: "rgba(239, 68, 68, 1)", line: "rgb(239, 68, 68)" },
   CHL: { bg: "rgba(168, 85, 247, 0.5)", border: "rgba(168, 85, 247, 1)", line: "rgb(168, 85, 247)" },
-  COL: { bg: "rgba(251, 146, 60, 0.5)", border: "rgba(251, 146, 60, 1)", line: "rgb(251, 146, 60)" },
-  PER: { bg: "rgba(236, 72, 153, 0.5)", border: "rgba(236, 72, 153, 1)", line: "rgb(236, 72, 153)" },
 }
 
 function getCountryFromKey(key: string): string {
   // Formato: PAIS_tipo
   const parts = key.split("_")
-  return parts[0]
+  return parts[0].toUpperCase()
 }
 
 function getBestFitType(cluster: ClusterData): "lineal" | "exponencial" | "potencial" | "cuadratico" {
@@ -115,9 +112,25 @@ export function CombinedTypeChart({ clusters, typeName }: CombinedTypeChartProps
     // Crear datasets para cada país/cluster
     Object.entries(clusters).forEach(([key, cluster]) => {
       const country = getCountryFromKey(key)
-      const colors = countryColors[country] || countryColors.ARG
+      const colors = countryColors[country] || countryColors['ARG']
       const bestFitType = getBestFitType(cluster)
 
+      // Dataset de la función de mejor bondad
+      const fitPoints = generateFitPoints(cluster, bestFitType, globalTMin, globalTMax)
+
+      datasets.push({
+        label: `${country}`,
+        data: fitPoints,
+        borderColor: 'red',
+        borderWidth: 3,
+        pointRadius: 0,
+        showLine: true,
+        type: "line",
+        fill: false,
+        tension: 0.4,
+        yAxisID: "y",
+      })
+      
       // Dataset de puntos de muestreo
       datasets.push({
         label: `${country} (datos)`,
@@ -130,22 +143,6 @@ export function CombinedTypeChart({ clusters, typeName }: CombinedTypeChartProps
         yAxisID: "y",
       })
 
-      // Dataset de la función de mejor bondad
-      const fitPoints = generateFitPoints(cluster, bestFitType, globalTMin, globalTMax)
-      const r2Value = cluster.ajustes[bestFitType].r2
-
-      datasets.push({
-        label: `${country} (${bestFitType}, R²=${r2Value.toFixed(4)})`,
-        data: fitPoints,
-        borderColor: colors.line,
-        borderWidth: 3,
-        pointRadius: 0,
-        showLine: true,
-        type: "line",
-        fill: false,
-        tension: 0.4,
-        yAxisID: "y",
-      })
     })
 
     const config: ChartConfiguration = {

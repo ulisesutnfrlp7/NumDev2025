@@ -210,7 +210,7 @@ export async function loadCSVData(): Promise<Record<string, ClusterData>> {
   for (let i = 1; i < lines.length; i++) {
     const values = lines[i].split(";")
     const t = Number.parseFloat(values[0].replace(",", "."))
-    const pais = values[1]
+    const pais = values[1].trim().toUpperCase()
     const tipo = values[2]
     const descargas = Number.parseFloat(values[3].replace(",", "."))
 
