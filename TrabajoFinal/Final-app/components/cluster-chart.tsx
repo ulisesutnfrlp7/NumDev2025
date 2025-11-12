@@ -58,47 +58,20 @@ export function ClusterChart({ cluster, clusterName }: ClusterChartProps) {
       data: {
         datasets: [
           {
+            label: "Exponencial",
+            data: exponencialPoints,
+            type: "line",
+            borderColor: "red",
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0,
+          },
+          {
             label: "Datos",
             data: scatterData,
             backgroundColor: "rgba(34, 211, 238, 0.5)",
             borderColor: "rgba(34, 211, 238, 1)",
             pointRadius: 3,
-          },
-          {
-            label: "Lineal",
-            data: linealPoints,
-            type: "line",
-            borderColor: "rgba(239, 68, 68, 0.7)",
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-          },
-          {
-            label: "Exponencial",
-            data: exponencialPoints,
-            type: "line",
-            borderColor: "rgba(34, 197, 94, 0.7)",
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-          },
-          {
-            label: "Potencial",
-            data: potencialPoints,
-            type: "line",
-            borderColor: "rgba(59, 130, 246, 0.7)",
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-          },
-          {
-            label: "Cuadrático",
-            data: cuadraticoPoints,
-            type: "line",
-            borderColor: "rgba(251, 146, 60, 0.7)",
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
           },
         ],
       },
@@ -107,12 +80,7 @@ export function ClusterChart({ cluster, clusterName }: ClusterChartProps) {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: "top",
-            labels: {
-              color: "#e2e8f0",
-              font: { size: 11 },
-              boxWidth: 12,
-            },
+            display: false,
           },
         },
         scales: {
