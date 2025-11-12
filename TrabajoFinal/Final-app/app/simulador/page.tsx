@@ -7,8 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { DownloadChart } from "@/components/download-chart"
-import { loadCSVData, parseCSVData, type ClusterData, predecirDescargas, estimarTiempo } from "@/lib/data-processor"
-import { Calculator, TrendingUp, Clock, DollarSign, Upload } from "lucide-react"
+import { loadCSVData, type ClusterData, predecirDescargas, estimarTiempo } from "@/lib/data-processor"
+import { Calculator, TrendingUp, Clock, DollarSign, Target } from "lucide-react"
 import { useDataContext } from "@/lib/data-context"
 
 export default function SimuladorPage() {
@@ -18,9 +18,13 @@ export default function SimuladorPage() {
   const [selectedCountry, setSelectedCountry] = useState("Argentina")
   const [selectedType, setSelectedType] = useState("informativa")
   const [horizonte, setHorizonte] = useState(30)
+  const [horizonteLabel, setHorizonteLabel] = useState(0)
   const [umbral, setUmbral] = useState(100000)
   const [costoDescarga, setCostoDescarga] = useState(0.5)
   const [ingresoDescarga, setIngresoDescarga] = useState(2.0)
+
+  const [montoObjetivo, setMontoObjetivo] = useState<number | null>(50000) 
+  const [tiempoObjetivoFinanciero, setTiempoObjetivoFinanciero] = useState<number | null>(null)
 
   const [prediccion, setPrediccion] = useState<number | null>(null)
   const [tiempoEstimado, setTiempoEstimado] = useState<number | null>(null)
@@ -70,6 +74,28 @@ export default function SimuladorPage() {
     }
   }
 
+  const calcularTiempoFinanciero = () => {
+    if (!clusters || montoObjetivo === null) {
+        setTiempoObjetivoFinanciero(null)
+        return
+    }
+    const huellaRentabilidad = ingresoDescarga - costoDescarga;
+
+    if (huellaRentabilidad <= 0) {
+        setTiempoObjetivoFinanciero(Infinity) 
+        return
+    }
+
+    const umbralDescargasRequerido = montoObjetivo / huellaRentabilidad;
+
+    const key = `${selectedCountry}_${selectedType}`
+    const cluster = clusters[key]
+    if (cluster) {
+        const tiempo = estimarTiempo(cluster, umbralDescargasRequerido)
+        setTiempoObjetivoFinanciero(tiempo)
+    }
+  }
+
   const calcularROI = () => {
     if (!prediccion) return null
     const costoTotal = prediccion * costoDescarga
@@ -80,6 +106,10 @@ export default function SimuladorPage() {
   }
 
   const roi = calcularROI()
+
+  useEffect(() => {
+    calcularTiempoFinanciero()
+  }, [montoObjetivo, costoDescarga, ingresoDescarga, selectedCountry, selectedType, clusters]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -136,7 +166,10 @@ export default function SimuladorPage() {
               </div>
 
               <Button
-                onClick={calcularPrediccion}
+                onClick={() => {
+                  calcularPrediccion()
+                  setHorizonteLabel(horizonte)
+                }}
                 className="w-full bg-cyan-600 hover:bg-cyan-700"
                 disabled={!clusters}
               >
@@ -209,20 +242,52 @@ export default function SimuladorPage() {
                 />
               </div>
 
+              <div className="pt-2 border-t border-slate-700">
+                <Label className="text-slate-300 mb-1 flex items-center gap-1">
+                    <Target className="w-4 h-4 text-cyan-500"/>
+                    Meta de Ganancia Neta ($)
+                </Label>
+                <Input
+                    type="number"
+                    step="1000"
+                    value={montoObjetivo ?? ''} 
+                    onChange={(e) => setMontoObjetivo(e.target.value ? Number(e.target.value) : null)}
+                    className="bg-slate-900 border-cyan-600 text-slate-200 font-bold"
+                    placeholder="50000"
+                />
+                {tiempoObjetivoFinanciero !== null && isFinite(tiempoObjetivoFinanciero) && montoObjetivo !== null && (
+                  <div className="p-4 bg-slate-900 rounded-lg border border-cyan-500/30 text-center">
+                      <p className="text-sm text-slate-400 mb-1">Tiempo para alcanzar ${montoObjetivo.toLocaleString()} de Ganancia Neta:</p>
+                      <p className="text-3xl font-bold text-cyan-400">
+                          {tiempoObjetivoFinanciero.toFixed(1)} días
+                      </p>
+                  </div>
+                )}
+                {tiempoObjetivoFinanciero === Infinity && (
+                    <div className="p-4 bg-red-900/50 rounded-lg border border-red-500/30 text-center">
+                        <p className="text-sm text-red-400 font-medium">Margen de Ganancia Negativo o Cero. La meta es inalcanzable con estos costos/ingresos.</p>
+                    </div>
+                )}
+              </div>
               {roi && (
-                <div className="space-y-2 pt-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Costos:</span>
-                    <span className="text-red-400">${roi.costoTotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Ingresos:</span>
-                    <span className="text-green-400">${roi.ingresoTotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm font-bold">
-                    <span className="text-slate-300">ROI:</span>
-                    <span className="text-cyan-400">{roi.roi}%</span>
-                  </div>
+                <div className="space-y-2 pt-2 border-t border-slate-700">
+                    <CardDescription className="text-cyan-300">Resumen Proyectado ({horizonteLabel} días):</CardDescription>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-400">Costos:</span>
+                      <span className="text-red-400">${roi.costoTotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-400">Ingresos:</span>
+                      <span className="text-green-400">${roi.ingresoTotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                        <span className="text-slate-400">Ganancia Neta:</span>
+                        <span className={`font-bold ${roi.ganancia >= 0 ? 'text-green-400' : 'text-red-400'}`}>${roi.ganancia.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm font-bold">
+                        <span className="text-slate-300">ROI Proyectado:</span>
+                        <span className="text-cyan-400">{roi.roi}%</span>
+                    </div>
                 </div>
               )}
             </CardContent>
@@ -239,7 +304,7 @@ export default function SimuladorPage() {
             </CardHeader>
             <CardContent>
               <div className="text-center p-8">
-                <p className="text-slate-400 mb-2">Descargas proyectadas en {horizonte} días:</p>
+                <p className="text-slate-400 mb-2">Descargas proyectadas en {horizonteLabel} días:</p>
                 <p className="text-5xl font-bold text-cyan-400">
                   {prediccion.toLocaleString("es-ES", { maximumFractionDigits: 0 })}
                 </p>

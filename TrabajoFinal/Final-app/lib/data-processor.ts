@@ -278,7 +278,7 @@ export function predecirDescargas(cluster: ClusterData, dias: number): number {
 // Estimar tiempo para alcanzar un umbral de descargas
 export function estimarTiempo(cluster: ClusterData, umbral: number): number {
   let tMin = 0
-  let tMax = 1000
+  let tMax = 5475
 
   while (tMax - tMin > 0.1) {
     const tMid = (tMin + tMax) / 2
