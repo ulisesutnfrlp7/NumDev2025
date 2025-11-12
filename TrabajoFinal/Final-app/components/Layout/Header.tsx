@@ -37,8 +37,8 @@ const Header: React.FC = () => {
             <Link href="/simulador" className={getLinkClasses("/simulador")}>
                 Simulador
             </Link>
-            <Link href="/validacion" className={getLinkClasses("/validacion")}>
-                Validación
+            <Link href="/graficos" className={getLinkClasses("/graficos")}>
+                Gráficos
             </Link>
             <Link href="/acerca" className={getLinkClasses("/acerca")}>
                 Acerca de Nosotros
