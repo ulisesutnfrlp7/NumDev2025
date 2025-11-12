@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => (
                 El Futuro de tus Descargas, <span className="text-cyan-400">Proyectado por Data Science</span>.
             </h1>
             <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-10">
-                Transformamos la analítica retrospectiva en planificación prospectiva. Conozca la precisión de nuestro modelo de Mínimos Cuadrados (LS) para sus 6 clústeres de mercado.
+                Transformamos la analítica retrospectiva en planificación prospectiva. Conozca la precisión de nuestro simulador para los distintos mercados.
             </p>
             {/* El atributo passHref y legacyBehavior son buenas prácticas al envolver componentes con Link */}
             <Link href="/simulador">
@@ -63,12 +63,12 @@ const FeaturesSection: React.FC = () => (
                 <FeatureCard 
                     icon={<FlaskConical className="w-full h-full" />} 
                     title="Precisión Científica (LS)"
-                    description="El modelo de Mínimos Cuadrados minimiza el error cuadrático, ofreciendo una proyección de crecimiento estable y científicamente validada."
+                    description="El modelo de Mínimos Cuadrados minimiza el error, ofreciendo una proyección de crecimiento estable y científicamente validada."
                 />
                 <FeatureCard 
                     icon={<Target className="w-full h-full" />} 
-                    title="Análisis por Clústeres (6X)"
-                    description="Segmentamos en 3 Países y 2 Tipos de App, calibrando los coeficientes LS para reflejar las dinámicas de mercado específicas."
+                    title="Análisis por Mercado"
+                    description="Segmentamos en 3 Países y 2 Tipos de App, calibrando los coeficientes para reflejar las dinámicas de mercado específicas."
                 />
                 <FeatureCard 
                     icon={<Clock className="w-full h-full" />} 
