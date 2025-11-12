@@ -1,27 +1,34 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { DataProvider } from "@/lib/data-context"
+import './globals.css'; // Asegúrate de que esta línea esté presente
+import { Inter } from 'next/font/google'; // Usa la fuente que desees
+import Header from '../components/Layout/Header'
+import Footer from '../components/Layout/Footer';
+import { DataProvider } from '@/lib/data-context';
 
-const inter = Inter({ subsets: ["latin"] })
+// Define la fuente (si usas Next/font)
+const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: "MobileMetrics Analytics - Simulador de Descargas",
-  description: "Sistema de modelado predictivo para descargas de aplicaciones móviles usando mínimos cuadrados",
-  generator: "v0.app",
-}
+// Metadatos globales (importante para SEO)
+export const metadata = {
+  title: 'MobileMetrics Analytics | Proyección de Descargas LS',
+  description: 'Simulador de descargas de aplicaciones móviles basado en modelos de regresión por Mínimos Cuadrados (LS).',
+};
 
+// Componente Root Layout
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
-        <DataProvider>{children}</DataProvider>
+    <html lang="es" className={inter.className}>
+      <body className="bg-slate-900 text-slate-200 antialiased">
+        <Header />
+        
+        <DataProvider>
+          <main>{children}</main> 
+        </DataProvider>
+        <Footer />
       </body>
     </html>
-  )
+  );
 }
