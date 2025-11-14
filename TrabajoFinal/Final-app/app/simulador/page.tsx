@@ -10,6 +10,8 @@ import { DownloadChart } from "@/components/download-chart"
 import { loadCSVData, type ClusterData, predecirDescargas, estimarTiempo } from "@/lib/data-processor"
 import { Calculator, TrendingUp, Clock, DollarSign, Target } from "lucide-react"
 import { useDataContext } from "@/lib/data-context"
+import { generarReportePDF } from "@/lib/generarPDF"
+import { toBase64 } from "@/lib/toBase64";
 
 export default function SimuladorPage() {
   const { clusters, setClusters } = useDataContext()
@@ -292,6 +294,34 @@ export default function SimuladorPage() {
               )}
             </CardContent>
           </Card>
+          <Button
+            onClick={ async () => {
+              const base64Logo = await toBase64("/mbanalyt.png");
+              const tiempoRedondeado = tiempoObjetivoFinanciero 
+                ? Math.ceil(tiempoObjetivoFinanciero)
+                : "-";
+              const descargasRedondeadas = prediccion
+                ? Math.ceil(prediccion)
+                : "-";
+              generarReportePDF({
+                pais: selectedCountry,
+                tipo: selectedType === "informativa" ? "Informativa" : "Videojuego",
+                costoDescarga,
+                ingresoDescarga,
+                metaGanancia: montoObjetivo,
+                tiempoEstimado: tiempoRedondeado,
+                detalleResultados: [
+                  ["Descargas proyectadas", descargasRedondeadas?.toLocaleString() ?? "-"],
+                  ["ROI proyectado", roi?.roi + "%" ?? "-"]
+                ],
+                logoBase64: base64Logo
+              })
+            }
+          }
+            className="bg-cyan-600 hover:bg-cyan-700 text-lg"
+          >
+            Descargar PDF Para Análisis Ejecutivo
+          </Button>
         </div>
 
         {prediccion !== null && (
