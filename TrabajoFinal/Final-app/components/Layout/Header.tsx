@@ -43,12 +43,8 @@ const Header: React.FC = () => {
             <Link href="/acerca" className={getLinkClasses("/acerca")}>
                 Acerca de Nosotros
             </Link>
-            
-            {/* CTA de contacto o acción rápida */}
-            <Link href="/contacto" passHref>
-              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-white ml-4">
+            <Link href="/contacto" className={getLinkClasses("/contacto")}>
                 Contacto
-              </Button>
             </Link>
           </nav>
 

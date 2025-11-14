@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => (
                 El Futuro de tus Descargas, <span className="text-cyan-400">Proyectado por Data Science</span>.
             </h1>
             <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-10">
-                Transformamos la analítica retrospectiva en planificación prospectiva. Conozca la precisión de nuestro simulador para los distintos mercados.
+                Transformamos la analítica retrospectiva en planificación prospectiva. Conocé la precisión de nuestro simulador para los distintos mercados.
             </p>
             {/* El atributo passHref y legacyBehavior son buenas prácticas al envolver componentes con Link */}
             <Link href="/simulador">
@@ -68,7 +68,7 @@ const FeaturesSection: React.FC = () => (
                 <FeatureCard 
                     icon={<Target className="w-full h-full" />} 
                     title="Análisis por Mercado"
-                    description="Segmentamos en 3 Países y 2 Tipos de App, calibrando los coeficientes para reflejar las dinámicas de mercado específicas."
+                    description="Segmentamos en 3 Países (Argentina, Chile y México) y 2 tipos de Aplicación (Videojuego e Informativa), calibrando los coeficientes para reflejar las dinámicas de mercado específicas."
                 />
                 <FeatureCard 
                     icon={<Clock className="w-full h-full" />} 
@@ -92,11 +92,6 @@ const HomePage: React.FC = () => {
                 <HeroSection />
                 <FeaturesSection />
             </main>
-
-            {/* Footer básico (asumiendo que no está en el layout global) */}
-            <footer className="bg-slate-900 border-t border-slate-700 py-6 text-center text-slate-500">
-                <p>&copy; {new Date().getFullYear()} MobileMetrics Analytics. Todos los derechos reservados.</p>
-            </footer>
         </div>
     );
 };

@@ -41,7 +41,7 @@ export default function ContactPage() {
         if (submitStatus === 'success') {
             return (
                 <div className="p-4 bg-green-900/40 border border-green-500/50 rounded-lg text-green-300 font-medium mt-4">
-                    ✅ ¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.
+                    ✅ ¡Mensaje enviado con éxito! Nos pondremos en contacto pronto ;)
                 </div>
             );
         }

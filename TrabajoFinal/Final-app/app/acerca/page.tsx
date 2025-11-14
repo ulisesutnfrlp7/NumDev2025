@@ -55,7 +55,7 @@ export default function AboutPage() {
             className="inline-flex items-center justify-center bg-cyan-600 hover:bg-cyan-700 text-slate-50 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-cyan-500/50 transition-all font-semibold"
           >
             <Zap className="w-5 h-5 mr-2" />
-            Proyecta tu Futuro con nuestro simulador
+            Proyectá tu futuro con nuestro simulador
           </a>
         </section>
 
@@ -141,7 +141,7 @@ export default function AboutPage() {
                     {/* Lo que Ellos Hacen */}
                     <div className="space-y-4 p-6 bg-red-900/20 border-l-4 border-red-500 rounded-lg">
                         <h3 className="text-2xl font-bold text-red-400 flex items-center gap-2">
-                            <Target className="w-6 h-6" /> Lo que todos Hacen
+                            <Target className="w-6 h-6" /> Lo que todos hacen...
                         </h3>
                         <p className="text-slate-400">
                             Se quedan en <strong>métricas básicas</strong>: descargas totales, usuarios activos, gráficos genéricos.

@@ -242,7 +242,7 @@ export default function SimuladorPage() {
                 />
               </div>
 
-              <div className="pt-2 border-t border-slate-700">
+              <div className="pt-4 border-t border-slate-700 pb-2">
                 <Label className="text-slate-300 mb-1 flex items-center gap-1">
                     <Target className="w-4 h-4 text-cyan-500"/>
                     Meta de Ganancia Neta ($)
@@ -252,11 +252,11 @@ export default function SimuladorPage() {
                     step="1000"
                     value={montoObjetivo ?? ''} 
                     onChange={(e) => setMontoObjetivo(e.target.value ? Number(e.target.value) : null)}
-                    className="bg-slate-900 border-cyan-600 text-slate-200 font-bold"
+                    className="bg-slate-900 border-cyan-600 text-slate-200 font-bold mt-2"
                     placeholder="50000"
                 />
                 {tiempoObjetivoFinanciero !== null && isFinite(tiempoObjetivoFinanciero) && montoObjetivo !== null && (
-                  <div className="p-4 bg-slate-900 rounded-lg border border-cyan-500/30 text-center">
+                  <div className="p-4 bg-slate-900 rounded-lg border border-cyan-500/30 text-center mt-4">
                       <p className="text-sm text-slate-400 mb-1">Tiempo para alcanzar ${montoObjetivo.toLocaleString()} de Ganancia Neta:</p>
                       <p className="text-3xl font-bold text-cyan-400">
                           {tiempoObjetivoFinanciero.toFixed(1)} días
